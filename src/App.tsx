@@ -128,10 +128,8 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
           <p className="outfit-font text-xs uppercase tracking-[0.8em] opacity-80">The Wedding of</p>
         </Reveal>
         <Reveal delay={0.4} scale={0.9} y={30} duration={1}>
-          <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl flex items-center justify-center gap-4">
-            <span>Ayu</span>
-            <span className="text-4xl lg:text-5xl opacity-50 font-light italic">&</span>
-            <span>Rudi</span>
+          <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl">
+            Ayu <span className="text-4xl lg:text-5xl opacity-40 font-light italic align-middle mx-4">&</span> Rudi
           </h1>
         </Reveal>
         <Reveal delay={0.6} y={10}>
@@ -319,17 +317,17 @@ const App = () => {
               <Lottie animationData={birdsData} loop={true} className="w-full h-full object-cover scale-[1.5]" />
             </div>
 
-            <div className="relative z-10 space-y-6 max-w-[340px]">
-              <div className="space-y-3">
+            <div className="relative z-10 space-y-6 max-w-[340px] mx-auto">
+              <div className="space-y-3 text-center">
                 <Reveal delay={0.2} y={15} duration={1.5}>
                   <p className="cinzel-font text-[11px] uppercase tracking-[0.5em] text-primary/60 font-bold mb-1">
                     The Wedding of
                   </p>
                 </Reveal>
                 <Reveal delay={0.5} scale={1} y={30} duration={1.8}>
-                  <h1 className="italiana-font text-center text-[52px] leading-none text-[#2D2D2D] flex items-center justify-center gap-5">
+                  <h1 className="italiana-font text-[52px] leading-none text-[#2D2D2D] flex items-center justify-center gap-3">
                     <span>Ayu</span>
-                    <span className="text-3xl text-primary/30 font-light italic">&</span>
+                    <span className="text-3xl text-primary/20 font-light italic">&</span>
                     <span>Rudi</span>
                   </h1>
                 </Reveal>
@@ -340,7 +338,7 @@ const App = () => {
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Countdown targetDate="2026-08-02T08:00:00" className="gap-4" />
+                  <Countdown targetDate="2026-08-02T08:00:00" className="gap-4 justify-center" />
                 </motion.div>
               </Reveal>
 
@@ -360,7 +358,7 @@ const App = () => {
 
                 <div className="space-y-4">
                   <Reveal delay={1.6} y={15} duration={1.5}>
-                    <h3 className="cinzel-font text-base font-bold text-gold tracking-[0.2em] uppercase whitespace-nowrap">
+                    <h3 className="cinzel-font text-base font-bold text-primary tracking-[0.2em] uppercase whitespace-nowrap text-center">
                       Minggu, 02 Agustus 2026
                     </h3>
                   </Reveal>
@@ -378,7 +376,7 @@ const App = () => {
                         };
                         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                       }}
-                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-md outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
+                      className="mx-auto flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-md outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
                     >
                       <CalendarIcon size={14} />
                       Simpan Ke Kalender

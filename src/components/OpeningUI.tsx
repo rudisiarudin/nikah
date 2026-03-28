@@ -50,9 +50,9 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
             </p>
           </Reveal>
           <Reveal delay={0.4} scale={0.9} duration={1}>
-            <h1 className="italiana-font font-normal m-0 mb-[10px] whitespace-nowrap leading-none tracking-wide text-[clamp(60px,12vw,72px)] drop-shadow-xl flex items-center justify-center gap-4" style={{ textShadow: "2px 4px 10px rgba(0,0,0,0.3)" }}>
+            <h1 className="italiana-font font-normal m-0 mb-[10px] whitespace-nowrap leading-none tracking-wide text-[clamp(60px,12vw,72px)] drop-shadow-xl text-white flex items-center justify-center gap-4" style={{ textShadow: "2px 4px 10px rgba(0,0,0,0.3)" }}>
               <span>Ayu</span>
-              <span className="text-[0.6em] opacity-50 font-light italic">&</span>
+              <span className="text-[0.6em] opacity-40 font-light italic">&</span>
               <span>Rudi</span>
             </h1>
           </Reveal>
@@ -119,7 +119,7 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
           <Reveal delay={0.4} scale={0.9} duration={1}>
             <h1 className="italiana-font text-7xl lg:text-[6rem] text-white drop-shadow-2xl leading-none flex items-center justify-center gap-4">
               <span>Ayu</span>
-              <span className="text-4xl lg:text-5xl opacity-50 font-light italic">&</span>
+              <span className="text-4xl lg:text-5xl opacity-40 font-light italic">&</span>
               <span>Rudi</span>
             </h1>
           </Reveal>
