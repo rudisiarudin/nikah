@@ -128,7 +128,11 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
           <p className="outfit-font text-xs uppercase tracking-[0.8em] opacity-80">The Wedding of</p>
         </Reveal>
         <Reveal delay={0.4} scale={0.9} y={30} duration={1}>
-          <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl">Ayu & Rudi</h1>
+          <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl flex items-center justify-center gap-4">
+            <span>Ayu</span>
+            <span className="text-4xl lg:text-5xl opacity-50 font-light italic">&</span>
+            <span>Rudi</span>
+          </h1>
         </Reveal>
         <Reveal delay={0.6} y={10}>
           <p className="serif-font text-lg lg:text-2xl tracking-[0.5em] font-light opacity-90">02 . 08 . 2026</p>
@@ -322,11 +326,11 @@ const App = () => {
                     The Wedding of
                   </p>
                 </Reveal>
-                <Reveal delay={0.5} scale={0.95} y={30} duration={1.8}>
-                  <h1 className="italiana-font text-6xl leading-tight flex items-center justify-center gap-4">
-                    <span className="text-[#2D2D2D]">Ayu</span>
-                    <span className="text-primary/40 cinzel-font text-3xl">&</span>
-                    <span className="text-[#2D2D2D]">Rudi</span>
+                <Reveal delay={0.5} scale={1} y={30} duration={1.8}>
+                  <h1 className="italiana-font text-center text-[52px] leading-none text-[#2D2D2D] flex items-center justify-center gap-5">
+                    <span>Ayu</span>
+                    <span className="text-3xl text-primary/30 font-light italic">&</span>
+                    <span>Rudi</span>
                   </h1>
                 </Reveal>
               </div>
