@@ -1,0 +1,182 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Lateef:wght@400;700&family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap');
+
+@font-face {
+  font-family: 'Charlotte Southern';
+  src: url('/font/charlotte_southern/Charlotte Southern.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Italiana';
+  src: url('/font/Italiana/Italiana-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cinzel';
+  src: url('/font/Cinzel/Cinzel-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", serif;
+  --font-display: "Playfair Display", serif;
+  --font-script: "Great Vibes", cursive;
+  --font-arabic: "Amiri", serif;
+  --font-outfit: "Outfit", sans-serif;
+
+  --color-primary: #6B705C; /* Olive Green */
+  --color-secondary: #A5A58D; /* Muted Sage */
+  --color-tertiary: #B7B7A4; /* Light Sage/Khaki */
+  --color-neutral: #F5F3EF; /* Off-white/Cream */
+  
+  --color-earth-dark: #6B705C;
+  --color-earth-mid: #A5A58D;
+  --color-earth-light: #B7B7A4;
+  --color-earth-cream: #F5F3EF;
+  --color-earth-accent: #6B705C;
+  --color-gold: #D4AF37;
+}
+
+@layer base {
+  body {
+    @apply bg-neutral text-primary font-sans antialiased overflow-x-hidden;
+  }
+}
+
+.glass-card {
+  @apply bg-neutral/40 backdrop-blur-md border border-primary/5 shadow-sm;
+}
+
+.design-card {
+  @apply bg-white/50 backdrop-blur-sm p-8 rounded-[3rem] shadow-sm border border-primary/5;
+}
+
+.btn-primary {
+  @apply bg-primary text-neutral px-8 py-4 rounded-full font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/90 active:scale-95 shadow-lg hover:shadow-primary/20;
+}
+
+.btn-outlined {
+  @apply border border-primary/20 text-primary px-8 py-4 rounded-full font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/5 active:scale-95;
+}
+
+.script-font {
+  font-family: var(--font-script);
+}
+
+.serif-font {
+  font-family: var(--font-serif);
+}
+
+.display-font {
+  font-family: var(--font-display);
+}
+
+.arabic-font {
+  font-family: var(--font-arabic);
+}
+
+.lateef-font {
+  font-family: 'Lateef', serif;
+}
+
+.sans-font {
+  font-family: var(--font-sans);
+}
+
+.outfit-font {
+  font-family: var(--font-outfit);
+}
+
+.charlotte-font {
+  font-family: 'Charlotte Southern', sans-serif;
+}
+
+.italiana-font {
+  font-family: 'Italiana', serif;
+}
+
+.cinzel-font {
+  font-family: 'Cinzel', serif;
+}
+
+.cinzel-font {
+  font-family: 'Cinzel', serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-neutral);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes slow-zoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-slow-zoom {
+  animation: slow-zoom 15s ease-in-out infinite alternate;
+}
+
+/* Texture Overlay */
+.bg-texture {
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+}
+
+.mask-oval {
+  clip-path: ellipse(45% 50% at 50% 50%);
+}
+
+.mask-arch {
+  clip-path: polygon(0% 100%, 0% 20%, 5% 15%, 10% 10%, 20% 5%, 30% 2%, 50% 0%, 70% 2%, 80% 5%, 90% 10%, 95% 15%, 100% 20%, 100% 100%);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-tertiary);
+  border-radius: 10px;
+}
+
+/* Parallax-ish effect */
+.parallax-bg {
+  transform: translateZ(-1px) scale(2);
+}
+
+.ticket-cutout {
+  mask-image: radial-gradient(circle at 0 50%, transparent 15px, black 16px),
+              radial-gradient(circle at 100% 50%, transparent 15px, black 16px);
+  mask-composite: intersect;
+}
