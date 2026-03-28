@@ -317,28 +317,28 @@ const App = () => {
               <Lottie animationData={birdsData} loop={true} className="w-full h-full object-cover scale-[1.5]" />
             </div>
 
-            <div className="relative z-10 space-y-6 max-w-[340px] mx-auto">
-              <div className="space-y-3 text-center">
+            <div className="relative z-10 space-y-6 max-w-[340px]">
+              <div className="space-y-3 text-left">
                 <Reveal delay={0.2} y={15} duration={1.5}>
                   <p className="cinzel-font text-[11px] uppercase tracking-[0.5em] text-primary/60 font-bold mb-1">
                     The Wedding of
                   </p>
                 </Reveal>
                 <Reveal delay={0.5} scale={1} y={30} duration={1.8}>
-                  <h1 className="italiana-font text-[52px] leading-none text-[#2D2D2D] flex items-center justify-center gap-3">
+                  <h1 className="italiana-font text-[52px] leading-none text-[#2D2D2D] flex items-center justify-start gap-4">
                     <span>Ayu</span>
                     <span className="text-3xl text-primary/20 font-light italic">&</span>
                     <span>Rudi</span>
                   </h1>
                 </Reveal>
               </div>
-
+              
               <Reveal delay={0.8} y={20} duration={1.5}>
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Countdown targetDate="2026-08-02T08:00:00" className="gap-4 justify-center" />
+                  <Countdown targetDate="2026-08-02T08:00:00" className="gap-4 justify-start" />
                 </motion.div>
               </Reveal>
 
@@ -358,7 +358,7 @@ const App = () => {
 
                 <div className="space-y-4">
                   <Reveal delay={1.6} y={15} duration={1.5}>
-                    <h3 className="cinzel-font text-base font-bold text-primary tracking-[0.2em] uppercase whitespace-nowrap text-center">
+                    <h3 className="cinzel-font text-base font-bold text-primary tracking-[0.2em] uppercase whitespace-nowrap">
                       Minggu, 02 Agustus 2026
                     </h3>
                   </Reveal>
@@ -376,7 +376,7 @@ const App = () => {
                         };
                         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                       }}
-                      className="mx-auto flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-md outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
+                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-md outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
                     >
                       <CalendarIcon size={14} />
                       Simpan Ke Kalender
