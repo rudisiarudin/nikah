@@ -394,7 +394,7 @@ const App = () => {
                         };
                         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                       }}
-                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-md outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
+                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-[5px] outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
                     >
                       <CalendarIcon size={14} />
                       Simpan Ke Kalender
@@ -476,7 +476,7 @@ const App = () => {
             <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
               {/* Bride Card: Image Left, Text Right (Flipped as per request) */}
               <Reveal y={40} className="w-full">
-                <div className="flex flex-row-reverse bg-[#2D2D2D] rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 w-full min-h-[220px]">
+                <div className="flex flex-row-reverse bg-[#2D2D2D] rounded-[5px] overflow-hidden shadow-2xl border border-white/5 w-full min-h-[220px]">
                   {/* Text Side (Right Aligned for Bride) */}
                   <div className="w-[52%] p-6 flex flex-col justify-center items-end relative h-full text-right">
                     <div className="space-y-4 text-right flex flex-col items-end w-full">
@@ -534,7 +534,7 @@ const App = () => {
 
               {/* Groom Card: Text Left, Image Right (Flipped as per request) */}
               <Reveal y={40} className="w-full">
-                <div className="flex flex-row bg-[#2D2D2D] rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 w-full min-h-[220px]">
+                <div className="flex flex-row bg-[#F9F8F4] rounded-[5px] overflow-hidden shadow-2xl border border-primary/5 w-full min-h-[220px]">
                   {/* Text Side (Left Aligned for Groom) */}
                   <div className="w-[52%] p-6 flex flex-col justify-center items-start relative h-full text-left">
                     <div className="space-y-4 text-left flex flex-col items-start w-full">
@@ -598,7 +598,7 @@ const App = () => {
 
             <div className="max-w-3xl mx-auto relative z-10">
               <Reveal y={50}>
-                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
+                <div className="relative rounded-[5px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 z-0">
                     <img
@@ -678,7 +678,7 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-xl backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
                         >
                           <MapPin size={14} className="opacity-60" />
                           Peta Lokasi
@@ -688,7 +688,7 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,0,0,0.1)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-xl backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
                         >
                           <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
                           Live Streaming
@@ -816,7 +816,7 @@ const App = () => {
                       <div className="absolute left-0 top-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-neutral text-[10px] font-bold">
                         0{idx + 1}
                       </div>
-                      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-primary/10 shadow-lg p-5 space-y-3">
+                      <div className="bg-white/80 backdrop-blur-sm rounded-[5px] border border-primary/5 shadow-lg p-8 relative overflow-hidden group">
                         <h3 className="serif-font text-xl italic font-bold text-[#2D2D2D]">{story.title}</h3>
                         <p className="text-[12px] text-primary/80 leading-[1.8] italic serif-font">
                           {story.desc}
@@ -844,7 +844,7 @@ const App = () => {
 
             {/* Cinematic Video */}
             <Reveal y={30} delay={0.2}>
-              <div className="relative rounded-2xl overflow-hidden border border-primary/10 shadow-lg mb-6">
+              <div className="relative rounded-[5px] overflow-hidden border border-primary/10 shadow-lg mb-6">
                 <video
                   autoPlay
                   loop
@@ -1073,7 +1073,7 @@ const App = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               src={`/images/galeri${selectedGalleryImage + 1}.jpg`}
-              className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain border border-white/10"
+              className="max-w-full max-h-[85vh] rounded-[5px] shadow-2xl object-contain border border-white/10"
               onClick={(e) => e.stopPropagation()}
             />
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
@@ -1145,7 +1145,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "relative rounded-[2rem] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        "relative rounded-[5px] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
         className
       )}
     >
@@ -1204,7 +1204,7 @@ const GiftModal = () => {
               initial={{ y: 50, opacity: 0, scale: 0.9 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 50, opacity: 0, scale: 0.9 }}
-              className="bg-[#FDFBF7] w-full max-w-[420px] rounded-[3rem] p-8 md:p-10 relative overflow-hidden text-primary shadow-2xl border-[6px] border-[#C19A5B]/10"
+              className="bg-[#FDFBF7] w-full max-w-[420px] rounded-[5px] p-8 md:p-10 relative overflow-hidden text-primary shadow-2xl border-[6px] border-[#C19A5B]/10"
             >
               <button
                 onClick={() => setShow(false)}
@@ -1220,7 +1220,7 @@ const GiftModal = () => {
 
                 <div className="space-y-6">
                   {/* Bank Card (BCA Black Titanium Mastercard Style) */}
-                  <div className="relative aspect-[1.6/1] bg-[#1a1a1a] rounded-[2rem] p-7 text-white shadow-[0_25px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-white/10 group">
+                  <div className="relative aspect-[1.6/1] bg-[#1a1a1a] rounded-[5px] p-7 text-white shadow-[0_25px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-white/10 group">
                     {/* Dark Brushed Metal Background Part 1 */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#1a1a1a] to-[#222222]" />
 
@@ -1296,7 +1296,7 @@ const GiftModal = () => {
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
-                      className="w-full bg-gradient-to-r from-[#C19A5B] to-[#A67C3D] text-white py-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-[#C19A5B]/20 outfit-font text-[10px] font-bold tracking-[0.25em] uppercase"
+                      className="w-full bg-gradient-to-r from-[#C19A5B] to-[#A67C3D] text-white py-4 rounded-[5px] flex items-center justify-center gap-3 shadow-xl shadow-[#C19A5B]/20 outfit-font text-[10px] font-bold tracking-[0.25em] uppercase"
                     >
                       <Copy size={16} />
                       {copied ? 'BERHASIL DISALIN' : 'SALIN NO REKENING'}
@@ -1317,9 +1317,9 @@ const GiftModal = () => {
                   </div>
 
                   {/* Physical Gift Section */}
-                  <div className="bg-[#FAF9F6] rounded-[2rem] p-8 border-2 border-dashed border-[#C19A5B]/20 space-y-5 relative">
+                  <div className="bg-[#FAF9F6] rounded-[5px] p-8 border-2 border-dashed border-[#C19A5B]/20 space-y-5 relative">
                     <div className="flex items-center gap-5">
-                      <div className="w-14 h-14 bg-[#C19A5B]/10 text-[#C19A5B] rounded-2xl flex items-center justify-center shadow-inner">
+                      <div className="w-14 h-14 bg-[#C19A5B]/10 text-[#C19A5B] rounded-[5px] flex items-center justify-center shadow-inner">
                         <Gift size={24} />
                       </div>
                       <div>
@@ -1448,7 +1448,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
               type="text"
               value={displayName}
               readOnly
-              className="w-full bg-primary/5 border border-primary/10 rounded-2xl px-5 py-4 text-sm focus:outline-none sans-font text-primary/80 shadow-sm cursor-not-allowed font-medium"
+              className="w-full bg-primary/5 border border-primary/10 rounded-[5px] px-5 py-4 text-sm focus:outline-none sans-font text-primary/80 shadow-sm cursor-not-allowed font-medium"
               placeholder="Nama dari undangan"
             />
           </div>
@@ -1462,7 +1462,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                   type="button"
                   onClick={() => setStatus(opt)}
                   className={cn(
-                    "flex-1 py-4 px-2 outfit-font text-[9px] md:text-[10px] rounded-2xl border transition-all font-bold uppercase tracking-widest flex items-center justify-center gap-1.5",
+                    "flex-1 py-4 px-2 outfit-font text-[9px] md:text-[10px] rounded-[5px] border transition-all font-bold uppercase tracking-widest flex items-center justify-center gap-1.5",
                     status === opt
                       ? "bg-primary text-neutral border-primary shadow-lg shadow-primary/20 scale-[1.02]"
                       : "bg-white/80 text-primary/40 border-primary/5 hover:border-primary/20"
@@ -1483,7 +1483,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full bg-white/80 border border-primary/10 rounded-2xl px-5 py-4 text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all resize-none sans-font placeholder:text-primary/20 shadow-sm"
+            className="w-full bg-white/80 border border-primary/10 rounded-[5px] px-5 py-4 text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all resize-none sans-font placeholder:text-primary/20 shadow-sm"
             placeholder="Tuliskan pesan & doa tulus Anda..."
             rows={4}
             required
@@ -1495,7 +1495,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
           whileHover={isSubmitting || !displayName ? {} : { scale: 1.01, backgroundColor: 'var(--color-primary)' }}
           whileTap={isSubmitting || !displayName ? {} : { scale: 0.98 }}
           className={cn(
-            "btn-primary w-full py-5 rounded-2xl flex items-center justify-center gap-3 text-[11px] shadow-xl transition-all",
+            "btn-primary w-full py-5 rounded-[5px] flex items-center justify-center gap-3 text-[11px] shadow-xl transition-all",
             (isSubmitting || !displayName) && "opacity-70 cursor-not-allowed"
           )}
         >
@@ -1547,7 +1547,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                   className="relative group"
                 >
                   {/* Glassmorphism Card */}
-                  <div className="bg-white/70 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-primary/10 shadow-lg hover:shadow-[0_25px_50px_rgba(0,0,0,0.06)] transition-all duration-700 relative overflow-hidden">
+                  <div className="bg-white/70 backdrop-blur-md p-6 md:p-8 rounded-[5px] border border-primary/10 shadow-lg hover:shadow-[0_25px_50px_rgba(0,0,0,0.06)] transition-all duration-700 relative overflow-hidden">
                     <div className="relative z-10 space-y-4">
                       {/* Name & Date Part */}
                       <div className="flex items-center gap-4">
@@ -1604,7 +1604,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                           viewport={{ once: true }}
                           className="mt-6 md:mt-8 pl-0 md:pl-[4.5rem] relative"
                         >
-                          <div className="bg-[#f8f8f8] p-5 md:p-6 rounded-2xl border border-primary/5 space-y-4 shadow-inner">
+                          <div className="bg-[#f8f8f8] p-5 md:p-6 rounded-[5px] border border-primary/5 space-y-4 shadow-inner">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                               <div className="flex items-center gap-3">
                                 <div className="w-7 h-7 rounded-full bg-black/5 flex items-center justify-center text-primary/40">

@@ -141,7 +141,7 @@ const Admin = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-md p-8 rounded-[2rem] shadow-xl w-full max-w-sm border border-primary/10"
+          className="bg-white/80 backdrop-blur-md p-8 rounded-[5px] shadow-xl w-full max-w-sm border border-primary/10"
         >
           <div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
             <Lock size={24} />
@@ -156,11 +156,11 @@ const Admin = () => {
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
                 placeholder="Passcode"
-                className="w-full bg-white border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all text-center tracking-widest"
+                className="w-full bg-white border border-primary/10 rounded-[5px] px-4 py-3 text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all text-center tracking-widest"
               />
               {error && <p className="text-red-500 text-xs text-center mt-2">{error}</p>}
             </div>
-            <button type="submit" className="w-full bg-primary text-neutral py-3 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+            <button type="submit" className="w-full bg-primary text-neutral py-3 rounded-[5px] text-sm font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
               Masuk
             </button>
             <div className="pt-4 text-center">
@@ -195,16 +195,16 @@ const Admin = () => {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 bg-white/50 p-1.5 rounded-2xl border border-primary/5 w-fit">
+        <div className="flex gap-2 mb-8 bg-white/50 p-1.5 rounded-[5px] border border-primary/5 w-fit">
           <button
             onClick={() => setActiveTab('url')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'url' ? 'bg-primary text-neutral shadow-md' : 'text-primary/60 hover:text-primary hover:bg-white/80'}`}
+            className={`px-6 py-2.5 rounded-[5px] text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'url' ? 'bg-primary text-neutral shadow-md' : 'text-primary/60 hover:text-primary hover:bg-white/80'}`}
           >
             <LinkIcon size={16} /> Buat URL
           </button>
           <button
             onClick={() => setActiveTab('wishes')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'wishes' ? 'bg-primary text-neutral shadow-md' : 'text-primary/60 hover:text-primary hover:bg-white/80'}`}
+            className={`px-6 py-2.5 rounded-[5px] text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'wishes' ? 'bg-primary text-neutral shadow-md' : 'text-primary/60 hover:text-primary hover:bg-white/80'}`}
           >
             <MessageSquare size={16} /> Kelola Ucapan
           </button>
@@ -212,7 +212,7 @@ const Admin = () => {
 
         {/* URL Generator Content */}
         {activeTab === 'url' && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-primary/10 rounded-[2rem] p-6 md:p-10 shadow-sm max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-primary/10 rounded-[5px] p-6 md:p-10 shadow-sm max-w-2xl">
             <h2 className="italiana-font text-2xl mb-2">Buat URL Undangan</h2>
             <p className="text-sm text-primary/60 mb-8">Ketikkan nama tamu untuk menghasilkan link khusus untuk mereka. Nama ini akan muncul di halaman depan saat mereka membuka undangan.</p>
 
@@ -224,22 +224,22 @@ const Admin = () => {
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   placeholder="Misal: Joko Widodo"
-                  className="w-full bg-neutral border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all font-medium"
+                  className="w-full bg-neutral border border-primary/10 rounded-[5px] px-4 py-3 text-sm focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all font-medium"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs font-bold tracking-wider uppercase text-primary/40 block">Kategori Ucapan</label>
-                <div className="flex bg-neutral border border-primary/10 rounded-xl p-1.5 w-full font-medium sm:max-w-xs">
+                <div className="flex bg-neutral border border-primary/10 rounded-[5px] p-1.5 w-full font-medium sm:max-w-xs">
                   <button
                     onClick={() => setCategory('muslim')}
-                    className={`flex-1 py-2.5 rounded-lg text-sm transition-all duration-300 ${category === 'muslim' ? 'bg-white shadow-sm text-primary font-bold' : 'text-primary/40 hover:text-primary'}`}
+                    className={`flex-1 py-2.5 rounded-[5px] text-sm transition-all duration-300 ${category === 'muslim' ? 'bg-white shadow-sm text-primary font-bold' : 'text-primary/40 hover:text-primary'}`}
                   >
                     Muslim
                   </button>
                   <button
                     onClick={() => setCategory('umum')}
-                    className={`flex-1 py-2.5 rounded-lg text-sm transition-all duration-300 ${category === 'umum' ? 'bg-white shadow-sm text-primary font-bold' : 'text-primary/40 hover:text-primary'}`}
+                    className={`flex-1 py-2.5 rounded-[5px] text-sm transition-all duration-300 ${category === 'umum' ? 'bg-white shadow-sm text-primary font-bold' : 'text-primary/40 hover:text-primary'}`}
                   >
                     Umum
                   </button>
@@ -256,14 +256,14 @@ const Admin = () => {
                     <div className="flex gap-3 grid-cols-2">
                       <button
                         onClick={handleCopyUrl}
-                        className="flex-1 bg-white border border-primary/20 text-primary py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                        className="flex-1 bg-white border border-primary/20 text-primary py-3 rounded-[5px] text-xs font-bold tracking-widest uppercase hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
                       >
                         {copiedUrl ? <CheckCircle2 size={16} className="text-green-500" /> : <Copy size={16} />}
                         {copiedUrl ? 'Tersalin!' : 'Salin URL'}
                       </button>
                       <button
                         onClick={handleWhatsAppShare}
-                        className="flex-1 bg-[#25D366] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/30"
+                        className="flex-1 bg-[#25D366] text-white py-3 rounded-[5px] text-xs font-bold tracking-widest uppercase hover:bg-[#20bd5a] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/30"
                       >
                         <MessageSquare size={16} />
                         Kirim via WA
@@ -289,7 +289,7 @@ const Admin = () => {
                   { label: 'Absen', value: wishes.filter(w => w.status === 'Tidak Hadir').length, color: 'red-500' },
                   { label: 'Ragu', value: wishes.filter(w => w.status === 'Masih Ragu').length, color: 'gray-500' }
                 ].map((stat, idx) => (
-                  <div key={idx} className="bg-white border border-primary/10 rounded-2xl p-4 shadow-sm">
+                  <div key={idx} className="bg-white border border-primary/10 rounded-[5px] p-4 shadow-sm">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-1">{stat.label}</p>
                     <p className={`text-2xl font-bold text-${stat.color}`}>{stat.value}</p>
                   </div>
@@ -297,14 +297,14 @@ const Admin = () => {
               </div>
             )}
 
-            <div className="bg-white border border-primary/10 rounded-2xl p-6 shadow-sm flex items-center justify-between">
+            <div className="bg-white border border-primary/10 rounded-[5px] p-6 shadow-sm flex items-center justify-between">
               <div>
                 <h2 className="italiana-font text-2xl mb-1">Daftar Ucapan</h2>
                 <p className="text-sm text-primary/60">Kelola dan balas ucapan yang dikirimkan oleh para tamu.</p>
               </div>
               <button 
                 onClick={fetchWishes} 
-                className="text-xs border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors font-medium flex items-center gap-2"
+                className="text-xs border border-primary/20 px-4 py-2 rounded-[5px] hover:bg-primary/5 transition-colors font-medium flex items-center gap-2"
               >
                 Refresh
               </button>
@@ -316,13 +316,13 @@ const Admin = () => {
                 Memuat data...
               </div>
             ) : wishes.length === 0 ? (
-              <div className="py-20 text-center text-primary/40 bg-white rounded-2xl border border-primary/5">
+              <div className="py-20 text-center text-primary/40 bg-white rounded-[5px] border border-primary/5">
                 Belum ada ucapan yang masuk.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {wishes.map((wish) => (
-                  <div key={wish.id} className="bg-white border border-primary/10 rounded-2xl p-6 shadow-sm flex flex-col">
+                  <div key={wish.id} className="bg-white border border-primary/10 rounded-[5px] p-6 shadow-sm flex flex-col">
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="font-bold text-lg mb-1">{wish.name}</h3>
@@ -334,7 +334,7 @@ const Admin = () => {
                         {wish.status === 'Hadir' ? 'Hadir' : wish.status === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
                       </span>
                     </div>
-                    <div className="bg-neutral p-4 rounded-xl text-sm italic serif-font text-primary/80 mb-6 flex-1">
+                    <div className="bg-neutral p-4 rounded-[5px] text-sm italic serif-font text-primary/80 mb-6 flex-1">
                       "{wish.message}"
                     </div>
 
@@ -348,7 +348,7 @@ const Admin = () => {
                         onChange={(e) => setReplyText({ ...replyText, [wish.id]: e.target.value })}
                         placeholder="Tulis balasan untuk ucapan ini..."
                         rows={2}
-                        className="w-full bg-white border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary/40 transition-all font-medium resize-none shadow-sm"
+                        className="w-full bg-white border border-primary/10 rounded-[5px] px-4 py-3 text-sm focus:outline-none focus:border-primary/40 transition-all font-medium resize-none shadow-sm"
                       />
                       <button
                         onClick={() => handleReplySubmit(wish.id)}
