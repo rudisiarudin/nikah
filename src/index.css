@@ -45,16 +45,16 @@
   --color-earth-accent: #6B705C;
   --color-gold: #D4AF37;
   
-  /* Global Radius Token - Refined Classic 5px */
+  /* Global Radius Token - Refined Classic 10px (iOS Style) */
   --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 5px;
-  --radius-lg: 5px;
-  --radius-xl: 5px;
-  --radius-2xl: 5px;
-  --radius-3xl: 5px;
-  --radius-[2rem]: 5px;
-  --radius-[3rem]: 5px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 10px;
+  --radius-xl: 10px;
+  --radius-2xl: 10px;
+  --radius-3xl: 10px;
+  --radius-[2rem]: 10px;
+  --radius-[3rem]: 10px;
 }
 
 @layer base {
@@ -68,15 +68,15 @@
 }
 
 .design-card {
-  @apply bg-white/50 backdrop-blur-sm p-8 rounded-[5px] shadow-sm border border-primary/5;
+  @apply bg-white/50 backdrop-blur-sm p-8 rounded-[10px] shadow-sm border border-primary/5;
 }
 
 .btn-primary {
-  @apply bg-primary text-neutral px-8 py-4 rounded-[5px] font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/90 active:scale-95 shadow-lg hover:shadow-primary/20;
+  @apply bg-primary text-neutral px-8 py-4 rounded-[10px] font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/90 active:scale-95 shadow-lg hover:shadow-primary/20;
 }
 
 .btn-outlined {
-  @apply border border-primary/20 text-primary px-8 py-4 rounded-[5px] font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/5 active:scale-95;
+  @apply border border-primary/20 text-primary px-8 py-4 rounded-[10px] font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/5 active:scale-95;
 }
 
 .script-font {
