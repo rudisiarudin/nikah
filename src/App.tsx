@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import {
   Heart,
@@ -20,7 +21,8 @@ import {
   Navigation,
   Users,
   Home,
-  BookOpen
+  BookOpen,
+  Lock
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { cn } from './lib/utils';
@@ -80,13 +82,13 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
   ];
 
   return (
-    <div className={cn("flex gap-4 md:gap-6", className || "justify-start")}>
+    <div className={cn("flex gap-3 md:gap-5", className || "justify-start")}>
       {items.map((item, i) => (
-        <div key={i} className="text-center">
-          <div className="cinzel-font text-2xl md:text-3xl font-bold text-gold leading-none">
+        <div key={i} className="text-center flex flex-col items-center">
+          <div className="cinzel-font text-[22px] md:text-[26px] font-bold text-gold leading-none">
             {String(item.value).padStart(2, '0')}
           </div>
-          <div className="outfit-font text-[8px] md:text-[9px] font-bold tracking-widest text-primary/60 mt-1.5 md:mt-2">
+          <div className="outfit-font text-[7px] md:text-[8px] font-bold tracking-[0.25em] text-primary/40 mt-2 uppercase">
             {item.label}
           </div>
         </div>
@@ -187,7 +189,7 @@ const App = () => {
       setCurrentStoryIndex((prev) => (prev + 1) % (WEDDING_CONFIG.storyImages?.length || 1));
     }, 5000);
     const galleryInterval = setInterval(() => {
-      setCurrentGalleryIndex((prev) => (prev + 1) % 6); // galeri1-6
+      setCurrentGalleryIndex((prev) => (prev + 1) % 7); // galeri1-7
     }, 4000);
     return () => {
       clearInterval(storyInterval);
@@ -271,14 +273,14 @@ const App = () => {
               {[0.6, 1, 0.4, 0.8, 0.5, 0.9, 0.4].map((h, i) => (
                 <motion.div
                   key={i}
-                  animate={{ 
+                  animate={{
                     height: ["20%", "100%", "20%"],
                     opacity: [0.4, 1, 0.4]
                   }}
-                  transition={{ 
-                    duration: 0.5 + i * 0.1, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
+                  transition={{
+                    duration: 0.5 + i * 0.1,
+                    repeat: Infinity,
+                    ease: "easeInOut"
                   }}
                   className="w-[1.5px] bg-neutral rounded-full"
                   style={{ height: `${h * 100}%` }}
@@ -343,14 +345,14 @@ const App = () => {
                   </p>
                 </Reveal>
                 <Reveal delay={0.5} scale={1} y={30} duration={1.8}>
-                  <h1 className="italiana-font text-[52px] leading-none text-[#2D2D2D] flex items-center justify-start gap-4">
+                  <h1 className="italiana-font text-[52px] leading-none text-[#4A4E3F] flex items-center justify-start gap-4">
                     <span>Ayu</span>
-                    <span className="text-3xl text-primary/20 font-light italic">&</span>
+                    <span className="text-3xl text-primary/30 font-light italic">&</span>
                     <span>Rudi</span>
                   </h1>
                 </Reveal>
               </div>
-              
+
               <Reveal delay={0.8} y={20} duration={1.5}>
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
@@ -394,7 +396,7 @@ const App = () => {
                         };
                         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                       }}
-                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-[10px] outfit-font text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
+                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-full outfit-font text-[9.5px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
                     >
                       <CalendarIcon size={14} />
                       Simpan Ke Kalender
@@ -418,12 +420,12 @@ const App = () => {
           {/* Quote Section */}
           <section className="py-24 px-8 bg-primary text-neutral text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-texture opacity-10 pointer-events-none" />
-            
+
             <div className="max-w-4xl mx-auto space-y-8">
               <Reveal delay={0.2} scale={0.8} duration={1.5}>
                 <motion.div
-                  animate={{ scale: [1, 1.15, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ y: [0, -8, 0], scale: [1, 1.12, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <Heart className="mx-auto text-neutral/40" size={32} />
                 </motion.div>
@@ -476,7 +478,7 @@ const App = () => {
             <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
               {/* Bride Card: Image Left, Text Right (Flipped as per request) */}
               <Reveal y={40} className="w-full">
-                <div className="flex flex-row-reverse bg-[#2D2D2D] rounded-[10px] overflow-hidden shadow-2xl border border-white/5 w-full min-h-[220px]">
+                <div className="flex flex-row-reverse bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl border border-primary/20 w-full min-h-[220px]">
                   {/* Text Side (Right Aligned for Bride) */}
                   <div className="w-[52%] p-6 flex flex-col justify-center items-end relative h-full text-right">
                     <div className="space-y-4 text-right flex flex-col items-end w-full">
@@ -515,7 +517,7 @@ const App = () => {
                       referrerPolicy="no-referrer"
                     />
                     {/* Correct Gradient to Fade into the Text Side (Right) */}
-                    <div className="absolute inset-0 bg-gradient-to-l from-[#2D2D2D] via-[#2D2D2D]/40 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-l from-[#4A4E3F] via-[#4A4E3F]/70 to-transparent pointer-events-none" />
                   </div>
                 </div>
               </Reveal>
@@ -532,9 +534,9 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Groom Card: Text Left, Image Right (Flipped as per request) */}
+              {/* Groom Card: Dark Theme (Matched with Bride) */}
               <Reveal y={40} className="w-full">
-                <div className="flex flex-row bg-[#F9F8F4] rounded-[10px] overflow-hidden shadow-2xl border border-primary/5 w-full min-h-[220px]">
+                <div className="flex flex-row bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl border border-primary/20 w-full min-h-[220px]">
                   {/* Text Side (Left Aligned for Groom) */}
                   <div className="w-[52%] p-6 flex flex-col justify-center items-start relative h-full text-left">
                     <div className="space-y-4 text-left flex flex-col items-start w-full">
@@ -572,8 +574,8 @@ const App = () => {
                       className="w-full h-full object-cover relative z-0"
                       referrerPolicy="no-referrer"
                     />
-                    {/* Correct Gradient to Fade into the Text Side (Left) */}
-                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#2D2D2D] via-[#2D2D2D]/40 to-transparent pointer-events-none" />
+                    {/* Correct Gradient to Fade into the Text Side (Left) - Use matching dark color */}
+                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#4A4E3F] via-[#4A4E3F]/70 to-transparent pointer-events-none" />
                   </div>
                 </div>
               </Reveal>
@@ -598,7 +600,7 @@ const App = () => {
 
             <div className="max-w-3xl mx-auto relative z-10">
               <Reveal y={50}>
-                <div className="relative rounded-[10px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
+                <div className="relative rounded-[25px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 z-0">
                     <img
@@ -615,7 +617,7 @@ const App = () => {
                       <Reveal delay={0.2} y={20}>
                         <h3 className="italiana-font text-4xl font-normal tracking-wide">Akad Nikah</h3>
                       </Reveal>
-                      
+
                       <Reveal delay={0.4} scale={0.9} duration={1.5}>
                         <div className="flex items-center justify-center gap-6">
                           <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">August</p>
@@ -678,7 +680,7 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[10px] backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
                           <MapPin size={14} className="opacity-60" />
                           Peta Lokasi
@@ -688,9 +690,9 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,0,0,0.1)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[10px] backdrop-blur-md text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
-                          <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
                           Live Streaming
                         </motion.a>
                       </div>
@@ -707,7 +709,7 @@ const App = () => {
             {/* Elegant Textures */}
             <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10 pointer-events-none" />
-            
+
             <Reveal y={30}>
               <div className="relative z-10 max-w-3xl mx-auto space-y-8">
                 <div className="space-y-4">
@@ -721,13 +723,13 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-5">
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 max-w-sm mx-auto">
                   {[
-                    { color: '#422B1E', name: 'Deep Earth' },
-                    { color: '#722B14', name: 'Burnt Sienna' },
-                    { color: '#8A5A2E', name: 'Terracotta' },
-                    { color: '#968D60', name: 'Sage Leaf' },
-                    { color: '#E3BE8D', name: 'Warm Sand' }
+                    { color: '#422B1E', name: 'DEEP EARTH' },
+                    { color: '#722B14', name: 'BURNT SIENNA' },
+                    { color: '#8A5A2E', name: 'TERRACOTTA' },
+                    { color: '#968D60', name: 'SAGE LEAF' },
+                    { color: '#E3BE8D', name: 'WARM SAND' }
                   ].map((item, idx) => (
                     <motion.div
                       key={idx}
@@ -735,28 +737,28 @@ const App = () => {
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ delay: idx * 0.1 }}
                       viewport={{ once: true }}
-                      className="flex flex-col items-center gap-4 group"
+                      className="flex flex-col items-center gap-3 group w-[80px]"
                     >
                       <div className="relative">
                         {/* Designer Ring Effect */}
                         <div className="absolute -inset-1.5 rounded-full border border-neutral/20 group-hover:border-neutral/40 transition-colors duration-500" />
-                        
+
                         <motion.div
                           whileHover={{ scale: 1.1, rotate: 5 }}
-                          className="w-12 h-12 rounded-full border-[2.5px] border-white shadow-2xl relative z-10 cursor-help"
-                          style={{ 
+                          className="w-12 h-12 rounded-full border-2 border-white shadow-xl relative z-10 cursor-help"
+                          style={{
                             backgroundColor: item.color,
-                            boxShadow: `0 10px 25px -5px ${item.color}66`
+                            boxShadow: `0 8px 20px -5px ${item.color}88`
                           }}
                         />
                       </div>
-                      <span className="outfit-font text-[8px] uppercase tracking-[0.2em] text-neutral/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="outfit-font text-[7.5px] font-bold uppercase tracking-[0.25em] text-neutral/50 transition-colors duration-300">
                         {item.name}
                       </span>
                     </motion.div>
                   ))}
                 </div>
-                
+
                 <p className="serif-font text-sm italic text-neutral/60 pt-4 leading-relaxed max-w-sm mx-auto">
                   "Khadirannya akan sangat melengkapi keindahan momen bahagia kami."
                 </p>
@@ -789,7 +791,7 @@ const App = () => {
             <div className="relative z-10">
               <Reveal>
                 <div className="text-center space-y-3 mb-12 md:mb-16">
-                  <h2 className="italiana-font text-3xl text-[#2D2D2D]">Our Love Story</h2>
+                  <h2 className="italiana-font text-3xl text-[#4A4E3F]">Our Love Story</h2>
                   <div className="h-[1.5px] w-10 bg-secondary mx-auto" />
                 </div>
               </Reveal>
@@ -857,27 +859,29 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 px-2">
-              {[0, 1, 2, 3, 4, 5].map((i) => (
-                <Reveal 
-                  key={i} 
-                  delay={i * 0.15} 
-                  y={40} 
-                  scale={0.95} 
+            <div className="columns-2 gap-1.5 space-y-1.5 md:columns-3 md:gap-3 md:space-y-3 px-2">
+              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+                <Reveal
+                  key={i}
+                  delay={i * 0.15}
+                  y={40}
+                  scale={0.95}
                   duration={1.2}
                   className="break-inside-avoid"
                 >
-                  <GalleryItem 
-                    index={i} 
+                  <GalleryItem
+                    index={i}
                     onClick={() => setSelectedGalleryImage(i)}
                     className={cn(
                       "w-full",
                       // Masonry simulation with varying heights/aspects
-                      i === 0 ? "aspect-[3/4]" : 
-                      i === 1 ? "aspect-square" :
-                      i === 2 ? "aspect-[2/3]" :
-                      i === 3 ? "aspect-[3/2]" :
-                      i === 4 ? "aspect-[4/5]" : "aspect-square"
+                      i === 0 ? "aspect-[3/4]" :
+                        i === 1 ? "aspect-square" :
+                          i === 2 ? "aspect-[2/3]" :
+                            i === 3 ? "aspect-[3/2]" :
+                              i === 4 ? "aspect-[4/5]" :
+                                i === 5 ? "aspect-square" :
+                                  i === 6 ? "aspect-[2/3]" : "aspect-square"
                     )}
                   />
                 </Reveal>
@@ -894,13 +898,18 @@ const App = () => {
 
             <div className="max-w-4xl mx-auto space-y-8 relative z-10">
               <Reveal delay={0.2} scale={0.8} duration={1.5}>
-                <Gift className="mx-auto mb-2 text-gold/60" size={40} md:size={48} />
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Gift className="mx-auto mb-2 text-gold/60" size={40} />
+                </motion.div>
               </Reveal>
-              
+
               <Reveal delay={0.4} y={20} duration={1.5}>
                 <h2 className="italiana-font text-4xl mb-4 md:mb-6 text-primary">Wedding Gift</h2>
               </Reveal>
-              
+
               <Reveal delay={0.6} y={15} duration={1.5}>
                 <p className="sans-font text-[11px] text-primary/60 mb-10 md:mb-12 leading-relaxed italic px-2 max-w-lg mx-auto">
                   Apabila Bapak/Ibu/Saudara/i ingin mengirimkan hadiah tanda kasih, dapat melalui tautan di bawah ini.
@@ -914,10 +923,15 @@ const App = () => {
           </section>
 
           {/* Guestbook Section */}
-          <section id="wishes" className="py-16 px-8 bg-neutral">
+          <section id="wishes" className="py-16 px-3 md:px-8 bg-neutral relative">
             <Reveal>
               <div className="text-center space-y-3 mb-12 md:mb-16">
-                <MessageSquare className="mx-auto text-secondary" size={32} md:size={40} />
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <MessageSquare className="mx-auto text-secondary" size={36} />
+                </motion.div>
                 <h2 className="italiana-font text-3xl text-primary tracking-wide">Guestbook</h2>
                 <p className="text-xs text-primary/60 serif-font italic">Berikan ucapan terbaik untuk kedua mempelai.</p>
               </div>
@@ -1024,7 +1038,7 @@ const App = () => {
           </section>
 
           {/* Footer */}
-          <footer className="py-12 px-8 text-center bg-primary text-neutral/40 space-y-6">
+          <footer className="py-16 px-8 text-center bg-[#4A4E3F] text-neutral/40 space-y-6">
             <Reveal delay={0.2} y={15} duration={1.5}>
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -1102,7 +1116,7 @@ const CustomCursor = () => {
 
     const updatePosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
-      
+
       const target = e.target as HTMLElement;
       setIsHovering(!!target.closest('button, a, input, select, textarea, .cursor-pointer'));
     };
@@ -1116,8 +1130,8 @@ const CustomCursor = () => {
   return (
     <>
       <motion.div
-        animate={{ 
-          x: position.x - 20, 
+        animate={{
+          x: position.x - 20,
           y: position.y - 20,
           scale: isHovering ? 1.5 : 1,
           opacity: 1
@@ -1126,8 +1140,8 @@ const CustomCursor = () => {
         className="fixed top-0 left-0 w-10 h-10 border border-primary/20 rounded-full z-[9999] pointer-events-none mix-blend-difference"
       />
       <motion.div
-        animate={{ 
-          x: position.x - 4, 
+        animate={{
+          x: position.x - 4,
           y: position.y - 4,
           scale: isHovering ? 0 : 1
         }}
@@ -1145,11 +1159,11 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "relative rounded-[10px] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        "relative rounded-[15px] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
         className
       )}
     >
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
       />
       <motion.img
@@ -1159,7 +1173,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         loading="lazy"
       />
-      
+
       {/* Subtle Overlay Label */}
       <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
         <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
@@ -1186,162 +1200,129 @@ const GiftModal = () => {
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setShow(true)}
-        className="px-10 py-5 bg-primary text-neutral rounded-[10px] font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
+        className="px-10 py-5 bg-primary text-neutral rounded-full font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
       >
         <Gift size={16} />
         KIRIM HADIAH
       </motion.button>
 
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[2000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-          >
+      {createPortal(
+        <AnimatePresence>
+          {show && (
             <motion.div
-              initial={{ y: 50, opacity: 0, scale: 0.9 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: 50, opacity: 0, scale: 0.9 }}
-              className="bg-[#FDFBF7] w-full max-w-[420px] rounded-[10px] p-8 md:p-10 relative overflow-hidden text-primary shadow-2xl border-[6px] border-[#C19A5B]/10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[5000] bg-black/60 backdrop-blur-[20px] flex items-center justify-center p-4 sm:p-6"
             >
-              <button
-                onClick={() => setShow(false)}
-                className="absolute top-6 right-6 w-10 h-10 bg-black/5 hover:bg-black/10 rounded-full flex items-center justify-center transition-colors z-20"
+              <motion.div
+                initial={{ y: 80, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 80, opacity: 0 }}
+                className="bg-[#FDFBF7] w-full max-w-[400px] max-h-[85vh] rounded-[30px] relative text-primary shadow-2xl overflow-hidden flex flex-col border border-white/40"
               >
-                <X size={20} className="opacity-60" />
-              </button>
-
-              <div className="space-y-8">
-                <div className="text-center">
-                  <h3 className="italiana-font text-4xl md:text-5xl text-[#C19A5B] drop-shadow-sm">Wedding Gift</h3>
+                {/* Absolute Header Area */}
+                <div className="absolute top-5 right-5 z-50">
+                  <button
+                    onClick={() => setShow(false)}
+                    className="w-10 h-10 bg-neutral/90 backdrop-blur-md border border-black/5 rounded-full flex items-center justify-center shadow-lg hover:bg-white active:scale-90 transition-all pointer-events-auto"
+                  >
+                    <X size={20} className="text-primary/70" />
+                  </button>
                 </div>
 
-                <div className="space-y-6">
-                  {/* Bank Card (BCA Black Titanium Mastercard Style) */}
-                  <div className="relative aspect-[1.6/1] bg-[#1a1a1a] rounded-[10px] p-7 text-white shadow-[0_25px_50px_rgba(0,0,0,0.3)] overflow-hidden border border-white/10 group">
-                    {/* Dark Brushed Metal Background Part 1 */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#1a1a1a] to-[#222222]" />
+                {/* Internal Scroll Area */}
+                <div className="overflow-y-auto w-full pt-16 pb-12 px-6 sm:px-10 custom-scrollbar">
+                  <div className="text-center mb-8">
+                    <h3 className="italiana-font text-3xl md:text-4xl text-primary mb-3">Wedding Gift</h3>
+                    <div className="h-[1px] w-10 bg-primary/20 mx-auto" />
+                  </div>
 
-                    {/* Metallic Curve Accent (Left Side) */}
-                    <div
-                      className="absolute top-0 bottom-0 left-0 w-[45%] bg-[#333] opacity-40"
-                      style={{
-                        clipPath: 'ellipse(100% 80% at 0% 50%)',
-                        backgroundImage: 'linear-gradient(90deg, #444 0%, #222 100%), repeating-linear-gradient(0deg, transparent 0, transparent 1px, rgba(255,255,255,0.03) 1px, rgba(255,255,255,0.03) 2px)'
-                      }}
-                    />
+                  <div className="space-y-6">
+                    {/* BCA Blue Debit Card */}
+                    <div className="relative aspect-[1.586/1] w-full rounded-[20px] p-6 text-white shadow-[0_20px_40px_-15px_rgba(0,82,156,0.6)] overflow-hidden border border-white/20 select-none bg-gradient-to-br from-[#1b64a6] via-[#00529C] to-[#013366]">
+                      {/* Gloss / Card Texture Overlay */}
+                      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
 
-                    {/* Glossy Reflection */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.08] pointer-events-none" />
+                      {/* Light reflection effect */}
+                      <div className="absolute top-0 right-[-30%] w-[150%] h-[150%] bg-gradient-to-bl from-white/10 via-transparent to-transparent rotate-[35deg] pointer-events-none" />
 
-                    <div className="relative z-10 h-full flex flex-col justify-between">
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-3">
-                          {/* Real BCA Logo (Force to White) */}
-                          <img
-                            src="/images/bca.png"
-                            alt="BCA"
-                            className="h-7 w-auto object-contain brightness-0 invert"
-                          />
+                      <div className="relative z-10 h-full flex flex-col justify-between">
+                        {/* Top bar: Bank Logo & Debit Text */}
+                        <div className="flex justify-between items-start">
+                          <img src="/images/bca.png" alt="BCA" className="h-[22px] w-auto brightness-0 invert opacity-90" />
+                          <div className="bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-md text-[8px] font-bold tracking-[0.25em] outfit-font text-white uppercase shadow-sm">DEBIT</div>
                         </div>
-                        <div className="text-right">
-                          <p className="italiana-font text-[14px] font-bold tracking-[0.1em] text-[#C19A5B]">Wedding Gift</p>
-                        </div>
-                      </div>
 
-                      {/* Silver Chip */}
-                      <div className="w-11 h-8 bg-gradient-to-br from-[#d1d1d1] via-[#ebebeb] to-[#a1a1a1] rounded-lg shadow-inner relative flex items-center justify-center overflow-hidden border border-black/20 opacity-90 mx-1">
-                        <div className="absolute inset-x-0 h-[0.5px] bg-black/10 top-2" />
-                        <div className="absolute inset-x-0 h-[0.5px] bg-black/10 bottom-2" />
-                        <div className="absolute inset-y-0 w-[0.5px] bg-black/10 left-3" />
-                        <div className="absolute inset-y-0 w-[0.5px] bg-black/10 right-3" />
-                      </div>
-
-                      <div className="space-y-4">
-                        <div className="relative">
-                          {/* Contactless Icon */}
-                          <div className="absolute -top-6 right-0 opacity-40">
-                            <div className="flex gap-[2px] items-end">
-                              {[1, 1.5, 2, 2.5].map((h, i) => (
-                                <div key={i} className="w-[1.5px] bg-white rounded-full" style={{ height: `${h * 4}px`, transform: `skewX(-20deg)` }} />
-                              ))}
-                            </div>
+                        {/* Microchip */}
+                        <div className="w-12 h-9 bg-gradient-to-br from-[#ffd700] via-[#eedd82] to-[#b8860b] rounded-[6px] shadow-sm border border-black/10 relative overflow-hidden flex flex-col justify-between p-[3px]">
+                          {/* Chip internal lines */}
+                          <div className="absolute inset-0 opacity-40">
+                            <div className="w-full h-full border-[0.5px] border-black/40 rounded-[4px]" />
+                            <div className="absolute top-1/2 left-0 w-full h-[0.5px] bg-black/40" />
+                            <div className="absolute top-0 left-1/2 w-[0.5px] h-full bg-black/40" />
+                            <div className="absolute top-1/4 left-0 w-full h-[0.5px] bg-black/40" />
+                            <div className="absolute bottom-1/4 left-0 w-full h-[0.5px] bg-black/40" />
                           </div>
-                          <p className="text-[1.35rem] md:text-[1.8rem] font-bold tracking-[0.25em] outfit-font text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] text-center">
+                        </div>
+
+                        {/* Card Numbers & Bottom Bar */}
+                        <div className="space-y-3">
+                          <p className="text-[1.35rem] sm:text-[1.6rem] font-medium tracking-[0.25em] text-white/95 drop-shadow-md font-mono" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
                             {WEDDING_CONFIG.bankAccount}
                           </p>
-                        </div>
 
-                        <div className="flex justify-between items-end">
-                          <div className="space-y-0.5">
-                            <p className="text-[7px] font-bold tracking-[0.3em] uppercase text-white/40">authorized signature</p>
-                            <p className="text-[12px] md:text-[14px] font-bold tracking-[0.1em] uppercase text-white/80">{WEDDING_CONFIG.bankAccountName}</p>
-                          </div>
+                          <div className="flex justify-between items-end">
+                            <p className="text-[11px] sm:text-[13px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
+                              {WEDDING_CONFIG.bankAccountName}
+                            </p>
 
-                          {/* Mastercard Logo */}
-                          <div className="flex -space-x-3 mb-1">
-                            <div className="w-9 h-9 rounded-full bg-[#EB001B]/90 shadow-lg" />
-                            <div className="w-9 h-9 rounded-full bg-[#F79E1B]/90 shadow-lg mix-blend-screen" />
+                            {/* Mastercard style circles */}
+                            <div className="flex -space-x-3 opacity-60">
+                              <div className="w-8 h-8 rounded-full bg-[#EB001B] mix-blend-screen" />
+                              <div className="w-8 h-8 rounded-full bg-[#F79E1B] mix-blend-screen" />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Copy Button */}
-                  <div className="relative">
+                    {/* Primary Color Copy Button */}
                     <motion.button
-                      whileHover={{ y: -2 }}
+                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
-                      className="w-full bg-gradient-to-r from-[#C19A5B] to-[#A67C3D] text-white py-4 rounded-[10px] flex items-center justify-center gap-3 shadow-xl shadow-[#C19A5B]/20 outfit-font text-[10px] font-bold tracking-[0.25em] uppercase"
+                      className="w-full bg-primary hover:bg-primary/90 text-neutral py-[18px] rounded-full flex items-center justify-center gap-3 shadow-xl shadow-primary/20 outfit-font text-[10px] font-bold tracking-[0.3em] uppercase transition-all border border-black/5"
                     >
                       <Copy size={16} />
                       {copied ? 'BERHASIL DISALIN' : 'SALIN NO REKENING'}
                     </motion.button>
 
-                    <AnimatePresence>
-                      {copied && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: -45 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] px-4 py-1.5 rounded-full font-bold tracking-widest whitespace-nowrap pointer-events-none"
-                        >
-                          COPIED!
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Physical Gift Section */}
-                  <div className="bg-[#FAF9F6] rounded-[10px] p-8 border-2 border-dashed border-[#C19A5B]/20 space-y-5 relative">
-                    <div className="flex items-center gap-5">
-                      <div className="w-14 h-14 bg-[#C19A5B]/10 text-[#C19A5B] rounded-[10px] flex items-center justify-center shadow-inner">
-                        <Gift size={24} />
+                    {/* Physical Gift Section */}
+                    <div className="bg-[#EFEDE7] rounded-[25px] p-7 space-y-5 border border-black/5">
+                      <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md text-primary">
+                          <Gift size={22} />
+                        </div>
+                        <p className="font-bold text-sm tracking-tight text-primary outfit-font">Kirim Hadiah Fisik</p>
                       </div>
-                      <div>
-                        <p className="font-bold text-sm tracking-tight text-primary">Kirim Hadiah Fisik</p>
-                        <p className="text-[9px] uppercase tracking-widest opacity-40 font-bold">Alamat Pengiriman</p>
+                      <div className="pl-1 space-y-2">
+                        <p className="text-[11px] leading-6 text-primary/70 outfit-font italic font-medium">
+                          {WEDDING_CONFIG.physicalGiftAddress}
+                        </p>
+                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] pt-2">
+                          (Penerima: {WEDDING_CONFIG.bankAccountName})
+                        </p>
                       </div>
-                    </div>
-                    <div className="pl-1 space-y-2">
-                      <p className="text-xs md:text-sm leading-relaxed text-primary/70 serif-font italic">
-                        {WEDDING_CONFIG.physicalGiftAddress}
-                      </p>
-                      <p className="text-xs font-bold text-[#C19A5B] serif-font">
-                        {WEDDING_CONFIG.physicalGiftReceiver}
-                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 };
@@ -1371,7 +1352,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
+
       if (data) {
         const mappedWishes: Wish[] = data.map(item => ({
           id: item.id,
@@ -1399,9 +1380,9 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
       const { data, error } = await supabase
         .from('wishes')
         .insert([
-          { 
-            name: displayName, 
-            message, 
+          {
+            name: displayName,
+            message,
             status,
             created_at: new Date().toISOString()
           }
@@ -1438,80 +1419,99 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
   );
 
   return (
-    <div className="space-y-16">
-      {/* Enhanced Form */}
-      <form onSubmit={handleSubmit} className="design-card !p-8 md:!p-10 space-y-8 shadow-xl border-white/40 bg-white/60">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2.5">
-            <label className="outfit-font text-[10px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-1">Nama Lengkap</label>
-            <input
-              type="text"
-              value={displayName}
-              readOnly
-              className="w-full bg-primary/5 border border-primary/10 rounded-[10px] px-5 py-4 text-sm focus:outline-none sans-font text-primary/80 shadow-sm cursor-not-allowed font-medium"
-              placeholder="Nama dari undangan"
-            />
-          </div>
-
-          <div className="space-y-2.5">
-            <label className="outfit-font text-[10px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-1">Kehadiran</label>
-            <div className="flex gap-2">
-              {(['Hadir', 'Tidak Hadir', 'Masih Ragu'] as const).map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => setStatus(opt)}
-                  className={cn(
-                    "flex-1 py-4 px-2 outfit-font text-[9px] md:text-[10px] rounded-[10px] border transition-all font-bold uppercase tracking-widest flex items-center justify-center gap-1.5",
-                    status === opt
-                      ? "bg-primary text-neutral border-primary shadow-lg shadow-primary/20 scale-[1.02]"
-                      : "bg-white/80 text-primary/40 border-primary/5 hover:border-primary/20"
-                  )}
-                >
-                  <span className="opacity-80">
-                    {opt === 'Hadir' ? '✓' : opt === 'Tidak Hadir' ? '✗' : '?'}
-                  </span>
-                  {opt === 'Hadir' ? 'Hadir' : opt === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
-                </button>
-              ))}
+    <div className="space-y-6 md:space-y-8">
+      {/* Elegant Minimalist Form */}
+      {/* Modern Card Form Option */}
+      {!displayName ? (
+        <div className="max-w-xl mx-auto py-10 relative z-10 px-4">
+          <div className="bg-[#fcfbf9] border border-dashed border-[#C19A5B]/50 rounded-[20px] p-8 md:p-12 text-center space-y-6 shadow-sm">
+            <div className="flex justify-center">
+              <Lock size={32} className="text-[#C19A5B] opacity-80" />
             </div>
+            <p className="outfit-font text-[11px] md:text-sm text-primary/70 font-medium leading-[1.8] max-w-sm mx-auto">
+              Mohon maaf, fitur pengiriman ucapan hanya tersedia bagi tamu undangan yang menerima tautan khusus.
+            </p>
           </div>
         </div>
-
-        <div className="space-y-2.5">
-          <label className="outfit-font text-[10px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-1">Ucapan & Doa Restu</label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full bg-white/80 border border-primary/10 rounded-[10px] px-5 py-4 text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all resize-none sans-font placeholder:text-primary/20 shadow-sm"
-            placeholder="Tuliskan pesan & doa tulus Anda..."
-            rows={4}
-            required
-          />
-        </div>
-
-        <motion.button
-          disabled={isSubmitting || !displayName}
-          whileHover={isSubmitting || !displayName ? {} : { scale: 1.01, backgroundColor: 'var(--color-primary)' }}
-          whileTap={isSubmitting || !displayName ? {} : { scale: 0.98 }}
-          className={cn(
-            "btn-primary w-full py-5 rounded-[10px] flex items-center justify-center gap-3 text-[11px] shadow-xl transition-all",
-            (isSubmitting || !displayName) && "opacity-70 cursor-not-allowed"
-          )}
-        >
-          {isSubmitting ? (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              Mengirim...
+      ) : (
+        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto pb-4 relative z-10 px-0 sm:px-4">
+          <div className="bg-white/95 backdrop-blur-md rounded-[25px] sm:rounded-[30px] p-6 sm:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-primary/5 space-y-8 w-full">
+            
+            <div className="space-y-3 relative">
+              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2">Nama Lengkap</label>
+              <div className="bg-primary/5 rounded-[15px] px-5 py-4 border border-transparent">
+                <input
+                  type="text"
+                  value={displayName}
+                  readOnly
+                  className="w-full bg-transparent text-lg italic serif-font text-primary/80 focus:outline-none cursor-not-allowed placeholder:opacity-0"
+                  placeholder="Nama dari undangan"
+                />
+              </div>
             </div>
-          ) : (
-            <>
-              <Send size={16} className="opacity-60" />
-              Kirim Ucapan Terbaik
-            </>
-          )}
-        </motion.button>
-      </form>
+
+            <div className="space-y-3">
+              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2 block">Kehadiran</label>
+              <div className="flex gap-2.5">
+                {(['Hadir', 'Tidak Hadir', 'Masih Ragu'] as const).map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => setStatus(opt)}
+                    className={cn(
+                      "flex-1 py-4 px-2 outfit-font text-[9px] rounded-[15px] transition-all font-bold uppercase tracking-[0.15em] flex items-center justify-center gap-2",
+                      status === opt
+                        ? "bg-primary text-[#FDFBF7] shadow-lg shadow-primary/20 border border-primary"
+                        : "bg-white text-primary/40 border border-primary/10 shadow-sm hover:border-primary/30"
+                    )}
+                  >
+                    <span className="text-[10px] leading-none opacity-80 mt-[1px]">
+                      {opt === 'Hadir' ? '✓' : opt === 'Tidak Hadir' ? '✕' : '?'}
+                    </span>
+                    {opt === 'Hadir' ? 'Hadir' : opt === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 relative">
+              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2">Ucapan & Doa Restu</label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full bg-white border border-primary/10 rounded-[15px] px-5 py-5 text-base italic focus:outline-none focus:border-primary/40 transition-colors resize-none serif-font text-primary placeholder:text-primary/30 shadow-sm"
+                placeholder="Tuliskan pesan & doa tulus Anda..."
+                rows={3}
+                required
+              />
+            </div>
+
+            <div className="pt-2">
+              <motion.button
+                disabled={isSubmitting || !displayName}
+                whileHover={isSubmitting || !displayName ? {} : { scale: 1.02, y: -2 }}
+                whileTap={isSubmitting || !displayName ? {} : { scale: 0.98 }}
+                className={cn(
+                  "w-full py-5 bg-primary text-[#FDFBF7] rounded-full font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center justify-center gap-3",
+                  (isSubmitting || !displayName) && "opacity-50 cursor-not-allowed pointer-events-none"
+                )}
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    Mengirim...
+                  </div>
+                ) : (
+                  <>
+                    <Send size={15} className="opacity-80" />
+                    <span className="mt-[1px]">Kirim Ucapan Terbaik</span>
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+        </form>
+      )}
 
       {/* Wishes Count */}
       {!isLoading && wishes.length > 0 && (
@@ -1523,7 +1523,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
       )}
 
       {/* Modern Wishes Feed */}
-      <div className="space-y-8 px-2 -mx-2">
+      <div className="space-y-6 md:space-y-8 px-0">
         {isLoading ? (
           <div className="py-20 text-center space-y-4">
             <div className="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin mx-auto" />
@@ -1540,88 +1540,64 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
               {paginatedWishes.map((wish) => (
                 <motion.div
                   key={wish.id}
-                  layout
-                  initial={{ opacity: 0, y: 30, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="relative group"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-white/95 backdrop-blur-md rounded-[25px] p-6 shadow-sm border border-primary/5 group relative"
                 >
-                  {/* Glassmorphism Card */}
-                  <div className="bg-white/70 backdrop-blur-md p-6 md:p-8 rounded-[10px] border border-primary/10 shadow-lg hover:shadow-[0_25px_50px_rgba(0,0,0,0.06)] transition-all duration-700 relative overflow-hidden">
-                    <div className="relative z-10 space-y-4">
-                      {/* Name & Date Part */}
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shadow-inner">
-                          <span className="serif-font text-xl md:text-2xl text-primary/60 font-medium">
-                            {wish.name.charAt(0).toUpperCase()}
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center flex-shrink-0 border border-transparent">
+                      <span className="italiana-font text-2xl text-primary/60 mt-1">
+                        {wish.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h4 className="serif-font text-xl md:text-2xl text-primary">{wish.name}</h4>
+                        <div className="flex items-center gap-2">
+                          <span className="text-primary/40 outfit-font text-[8.5px] uppercase tracking-[0.2em] mt-1">
+                            {wish.timestamp.toLocaleDateString('id-ID', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}
+                          </span>
+                          <span className="w-1 h-1 bg-primary/20 rounded-full hidden sm:block mt-1" />
+                          <span className={cn(
+                            "px-2 py-1 rounded-[10px] text-[8.5px] font-bold uppercase tracking-[0.15em] outfit-font flex items-center gap-1 mt-1",
+                            wish.status === 'Hadir' ? "bg-primary/5 text-primary" :
+                            wish.status === 'Tidak Hadir' ? "bg-white border border-primary/10 text-primary/40" :
+                            "bg-white border border-primary/10 text-primary/50"
+                          )}>
+                            <span className="text-[10px] leading-none opacity-80 mt-[1px]">
+                              {wish.status === 'Hadir' ? '✓' : wish.status === 'Tidak Hadir' ? '✕' : '?'}
+                            </span>
+                            {wish.status === 'Hadir' ? 'Hadir' : wish.status === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
                           </span>
                         </div>
-                        <div className="space-y-1">
-                          <p className="serif-font text-lg md:text-xl text-primary font-medium tracking-normal">
-                            {wish.name}
-                          </p>
-                          <div className="flex items-center gap-1.5 opacity-40">
-                            <Clock size={10} />
-                            <p className="text-[9px] font-bold uppercase tracking-widest flex items-center gap-1">
-                              {wish.timestamp.toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })}
-                              <span>•</span>
-                              {wish.timestamp.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).replace('.', ':')}
-                            </p>
-                          </div>
-                        </div>
                       </div>
 
-                      {/* Status Tag */}
-                      <div className="pl-0 md:pl-[4.5rem]">
-                        <div className={cn(
-                          "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[8.5px] font-bold uppercase tracking-widest bg-white shadow-sm border",
-                          wish.status === 'Hadir'
-                            ? "text-green-600 border-green-100"
-                            : wish.status === 'Tidak Hadir'
-                              ? "text-red-500 border-red-100"
-                              : "text-gray-500 border-gray-100"
-                        )}>
-                          <div className={cn("w-1.5 h-1.5 rounded-full",
-                            wish.status === 'Hadir' ? "bg-green-500" : wish.status === 'Tidak Hadir' ? "bg-red-500" : "bg-gray-400"
-                          )} />
-                          {wish.status === 'Hadir' ? 'Hadir' : wish.status === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
-                        </div>
-                      </div>
-
-                      {/* Message Content */}
-                      <div className="pl-0 md:pl-[4.5rem] pt-1 flex gap-2 md:gap-3 items-start">
-                        <div className="text-primary/10 text-2xl font-bold font-serif leading-none italic mt-0.5">"</div>
-                        <p className="serif-font text-sm md:text-base text-primary/60 italic leading-relaxed pt-1">
-                          {wish.message}
+                      <div className="relative pt-1">
+                        <p className="serif-font text-primary/80 italic text-base md:text-lg leading-relaxed">
+                          "{wish.message}"
                         </p>
                       </div>
-
+                      
                       {/* Reply Box */}
                       {wish.reply && (
                         <motion.div
-                          initial={{ opacity: 0, scale: 0.98 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
                           viewport={{ once: true }}
-                          className="mt-6 md:mt-8 pl-0 md:pl-[4.5rem] relative"
+                          className="mt-6 p-4 md:p-5 bg-primary/5 rounded-[15px] relative"
                         >
-                          <div className="bg-[#f8f8f8] p-5 md:p-6 rounded-[5px] border border-primary/5 space-y-4 shadow-inner">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                              <div className="flex items-center gap-3">
-                                <div className="w-7 h-7 rounded-full bg-black/5 flex items-center justify-center text-primary/40">
-                                  <Heart size={12} fill="currentColor" className="opacity-40" />
-                                </div>
-                                <p className="outfit-font text-[9px] font-bold uppercase tracking-[0.3em] text-primary/40">Balasan Mempelai</p>
-                              </div>
-                              <div className="flex items-center gap-1.5 opacity-30 sm:pr-2">
-                                <Clock size={10} />
-                                <p className="text-[8px] font-bold uppercase tracking-widest flex items-center gap-1">
-                                  {wish.timestamp.toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })}
-                                  <span>•</span>
-                                  {wish.timestamp.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).replace('.', ':')}
-                                </p>
-                              </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <Heart size={10} fill="currentColor" className="text-primary/30" />
+                              <p className="outfit-font text-[8px] font-bold uppercase tracking-[0.3em] text-primary/40">Balasan Mempelai</p>
                             </div>
-                            <p className="text-sm md:text-base text-primary/60 italic serif-font leading-relaxed pl-1 md:pl-2">
+                            <p className="text-base text-primary/70 italic serif-font leading-relaxed pl-1">
                               {wish.reply}
                             </p>
                           </div>
@@ -1650,7 +1626,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                 >
                   ‹
                 </motion.button>
-                
+
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <motion.button
                     key={page}
@@ -1667,7 +1643,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                     {page}
                   </motion.button>
                 ))}
-                
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

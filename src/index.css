@@ -59,7 +59,19 @@
 
 @layer base {
   body {
-    @apply bg-neutral text-primary font-sans antialiased overflow-x-hidden;
+    @apply bg-neutral min-h-screen text-primary selection:bg-primary selection:text-neutral;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Glassmorphism support for all devices */
+  .backdrop-blur-2xl {
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+  }
+
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 }
 

@@ -27,7 +27,7 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
         </div>
 
         {/* Image Background KHUSUS KIRI */}
-        <div className="absolute inset-0 z-[-2] bg-[#5c4a3a]">
+        <div className="absolute inset-0 z-[-2] bg-[#4A4E3F]">
           <img src={WEDDING_CONFIG.coverImageLeft} alt="Cover Kiri" className="w-full h-full object-cover" />
         </div>
 
@@ -90,10 +90,10 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
           <Reveal delay={1.6} y={20}>
             <motion.button
               onClick={onOpen}
-              whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.15)", borderColor: "rgba(255, 255, 255, 0.8)", letterSpacing: "0.35em" }}
+              whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.15)", borderColor: "rgba(255, 255, 255, 0.8)", letterSpacing: "0.38em" }}
               whileTap={{ scale: 0.95 }}
-              className="mx-auto flex items-center justify-center gap-[15px] cursor-pointer backdrop-blur-[8px] transition-all duration-500 uppercase w-fit text-[#fff] text-[11px] font-medium tracking-[0.3em] px-[35px] py-[12px] rounded-[10px]"
-              style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.4)" }}
+              className="mx-auto flex items-center justify-center gap-[15px] cursor-pointer backdrop-blur-[12px] transition-all duration-500 uppercase w-fit text-[#fff] text-[10.5px] font-bold tracking-[0.35em] px-[45px] py-[15px] rounded-full"
+              style={{ background: "rgba(255, 255, 255, 0.1)", border: "1px solid rgba(255, 255, 255, 0.35)" }}
             >
               <MessageSquare size={14} />
               OPEN INVITATION
