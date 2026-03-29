@@ -1186,7 +1186,7 @@ const GiftModal = () => {
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setShow(true)}
-        className="px-10 py-5 bg-primary text-neutral rounded-full font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
+        className="px-10 py-5 bg-primary text-neutral rounded-[10px] font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
       >
         <Gift size={16} />
         KIRIM HADIAH

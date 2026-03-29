@@ -92,7 +92,7 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
               onClick={onOpen}
               whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.15)", borderColor: "rgba(255, 255, 255, 0.8)", letterSpacing: "0.35em" }}
               whileTap={{ scale: 0.95 }}
-              className="mx-auto flex items-center justify-center gap-[15px] cursor-pointer backdrop-blur-[8px] transition-all duration-500 uppercase w-fit text-[#fff] text-[11px] font-medium tracking-[0.3em] px-[35px] py-[12px] rounded-[4px]"
+              className="mx-auto flex items-center justify-center gap-[15px] cursor-pointer backdrop-blur-[8px] transition-all duration-500 uppercase w-fit text-[#fff] text-[11px] font-medium tracking-[0.3em] px-[35px] py-[12px] rounded-[10px]"
               style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.4)" }}
             >
               <MessageSquare size={14} />
