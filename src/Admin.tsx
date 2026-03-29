@@ -279,12 +279,35 @@ const Admin = () => {
         {/* Wishes Content */}
         {activeTab === 'wishes' && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+            
+            {/* Summary Cards */}
+            {!isLoadingWishes && wishes.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2">
+                {[
+                  { label: 'Total Ucapan', value: wishes.length, color: 'primary' },
+                  { label: 'Hadir', value: wishes.filter(w => w.status === 'Hadir').length, color: 'green-600' },
+                  { label: 'Absen', value: wishes.filter(w => w.status === 'Tidak Hadir').length, color: 'red-500' },
+                  { label: 'Ragu', value: wishes.filter(w => w.status === 'Masih Ragu').length, color: 'gray-500' }
+                ].map((stat, idx) => (
+                  <div key={idx} className="bg-white border border-primary/10 rounded-2xl p-4 shadow-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-1">{stat.label}</p>
+                    <p className={`text-2xl font-bold text-${stat.color}`}>{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="bg-white border border-primary/10 rounded-2xl p-6 shadow-sm flex items-center justify-between">
               <div>
                 <h2 className="italiana-font text-2xl mb-1">Daftar Ucapan</h2>
                 <p className="text-sm text-primary/60">Kelola dan balas ucapan yang dikirimkan oleh para tamu.</p>
               </div>
-              <button onClick={fetchWishes} className="text-xs border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors font-medium">Refresh</button>
+              <button 
+                onClick={fetchWishes} 
+                className="text-xs border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors font-medium flex items-center gap-2"
+              >
+                Refresh
+              </button>
             </div>
 
             {isLoadingWishes ? (

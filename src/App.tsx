@@ -96,19 +96,25 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
 };
 
 
-const LeafOrnament = ({ className, rotate = 0, delay = 0 }: { className?: string; rotate?: number; delay?: number }) => (
-  <motion.div
-    initial={{ opacity: 0, rotate: rotate - 20 }}
-    whileInView={{ opacity: 0.2, rotate }}
-    viewport={{ once: true }}
-    transition={{ duration: 1.5, delay, ease: "easeOut" }}
-    className={cn("pointer-events-none select-none", className)}
-  >
-    <svg viewBox="0 0 200 200" fill="currentColor" className="w-full h-full">
-      <path d="M100,0 C120,40 180,60 200,100 C180,140 120,160 100,200 C80,160 20,140 0,100 C20,60 80,40 100,0" />
-    </svg>
-  </motion.div>
-);
+const LeafOrnament = ({ className, rotate = 0, delay = 0, parallaxSpeed = 0 }: { className?: string; rotate?: number; delay?: number; parallaxSpeed?: number }) => {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 5000], [0, parallaxSpeed * 400]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, rotate: rotate - 20 }}
+      whileInView={{ opacity: 0.2, rotate }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.5, delay, ease: "easeOut" }}
+      style={{ y }}
+      className={cn("pointer-events-none select-none", className)}
+    >
+      <svg viewBox="0 0 200 200" fill="currentColor" className="w-full h-full">
+        <path d="M100,0 C120,40 180,60 200,100 C180,140 120,160 100,200 C80,160 20,140 0,100 C20,60 80,40 100,0" />
+      </svg>
+    </motion.div>
+  );
+};
 
 const DesktopSidebar = ({ guestName }: { guestName: string }) => {
   return (
@@ -152,8 +158,11 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [guestName, setGuestName] = useState('Tamu Undangan');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [guestName, setGuestName] = useState('Tamu Undangan');
+  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState<number | null>(null);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -171,8 +180,7 @@ const App = () => {
     }
   }, []);
 
-  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-  const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
+  // State previously declared above
 
   useEffect(() => {
     const storyInterval = setInterval(() => {
@@ -255,17 +263,24 @@ const App = () => {
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           onClick={toggleMusic}
-          className="fixed bottom-24 right-6 md:right-[2%] z-[100] w-14 h-14 bg-primary/90 backdrop-blur-xl text-neutral rounded-full flex items-center justify-center shadow-2xl border border-neutral/20 group overflow-hidden"
+          className="fixed bottom-24 right-6 md:right-[2%] z-[100] w-14 h-14 bg-primary/95 backdrop-blur-xl text-neutral rounded-full flex items-center justify-center shadow-2xl border border-neutral/20 group overflow-hidden"
         >
           <div className="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
           {isPlaying ? (
-            <div className="relative flex items-end gap-[2px] h-4">
-              {[0.6, 1, 0.4, 0.8, 0.5].map((h, i) => (
+            <div className="relative flex items-end gap-[3px] h-4">
+              {[0.6, 1, 0.4, 0.8, 0.5, 0.9, 0.4].map((h, i) => (
                 <motion.div
                   key={i}
-                  animate={{ height: ["20%", "100%", "20%"] }}
-                  transition={{ duration: 0.5 + i * 0.1, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-[2px] bg-neutral rounded-full"
+                  animate={{ 
+                    height: ["20%", "100%", "20%"],
+                    opacity: [0.4, 1, 0.4]
+                  }}
+                  transition={{ 
+                    duration: 0.5 + i * 0.1, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                  className="w-[1.5px] bg-neutral rounded-full"
                   style={{ height: `${h * 100}%` }}
                 />
               ))}
@@ -275,6 +290,9 @@ const App = () => {
           )}
         </motion.button>
       )}
+
+      {/* Custom Desktop Cursor */}
+      <CustomCursor />
 
       {/* Opening UI (Sampul) */}
       <AnimatePresence>
@@ -566,8 +584,8 @@ const App = () => {
           <section id="event" className="py-24 px-6 space-y-16 relative overflow-hidden bg-[#F9F8F4]">
             {/* Background Ornaments */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.03]">
-              <LeafOrnament className="absolute -top-20 -right-20 w-80 h-80 rotate-90" />
-              <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 -rotate-90" />
+              <LeafOrnament className="absolute -top-20 -right-20 w-80 h-80 rotate-90" parallaxSpeed={0.3} />
+              <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 -rotate-90" parallaxSpeed={-0.2} />
             </div>
 
             <Reveal y={30}>
@@ -814,7 +832,7 @@ const App = () => {
           {/* Gallery Section */}
           <section id="gallery" className="py-20 px-4 space-y-10 bg-primary/5 relative overflow-hidden">
             <div className="absolute inset-0 bg-texture opacity-10 pointer-events-none" />
-            <LeafOrnament className="absolute -top-20 -right-20 w-64 h-64 text-primary opacity-5" rotate={120} />
+            <LeafOrnament className="absolute -top-20 -right-20 w-64 h-64 text-primary opacity-5" rotate={120} parallaxSpeed={0.4} />
 
             <Reveal y={30}>
               <div className="text-center space-y-3 mb-12 md:mb-16">
@@ -839,10 +857,29 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="columns-2 gap-3 space-y-3 md:columns-3 md:gap-4 md:space-y-4 px-2">
               {[0, 1, 2, 3, 4, 5].map((i) => (
-                <Reveal key={i} delay={i * 0.1} y={20}>
-                  <GalleryItem index={i} />
+                <Reveal 
+                  key={i} 
+                  delay={i * 0.15} 
+                  y={40} 
+                  scale={0.95} 
+                  duration={1.2}
+                  className="break-inside-avoid"
+                >
+                  <GalleryItem 
+                    index={i} 
+                    onClick={() => setSelectedGalleryImage(i)}
+                    className={cn(
+                      "w-full",
+                      // Masonry simulation with varying heights/aspects
+                      i === 0 ? "aspect-[3/4]" : 
+                      i === 1 ? "aspect-square" :
+                      i === 2 ? "aspect-[2/3]" :
+                      i === 3 ? "aspect-[3/2]" :
+                      i === 4 ? "aspect-[4/5]" : "aspect-square"
+                    )}
+                  />
                 </Reveal>
               ))}
             </div>
@@ -941,8 +978,8 @@ const App = () => {
               <img src={WEDDING_CONFIG.floralBg} alt="" className="w-full h-full object-cover" />
             </div>
 
-            <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 text-primary opacity-[0.03]" rotate={-45} />
-            <LeafOrnament className="absolute -top-20 -right-20 w-80 h-80 text-primary opacity-[0.03]" rotate={135} />
+            <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 text-primary opacity-[0.03]" rotate={-45} parallaxSpeed={-0.3} />
+            <LeafOrnament className="absolute -top-20 -right-20 w-80 h-80 text-primary opacity-[0.03]" rotate={135} parallaxSpeed={0.5} />
 
             <div className="relative z-10 max-w-2xl mx-auto space-y-12">
               <Reveal delay={0.2} y={20} duration={1.8}>
@@ -1012,56 +1049,124 @@ const App = () => {
 
       {/* Floating Nav */}
       {isOpen && <FloatingNav />}
+
+      {/* Global Gallery Lightbox */}
+      <AnimatePresence>
+        {selectedGalleryImage !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedGalleryImage(null)}
+            className="fixed inset-0 z-[3000] bg-primary/95 backdrop-blur-2xl flex items-center justify-center p-6"
+          >
+            <motion.button
+              className="absolute top-10 right-10 text-neutral hover:scale-110 transition-transform"
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setSelectedGalleryImage(null)}
+            >
+              <X size={32} />
+            </motion.button>
+            <motion.img
+              layoutId={`image-${selectedGalleryImage}`}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              src={`/images/galeri${selectedGalleryImage + 1}.jpg`}
+              className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+              <p className="outfit-font text-[10px] uppercase tracking-[0.5em] text-white/40 font-bold bg-black/20 backdrop-blur-md px-6 py-2 rounded-full border border-white/5">
+                Moment {selectedGalleryImage + 1}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 // --- Sub-components ---
 
-const GalleryItem = ({ index }: { index: number }) => {
-  const [isZoomed, setIsZoomed] = useState(false);
+const CustomCursor = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsMobile(isMobileDevice);
+    if (isMobileDevice) return;
+
+    const updatePosition = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      
+      const target = e.target as HTMLElement;
+      setIsHovering(!!target.closest('button, a, input, select, textarea, .cursor-pointer'));
+    };
+
+    window.addEventListener('mousemove', updatePosition);
+    return () => window.removeEventListener('mousemove', updatePosition);
+  }, []);
+
+  if (isMobile) return null;
 
   return (
     <>
       <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsZoomed(true)}
-        className="aspect-square rounded-2xl overflow-hidden shadow-lg cursor-pointer"
-      >
-        <img
-          src={`/images/galeri${index + 1}.jpg`}
-          alt={`Gallery ${index + 1}`}
-          className="w-full h-full object-cover"
-        />
-      </motion.div>
-
-      <AnimatePresence>
-        {isZoomed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsZoomed(false)}
-            className="fixed inset-0 z-[2000] bg-primary/95 backdrop-blur-xl flex items-center justify-center p-6"
-          >
-            <motion.button
-              className="absolute top-10 right-10 text-neutral"
-              whileTap={{ scale: 0.9 }}
-            >
-              <X size={32} />
-            </motion.button>
-            <motion.img
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              src={`/images/galeri${index + 1}.jpg`}
-              className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+        animate={{ 
+          x: position.x - 20, 
+          y: position.y - 20,
+          scale: isHovering ? 1.5 : 1,
+          opacity: 1
+        }}
+        transition={{ type: "spring", damping: 30, stiffness: 200, mass: 0.5 }}
+        className="fixed top-0 left-0 w-10 h-10 border border-primary/20 rounded-full z-[9999] pointer-events-none mix-blend-difference"
+      />
+      <motion.div
+        animate={{ 
+          x: position.x - 4, 
+          y: position.y - 4,
+          scale: isHovering ? 0 : 1
+        }}
+        transition={{ type: "spring", damping: 40, stiffness: 350 }}
+        className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full z-[10000] pointer-events-none"
+      />
     </>
+  );
+};
+
+const GalleryItem = ({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={cn(
+        "relative rounded-[2rem] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        className
+      )}
+    >
+      <motion.div 
+        className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
+      />
+      <motion.img
+        layoutId={`image-${index}`}
+        src={`/images/galeri${index + 1}.jpg`}
+        alt={`Gallery ${index + 1}`}
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        loading="lazy"
+      />
+      
+      {/* Subtle Overlay Label */}
+      <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+        <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
+          Moment {index + 1}
+        </p>
+      </div>
+    </motion.div>
   );
 };
 
