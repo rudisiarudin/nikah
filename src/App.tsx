@@ -464,7 +464,7 @@ const App = () => {
           </section>
 
           {/* Profile Section */}
-          <section id="profile" className="pt-8 pb-20 px-4 space-y-16 relative overflow-hidden bg-neutral">
+          <section id="profile" className="pt-0 pb-16 px-6 space-y-12 relative overflow-hidden bg-neutral">
             {/* Background Ornaments */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <img
@@ -475,59 +475,76 @@ const App = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-neutral via-transparent to-neutral opacity-60" />
             </div>
 
-            <div className="max-w-xl mx-auto px-6 relative z-10 py-12">
-              <Reveal scale={0.95} duration={1.5} y={40}>
-                <div className="bg-[#4A4E3F] rounded-[40px] md:rounded-[50px] overflow-hidden shadow-2xl border border-white/10">
-                  {/* Card Photo Part */}
-                  <div className="relative aspect-[4/5] w-full">
-                    <img
+            <div className="max-w-3xl mx-auto relative z-10 py-6">
+              <Reveal duration={1.5} y={40}>
+                <div className="bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl">
+                  {/* Card Photo Part with Staggered Animation */}
+                  <div className="relative aspect-[4/5] w-full group overflow-hidden">
+                    <motion.img
+                      initial={{ scale: 1.1, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 2, ease: "easeOut" }}
                       src={WEDDING_CONFIG.couplePhoto}
                       alt="Ayu & Rudi"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#4A4E3F]/40 to-transparent opacity-60" />
                   </div>
 
-                  {/* Card Info Part (Dark Green) */}
-                  <div className="p-8 md:p-10 text-neutral relative">
-                    <div className="flex items-start justify-between gap-4 relative">
-                      {/* Central Ornament Icon */}
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral/30 flex items-center justify-center bg-[#4A4E3F] shadow-lg">
-                          <span className="italiana-font text-lg md:text-xl text-neutral/80 opacity-60">e</span>
+                  {/* Card Info Part (Compact & Animated) */}
+                  <div className="p-6 md:p-12 text-neutral relative bg-gradient-to-b from-[#4A4E3F] to-[#3D4135]">
+                    <div className="relative">
+                      {/* Central Union Symbol - Scale In Animation */}
+                      <Reveal delay={0.8} scale={0} duration={1}>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-gold/20 flex items-center justify-center bg-[#4A4E3F]">
+                            <span className="italiana-font text-sm md:text-lg text-gold/60 italic">&</span>
+                          </div>
                         </div>
-                      </div>
+                      </Reveal>
 
-                      {/* Bride Info (Left) */}
-                      <div className="flex-1 text-center space-y-2 pr-4">
-                        <h3 className="italiana-font text-2xl md:text-3xl text-neutral font-bold leading-tight">
-                          {WEDDING_CONFIG.brideNickname}
-                        </h3>
-                        <p className="italiana-font text-sm md:text-lg text-neutral/90 opacity-90 leading-tight">
-                          Saputri
-                        </p>
-                        <div className="pt-2 border-t border-neutral/10 space-y-1">
-                          <p className="outfit-font text-[6px] md:text-[8px] text-neutral/40 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
-                          <p className="outfit-font text-[8px] md:text-xs text-neutral/70 font-bold leading-tight">
-                            {WEDDING_CONFIG.brideParents}
-                          </p>
-                        </div>
-                      </div>
+                      <div className="flex items-start justify-between gap-4 relative">
+                        {/* Bride Info (Left) - Staggered Slide In */}
+                        <Reveal delay={0.4} x={-20} duration={1.2}>
+                          <div className="flex-1 text-center space-y-2 pt-1">
+                            <div className="min-h-[60px] md:min-h-[80px] flex items-center justify-center">
+                              <h3 className="italiana-font text-lg md:text-2xl text-neutral font-bold tracking-tight leading-tight">
+                                Ayu Dewi <br /> Saputri
+                              </h3>
+                            </div>
+                            <div className="pt-2 border-t border-white/5 space-y-1">
+                              <p className="outfit-font text-[6px] md:text-[8px] text-neutral/30 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
+                              <div className="min-h-[30px] md:min-h-[40px] flex items-start justify-center">
+                                <p className="outfit-font text-[8px] md:text-xs text-neutral/80 font-bold leading-relaxed max-w-[140px] mx-auto italic">
+                                  {WEDDING_CONFIG.brideParents}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </Reveal>
 
-                      {/* Groom Info (Right) */}
-                      <div className="flex-1 text-center space-y-2 pl-4">
-                        <h3 className="italiana-font text-2xl md:text-3xl text-neutral font-bold leading-tight">
-                          {WEDDING_CONFIG.groomNickname}
-                        </h3>
-                        <p className="italiana-font text-sm md:text-lg text-neutral/90 opacity-90 leading-tight">
-                          Si'arudin
-                        </p>
-                        <div className="pt-2 border-t border-neutral/10 space-y-1">
-                          <p className="outfit-font text-[6px] md:text-[8px] text-neutral/40 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
-                          <p className="outfit-font text-[8px] md:text-xs text-neutral/70 font-bold leading-tight">
-                            {WEDDING_CONFIG.groomParents}
-                          </p>
-                        </div>
+                        {/* Spacer for symbol */}
+                        <div className="w-8 md:w-10" />
+
+                        {/* Groom Info (Right) - Staggered Slide In */}
+                        <Reveal delay={0.6} x={20} duration={1.2}>
+                          <div className="flex-1 text-center space-y-2 pt-1">
+                            <div className="min-h-[60px] md:min-h-[80px] flex items-center justify-center">
+                              <h3 className="italiana-font text-lg md:text-2xl text-neutral font-bold tracking-tight leading-tight">
+                                Rudi <br /> Si'arudin
+                              </h3>
+                            </div>
+                            <div className="pt-2 border-t border-white/5 space-y-1">
+                              <p className="outfit-font text-[6px] md:text-[8px] text-neutral/30 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
+                              <div className="min-h-[30px] md:min-h-[40px] flex items-start justify-center">
+                                <p className="outfit-font text-[8px] md:text-xs text-neutral/80 font-bold leading-relaxed max-w-[140px] mx-auto italic">
+                                  {WEDDING_CONFIG.groomParents}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </Reveal>
                       </div>
                     </div>
                   </div>
@@ -815,14 +832,7 @@ const App = () => {
 
             <div className="columns-2 gap-1.5 space-y-1.5 md:columns-3 md:gap-3 md:space-y-3 px-2">
               {WEDDING_CONFIG.galleryImages.map((_, i) => (
-                <Reveal
-                  key={i}
-                  delay={i * 0.05}
-                  y={0}
-                  scale={1}
-                  duration={0.8}
-                  className="break-inside-avoid"
-                >
+                <div key={i} className="break-inside-avoid">
                   <GalleryItem
                     index={i}
                     onClick={() => setSelectedGalleryImage(i)}
@@ -832,7 +842,7 @@ const App = () => {
                         i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
                     )}
                   />
-                </Reveal>
+                </div>
               ))}
             </div>
           </section>
@@ -1103,7 +1113,15 @@ const CustomCursor = () => {
 const GalleryItem = ({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) => {
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ 
+        duration: 0.8, 
+        delay: (index % 6) * 0.1,
+        ease: "easeOut"
+      }}
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
