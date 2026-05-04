@@ -809,10 +809,10 @@ const App = () => {
               {WEDDING_CONFIG.galleryImages.map((_, i) => (
                 <Reveal
                   key={i}
-                  delay={i * 0.15}
-                  y={40}
-                  scale={0.95}
-                  duration={1.2}
+                  delay={i * 0.05}
+                  y={0}
+                  scale={1}
+                  duration={0.8}
                   className="break-inside-avoid"
                 >
                   <GalleryItem
@@ -820,7 +820,6 @@ const App = () => {
                     onClick={() => setSelectedGalleryImage(i)}
                     className={cn(
                       "w-full",
-                      // Masonry simulation with varying heights/aspects
                       i % 3 === 0 ? "aspect-[3/4]" :
                         i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
                     )}
@@ -1117,7 +1116,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
 
       {/* Subtle Overlay Label */}
       <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-        <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
+        <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/60 px-3 py-1 rounded-full">
           Moment {index + 1}
         </p>
       </div>
