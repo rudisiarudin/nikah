@@ -45,9 +45,9 @@ export const WEDDING_CONFIG = {
   whatsappContactDisplay: '0896-5103-5509',
 
   // Gambar-gambar
-  coverImageLeft: '/images/cover.jpg',
+  coverImageLeft: '/images/cover1.jpg',
   coverImageRight: '/images/couple.jpg',
-  eventBg: '/images/cover2.jpg',
+  eventBg: '/images/akad.jpg',
   storyBg: '/images/cover3.jpg',
   storyImages: [
     '/images/story1.jpg',
@@ -56,7 +56,17 @@ export const WEDDING_CONFIG = {
     '/images/story4.jpg',
     '/images/story5.jpg'
   ],
-  musicUrl: '/Kaulah-Segalanya.mp3',
+  musicUrl: '/Nadin Amizah - Berpayung Tuhan (Official Lyric Video).mp3',
+  couplePhoto: '/images/rudiayu.jpg',
   floralBg: '/images/flower-tema-31.webp',
-  profileBg: '/images/flower-3-tema-31.webp'
+  profileBg: '/images/flower-3-tema-31.webp',
+  galleryImages: [
+    '/images/galeri1.jpg',
+    '/images/galeri2.jpeg',
+    '/images/galeri3.jpeg',
+    '/images/galeri4.jpeg',
+    '/images/galeri5.jpeg',
+    '/images/galeri6.jpeg',
+    '/images/galeri7.jpeg'
+  ]
 };

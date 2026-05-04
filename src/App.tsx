@@ -475,110 +475,56 @@ const App = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-neutral via-transparent to-neutral opacity-60" />
             </div>
 
-            <div className="max-w-5xl mx-auto flex flex-col items-center relative z-10">
-              {/* Bride Card: Image Left, Text Right (Flipped as per request) */}
-              <Reveal y={40} className="w-full">
-                <div className="flex flex-row-reverse bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl border border-primary/20 w-full min-h-[220px]">
-                  {/* Text Side (Right Aligned for Bride) */}
-                  <div className="w-[52%] p-6 flex flex-col justify-center items-end relative h-full text-right">
-                    <div className="space-y-4 text-right flex flex-col items-end w-full">
-                      <Reveal delay={0.1} x={20}>
-                        <div className="relative flex items-center justify-end w-full min-h-[50px] mb-2">
-                          <p className="cinzel-font text-2xl text-white/10 uppercase tracking-normal font-bold absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none select-none whitespace-nowrap">The Bride</p>
-                          <p className="charlotte-font text-5xl text-white leading-none italic relative z-10 pr-2">Ayu</p>
-                        </div>
-                      </Reveal>
-
-                      <Reveal delay={0.2} x={20}>
-                        <h3 className="italiana-font text-2xl text-white font-medium leading-[1.1] tracking-wide">
-                          Ayu Dewi Saputri
-                        </h3>
-                      </Reveal>
-
-                      <Reveal delay={0.3} x={20}>
-                        <div className="space-y-1 text-right opacity-80 mt-1">
-                          <p className="outfit-font text-[8px] text-white/40 uppercase tracking-widest font-bold italic">Putri tercinta dari</p>
-                          <p className="outfit-font text-[10px] text-white font-bold leading-tight">
-                            Bapak Murdiono & Ibu Kriswati
-                          </p>
-                        </div>
-                      </Reveal>
-                    </div>
-                  </div>
-
-                  {/* Image Side (48%) */}
-                  <div className="w-[48%] relative overflow-hidden">
+            <div className="max-w-4xl mx-auto px-6 relative z-10 py-8">
+              <div className="relative w-full max-w-[280px] mx-auto">
+                {/* Central Oblong Photo Container (More Compact) */}
+                <Reveal scale={0.95} duration={1.5}>
+                  <div className="relative aspect-[3/4.5] rounded-[180px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[1.5px] border-white/80">
                     <motion.img
                       whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 1.5 }}
-                      src={WEDDING_CONFIG.bridePhoto}
-                      alt="Ayu"
+                      transition={{ duration: 3, ease: "easeOut" }}
+                      src={WEDDING_CONFIG.couplePhoto}
+                      alt="Ayu & Rudi"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
-                    {/* Correct Gradient to Fade into the Text Side (Right) */}
-                    <div className="absolute inset-0 bg-gradient-to-l from-[#4A4E3F] via-[#4A4E3F]/70 to-transparent pointer-events-none" />
                   </div>
-                </div>
-              </Reveal>
+                </Reveal>
 
-              {/* Separator */}
-              <div className="flex justify-center my-6 relative z-20">
-                <div className="relative">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 opacity-20 -z-10">
-                    <img src={WEDDING_CONFIG.floralBg} alt="Floral" className="w-full h-full object-contain brightness-0 invert" />
-                  </div>
-                  <Reveal scale={0.8}>
-                    <p className="cinzel-font text-4xl text-primary/80 italic select-none">&</p>
+                {/* Groom Name (Compact Glass Card - Top Left) */}
+                <div className="absolute top-[-30px] left-[-30px] md:top-[-20px] md:left-[-80px] z-30">
+                  <Reveal delay={0.4} x={-20}>
+                    <div className="bg-white/40 backdrop-blur-xl p-3 md:p-5 rounded-[30px] shadow-xl border border-white/60 text-center min-w-[160px] md:min-w-[200px]">
+                      <h3 className="italiana-font text-base md:text-xl text-[#4A4E3F] font-bold tracking-tight leading-tight">
+                        {WEDDING_CONFIG.groomName}
+                      </h3>
+                      <div className="pt-1.5 mt-1 border-t border-[#4A4E3F]/5">
+                        <p className="outfit-font text-[6px] md:text-[8px] text-[#4A4E3F]/50 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
+                        <p className="outfit-font text-[8px] md:text-xs text-[#4A4E3F] font-bold leading-tight truncate">
+                          {WEDDING_CONFIG.groomParents}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                </div>
+
+                {/* Bride Name (Compact Glass Card - Bottom Right) */}
+                <div className="absolute bottom-[-15px] right-[-30px] md:bottom-[-10px] md:right-[-80px] z-30">
+                  <Reveal delay={0.6} x={20}>
+                    <div className="bg-white/40 backdrop-blur-xl p-3 md:p-5 rounded-[30px] shadow-xl border border-white/60 text-center min-w-[160px] md:min-w-[200px]">
+                      <h3 className="italiana-font text-base md:text-xl text-[#4A4E3F] font-bold tracking-tight leading-tight">
+                        {WEDDING_CONFIG.brideName}
+                      </h3>
+                      <div className="pt-1.5 mt-1 border-t border-[#4A4E3F]/5">
+                        <p className="outfit-font text-[6px] md:text-[8px] text-[#4A4E3F]/50 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
+                        <p className="outfit-font text-[8px] md:text-xs text-[#4A4E3F] font-bold leading-tight truncate">
+                          {WEDDING_CONFIG.brideParents}
+                        </p>
+                      </div>
+                    </div>
                   </Reveal>
                 </div>
               </div>
-
-              {/* Groom Card: Dark Theme (Matched with Bride) */}
-              <Reveal y={40} className="w-full">
-                <div className="flex flex-row bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl border border-primary/20 w-full min-h-[220px]">
-                  {/* Text Side (Left Aligned for Groom) */}
-                  <div className="w-[52%] p-6 flex flex-col justify-center items-start relative h-full text-left">
-                    <div className="space-y-4 text-left flex flex-col items-start w-full">
-                      <Reveal delay={0.1} x={-20}>
-                        <div className="relative flex items-center justify-start w-full min-h-[50px] mb-2">
-                          <p className="cinzel-font text-2xl text-white/10 uppercase tracking-normal font-bold absolute left-1 top-1/2 -translate-y-1/2 pointer-events-none select-none whitespace-nowrap">The Groom</p>
-                          <p className="charlotte-font text-5xl text-white leading-none italic relative z-10 pl-2">Rudi</p>
-                        </div>
-                      </Reveal>
-
-                      <Reveal delay={0.2} x={-20}>
-                        <h3 className="italiana-font text-2xl text-white font-medium leading-[1.1] tracking-wide">
-                          Rudi Si'arudin
-                        </h3>
-                      </Reveal>
-
-                      <Reveal delay={0.3} x={-20}>
-                        <div className="space-y-1 text-left opacity-80 mt-1">
-                          <p className="outfit-font text-[8px] text-white/40 uppercase tracking-widest font-bold italic">Putra tercinta dari</p>
-                          <p className="outfit-font text-[10px] text-white font-bold leading-tight">
-                            Bapak Ohan (Alm.) & Ibu Onih (Alm.)
-                          </p>
-                        </div>
-                      </Reveal>
-                    </div>
-                  </div>
-
-                  {/* Image Side (48%) */}
-                  <div className="w-[48%] relative overflow-hidden">
-                    <motion.img
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 1.5 }}
-                      src={WEDDING_CONFIG.groomPhoto}
-                      alt="Rudi"
-                      className="w-full h-full object-cover relative z-0"
-                      referrerPolicy="no-referrer"
-                    />
-                    {/* Correct Gradient to Fade into the Text Side (Left) - Use matching dark color */}
-                    <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#4A4E3F] via-[#4A4E3F]/70 to-transparent pointer-events-none" />
-                  </div>
-                </div>
-              </Reveal>
             </div>
           </section>
 
@@ -860,7 +806,7 @@ const App = () => {
             </Reveal>
 
             <div className="columns-2 gap-1.5 space-y-1.5 md:columns-3 md:gap-3 md:space-y-3 px-2">
-              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              {WEDDING_CONFIG.galleryImages.map((_, i) => (
                 <Reveal
                   key={i}
                   delay={i * 0.15}
@@ -875,13 +821,8 @@ const App = () => {
                     className={cn(
                       "w-full",
                       // Masonry simulation with varying heights/aspects
-                      i === 0 ? "aspect-[3/4]" :
-                        i === 1 ? "aspect-square" :
-                          i === 2 ? "aspect-[2/3]" :
-                            i === 3 ? "aspect-[3/2]" :
-                              i === 4 ? "aspect-[4/5]" :
-                                i === 5 ? "aspect-square" :
-                                  i === 6 ? "aspect-[2/3]" : "aspect-square"
+                      i % 3 === 0 ? "aspect-[3/4]" :
+                        i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
                     )}
                   />
                 </Reveal>
@@ -947,7 +888,7 @@ const App = () => {
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentGalleryIndex}
-                  src={`/images/galeri${currentGalleryIndex + 1}.jpg`}
+                  src={WEDDING_CONFIG.galleryImages[currentGalleryIndex % WEDDING_CONFIG.galleryImages.length]}
                   initial={{ opacity: 0, scale: 1.1 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.05 }}
@@ -1086,7 +1027,7 @@ const App = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              src={`/images/galeri${selectedGalleryImage + 1}.jpg`}
+              src={WEDDING_CONFIG.galleryImages[selectedGalleryImage]}
               className="max-w-full max-h-[85vh] rounded-[10px] shadow-2xl object-contain border border-white/10"
               onClick={(e) => e.stopPropagation()}
             />
@@ -1168,7 +1109,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       />
       <motion.img
         layoutId={`image-${index}`}
-        src={`/images/galeri${index + 1}.jpg`}
+        src={WEDDING_CONFIG.galleryImages[index]}
         alt={`Gallery ${index + 1}`}
         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         loading="lazy"
