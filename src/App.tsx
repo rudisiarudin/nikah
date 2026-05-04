@@ -475,56 +475,64 @@ const App = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-neutral via-transparent to-neutral opacity-60" />
             </div>
 
-            <div className="max-w-4xl mx-auto px-6 relative z-10 py-8">
-              <div className="relative w-full max-w-[280px] mx-auto">
-                {/* Central Oblong Photo Container (More Compact) */}
-                <Reveal scale={0.95} duration={1.5}>
-                  <div className="relative aspect-[3/4.5] rounded-[180px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[1.5px] border-white/80">
-                    <motion.img
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 3, ease: "easeOut" }}
+            <div className="max-w-xl mx-auto px-6 relative z-10 py-12">
+              <Reveal scale={0.95} duration={1.5} y={40}>
+                <div className="bg-[#4A4E3F] rounded-[40px] md:rounded-[50px] overflow-hidden shadow-2xl border border-white/10">
+                  {/* Card Photo Part */}
+                  <div className="relative aspect-[4/5] w-full">
+                    <img
                       src={WEDDING_CONFIG.couplePhoto}
                       alt="Ayu & Rudi"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </div>
-                </Reveal>
 
-                {/* Groom Name (Compact Glass Card - Top Left) */}
-                <div className="absolute top-[-30px] left-[-30px] md:top-[-20px] md:left-[-80px] z-30">
-                  <Reveal delay={0.4} x={-20}>
-                    <div className="bg-white/40 backdrop-blur-xl p-3 md:p-5 rounded-[30px] shadow-xl border border-white/60 text-center min-w-[160px] md:min-w-[200px]">
-                      <h3 className="italiana-font text-base md:text-xl text-[#4A4E3F] font-bold tracking-tight leading-tight">
-                        {WEDDING_CONFIG.groomName}
-                      </h3>
-                      <div className="pt-1.5 mt-1 border-t border-[#4A4E3F]/5">
-                        <p className="outfit-font text-[6px] md:text-[8px] text-[#4A4E3F]/50 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
-                        <p className="outfit-font text-[8px] md:text-xs text-[#4A4E3F] font-bold leading-tight truncate">
-                          {WEDDING_CONFIG.groomParents}
+                  {/* Card Info Part (Dark Green) */}
+                  <div className="p-8 md:p-10 text-neutral relative">
+                    <div className="flex items-start justify-between gap-4 relative">
+                      {/* Central Ornament Icon */}
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral/30 flex items-center justify-center bg-[#4A4E3F] shadow-lg">
+                          <span className="italiana-font text-lg md:text-xl text-neutral/80 opacity-60">e</span>
+                        </div>
+                      </div>
+
+                      {/* Bride Info (Left) */}
+                      <div className="flex-1 text-center space-y-2 pr-4">
+                        <h3 className="italiana-font text-2xl md:text-3xl text-neutral font-bold leading-tight">
+                          {WEDDING_CONFIG.brideNickname}
+                        </h3>
+                        <p className="italiana-font text-sm md:text-lg text-neutral/90 opacity-90 leading-tight">
+                          Saputri
                         </p>
+                        <div className="pt-2 border-t border-neutral/10 space-y-1">
+                          <p className="outfit-font text-[6px] md:text-[8px] text-neutral/40 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
+                          <p className="outfit-font text-[8px] md:text-xs text-neutral/70 font-bold leading-tight">
+                            {WEDDING_CONFIG.brideParents}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Groom Info (Right) */}
+                      <div className="flex-1 text-center space-y-2 pl-4">
+                        <h3 className="italiana-font text-2xl md:text-3xl text-neutral font-bold leading-tight">
+                          {WEDDING_CONFIG.groomNickname}
+                        </h3>
+                        <p className="italiana-font text-sm md:text-lg text-neutral/90 opacity-90 leading-tight">
+                          Si'arudin
+                        </p>
+                        <div className="pt-2 border-t border-neutral/10 space-y-1">
+                          <p className="outfit-font text-[6px] md:text-[8px] text-neutral/40 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
+                          <p className="outfit-font text-[8px] md:text-xs text-neutral/70 font-bold leading-tight">
+                            {WEDDING_CONFIG.groomParents}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </Reveal>
+                  </div>
                 </div>
-
-                {/* Bride Name (Compact Glass Card - Bottom Right) */}
-                <div className="absolute bottom-[-15px] right-[-30px] md:bottom-[-10px] md:right-[-80px] z-30">
-                  <Reveal delay={0.6} x={20}>
-                    <div className="bg-white/40 backdrop-blur-xl p-3 md:p-5 rounded-[30px] shadow-xl border border-white/60 text-center min-w-[160px] md:min-w-[200px]">
-                      <h3 className="italiana-font text-base md:text-xl text-[#4A4E3F] font-bold tracking-tight leading-tight">
-                        {WEDDING_CONFIG.brideName}
-                      </h3>
-                      <div className="pt-1.5 mt-1 border-t border-[#4A4E3F]/5">
-                        <p className="outfit-font text-[6px] md:text-[8px] text-[#4A4E3F]/50 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
-                        <p className="outfit-font text-[8px] md:text-xs text-[#4A4E3F] font-bold leading-tight truncate">
-                          {WEDDING_CONFIG.brideParents}
-                        </p>
-                      </div>
-                    </div>
-                  </Reveal>
-                </div>
-              </div>
+              </Reveal>
             </div>
           </section>
 
