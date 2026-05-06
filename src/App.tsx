@@ -3,23 +3,16 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import {
   Heart,
-  Calendar as CalendarIcon,
+  Calendar,
   MapPin,
-  Clock,
-  Instagram,
   Send,
   Copy,
   MessageSquare,
   Camera,
-  Youtube,
   Gift,
   ChevronDown,
   X,
-  Volume2,
   VolumeX,
-  Ticket,
-  Navigation,
-  Users,
   Home,
   BookOpen,
   Lock
@@ -189,7 +182,7 @@ const App = () => {
       setCurrentStoryIndex((prev) => (prev + 1) % (WEDDING_CONFIG.storyImages?.length || 1));
     }, 5000);
     const galleryInterval = setInterval(() => {
-      setCurrentGalleryIndex((prev) => (prev + 1) % 7); // galeri1-7
+      setCurrentGalleryIndex((prev) => (prev + 1) % WEDDING_CONFIG.galleryImages.length);
     }, 4000);
     return () => {
       clearInterval(storyInterval);
@@ -398,7 +391,7 @@ const App = () => {
                       }}
                       className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-full outfit-font text-[9.5px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
                     >
-                      <CalendarIcon size={14} />
+                      <Calendar size={18} />
                       Simpan Ke Kalender
                     </motion.button>
                   </Reveal>
@@ -448,110 +441,197 @@ const App = () => {
             </div>
           </section>
 
-          {/* Greeting Section */}
-          <section className="pt-16 pb-8 px-8 text-center space-y-6">
-            <Reveal y={20} duration={1.5}>
-              <p className="lateef-font text-3xl mb-4 text-gold font-medium">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْمِ</p>
-            </Reveal>
-            <Reveal delay={0.3} y={15} duration={1.2}>
-              <h2 className="serif-font text-lg font-bold italic">Assalamu'alaikum Wr. Wb.</h2>
-            </Reveal>
-            <Reveal delay={0.6} y={15} duration={1.5}>
-              <p className="sans-font text-xs leading-relaxed text-primary/70 italic max-w-2xl mx-auto">
-                Dengan memohon rahmat dan ridho Allah SWT. Kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
-              </p>
-            </Reveal>
-          </section>
+          {/* Greeting + Couple Profile Section */}
+          <section id="profile" className="pt-10 pb-0 px-4 relative overflow-hidden bg-neutral">
+            {/* Soft Radial Glow behind content */}
+            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[150%] aspect-square bg-gradient-radial from-white via-transparent to-transparent opacity-80 pointer-events-none z-0" />
 
-          {/* Profile Section */}
-          <section id="profile" className="pt-0 pb-16 px-6 space-y-12 relative overflow-hidden bg-neutral">
-            {/* Background Ornaments */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              <img
-                src={WEDDING_CONFIG.profileBg}
-                alt="Background"
-                className="w-full h-full object-cover opacity-20"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-neutral via-transparent to-neutral opacity-60" />
-            </div>
+            {/* Top Left Botanical Watercolor Ornament (daun-atas.png) - Shrunk & Subtle */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20, y: -20 }}
+              whileInView={{ opacity: 1, x: 0, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute top-0 left-0 w-[45%] max-w-[240px] pointer-events-none z-10 opacity-40"
+            >
+              <img src={WEDDING_CONFIG.daunAtas} alt="" className="w-full h-auto object-contain" />
+            </motion.div>
 
-            <div className="max-w-3xl mx-auto relative z-10 py-6">
-              <Reveal duration={1.5} y={40}>
-                <div className="bg-[#4A4E3F] rounded-[25px] overflow-hidden shadow-2xl">
-                  {/* Card Photo Part with Staggered Animation */}
-                  <div className="relative aspect-[4/5] w-full group overflow-hidden">
+            <div className="max-w-md mx-auto relative z-30">
+              {/* Bismillah Section - Compact & High */}
+              <div className="space-y-1 mb-5 flex flex-col items-center">
+                <Reveal y={10} duration={1.5}>
+                  <div className="px-10">
+                    <img 
+                      src={WEDDING_CONFIG.bismillahImage} 
+                      alt="Bismillah" 
+                      className="w-full max-w-[150px] h-auto object-contain"
+                      style={{ filter: 'brightness(0) saturate(100%) invert(29%) sepia(93%) saturate(545%) hue-rotate(346deg) brightness(88%) contrast(92%)' }}
+                    />
+                  </div>
+                </Reveal>
+                
+                <Reveal delay={0.2} scale={0} duration={1}>
+                  <div className="flex justify-center -mt-2">
+                    <img 
+                      src={WEDDING_CONFIG.lineLove} 
+                      alt="" 
+                      className="w-32 h-auto object-contain opacity-100" 
+                      style={{ filter: 'brightness(0.5)' }}
+                    />
+                  </div>
+                </Reveal>
+
+                <div className="space-y-1 pt-1">
+                  <Reveal delay={0.4} y={10} duration={1.2}>
+                    <h2 className="serif-font text-[13px] font-bold text-center text-[#333333] tracking-wide">Assalamu'alaikum Wr. Wb.</h2>
+                  </Reveal>
+
+                  <Reveal delay={0.6} y={10} duration={1.5}>
+                    <p className="sans-font text-[11.5px] leading-relaxed text-primary/70 font-medium text-center max-w-[320px] mx-auto">
+                      Dengan memohon rahmat dan ridho Allah SWT. Kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
+                    </p>
+                  </Reveal>
+                </div>
+              </div>
+
+              {/* Photo Section */}
+              <div className="relative mx-auto max-w-[250px] pt-1 pb-6">
+                
+                {/* Ornaments - Floating Animation */}
+                <motion.div 
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-[5%] -left-10 w-32 h-auto pointer-events-none z-30 opacity-80"
+                >
+                  <img src={WEDDING_CONFIG.ornamenKiri} alt="" className="w-full h-auto object-contain" />
+                </motion.div>
+                
+                <motion.div 
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-[10%] -right-10 w-32 h-auto pointer-events-none z-30 opacity-80"
+                >
+                  <img src={WEDDING_CONFIG.ornamenKanan} alt="" className="w-full h-auto object-contain" />
+                </motion.div>
+
+                {/* Couple Photo - Zoom Animation */}
+                <div className="relative z-20 mx-auto w-full">
+                  <div className="overflow-hidden w-full shadow-lg">
                     <motion.img
-                      initial={{ scale: 1.1, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
                       transition={{ duration: 2, ease: "easeOut" }}
                       src={WEDDING_CONFIG.couplePhoto}
                       alt="Ayu & Rudi"
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto object-contain"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#4A4E3F]/40 to-transparent opacity-60" />
-                  </div>
-
-                  {/* Card Info Part (Compact & Animated) */}
-                  <div className="p-6 md:p-12 text-neutral relative bg-gradient-to-b from-[#4A4E3F] to-[#3D4135]">
-                    <div className="relative">
-                      {/* Central Union Symbol - Scale In Animation */}
-                      <Reveal delay={0.8} scale={0} duration={1}>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-gold/20 flex items-center justify-center bg-[#4A4E3F]">
-                            <span className="italiana-font text-sm md:text-lg text-gold/60 italic">&</span>
-                          </div>
-                        </div>
-                      </Reveal>
-
-                      <div className="flex items-start justify-between gap-4 relative">
-                        {/* Bride Info (Left) - Staggered Slide In */}
-                        <Reveal delay={0.4} x={-20} duration={1.2}>
-                          <div className="flex-1 text-center space-y-2 pt-1">
-                            <div className="min-h-[60px] md:min-h-[80px] flex items-center justify-center">
-                              <h3 className="italiana-font text-lg md:text-2xl text-neutral font-bold tracking-tight leading-tight">
-                                Ayu Dewi <br /> Saputri
-                              </h3>
-                            </div>
-                            <div className="pt-2 border-t border-white/5 space-y-1">
-                              <p className="outfit-font text-[6px] md:text-[8px] text-neutral/30 uppercase tracking-[0.2em] font-bold">Putri tercinta dari</p>
-                              <div className="min-h-[30px] md:min-h-[40px] flex items-start justify-center">
-                                <p className="outfit-font text-[8px] md:text-xs text-neutral/80 font-bold leading-relaxed max-w-[140px] mx-auto italic">
-                                  {WEDDING_CONFIG.brideParents}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </Reveal>
-
-                        {/* Spacer for symbol */}
-                        <div className="w-8 md:w-10" />
-
-                        {/* Groom Info (Right) - Staggered Slide In */}
-                        <Reveal delay={0.6} x={20} duration={1.2}>
-                          <div className="flex-1 text-center space-y-2 pt-1">
-                            <div className="min-h-[60px] md:min-h-[80px] flex items-center justify-center">
-                              <h3 className="italiana-font text-lg md:text-2xl text-neutral font-bold tracking-tight leading-tight">
-                                Rudi <br /> Si'arudin
-                              </h3>
-                            </div>
-                            <div className="pt-2 border-t border-white/5 space-y-1">
-                              <p className="outfit-font text-[6px] md:text-[8px] text-neutral/30 uppercase tracking-[0.2em] font-bold">Putra tercinta dari</p>
-                              <div className="min-h-[30px] md:min-h-[40px] flex items-start justify-center">
-                                <p className="outfit-font text-[8px] md:text-xs text-neutral/80 font-bold leading-relaxed max-w-[140px] mx-auto italic">
-                                  {WEDDING_CONFIG.groomParents}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </Reveal>
-                      </div>
-                    </div>
                   </div>
                 </div>
-              </Reveal>
+
+                {/* Wedding Rings - Scale & Bounce Animation */}
+                <motion.div 
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1, duration: 1, type: "spring", stiffness: 100 }}
+                  className="absolute -bottom-6 left-1/2 -translate-x-[52%] w-32 h-auto z-40 pointer-events-none"
+                >
+                  <img src={WEDDING_CONFIG.ringsImage} alt="" className="w-full h-auto object-contain drop-shadow-md" />
+                </motion.div>
+              </div>
+
+              {/* Names Section - Groom on Left, Bride on Right */}
+              <div className="pt-0 pb-16 relative z-50">
+                <div className="flex items-center justify-center gap-2">
+                  {/* Groom Column (Rudi) */}
+                  <div className="flex-1 text-center">
+                    <Reveal delay={1.1} y={20} duration={1.2}>
+                      <div className="space-y-0">
+                        <h3 className="italiana-font text-[19px] text-neutral tracking-[0.08em] font-medium">Rudi</h3>
+                        <p className="script-font text-[30px] text-neutral/90 leading-none mt-[-4px]">Si'arudin</p>
+                      </div>
+                      <div className="mt-2 space-y-0.5">
+                        <p className="outfit-font text-[6px] text-neutral/50 uppercase tracking-[0.2em] font-bold">Putra Terakhir dari</p>
+                        <p className="serif-font text-[8.5px] text-neutral/80 italic leading-relaxed">
+                          Bapak Ohan (Alm.) & Ibu Onih (Alm.)
+                        </p>
+                      </div>
+                    </Reveal>
+                  </div>
+
+                  <div className="flex flex-col items-center px-1">
+                    <div className="w-[0.3px] h-10 bg-neutral/50" />
+                    <Reveal delay={1.4} scale={0} duration={0.8}>
+                      <div className="py-0.5">
+                        <Heart size={7} strokeWidth={0.5} className="text-neutral/60" />
+                      </div>
+                    </Reveal>
+                    <div className="w-[0.3px] h-10 bg-neutral/50" />
+                  </div>
+
+                  {/* Bride Column (Ayu Dewi) */}
+                  <div className="flex-1 text-center">
+                    <Reveal delay={1.2} y={20} duration={1.2}>
+                      <div className="space-y-0">
+                        <h3 className="italiana-font text-[19px] text-neutral tracking-[0.08em] font-medium">Ayu Dewi</h3>
+                        <p className="script-font text-[30px] text-neutral/90 leading-none mt-[-4px]">Saputri</p>
+                      </div>
+                      <div className="mt-2 space-y-0.5">
+                        <p className="outfit-font text-[6px] text-neutral/50 uppercase tracking-[0.2em] font-bold">Putri Pertama dari</p>
+                        <p className="serif-font text-[8.5px] text-neutral/80 italic leading-relaxed">
+                          Bapak Murdiono & Ibu Kriswati
+                        </p>
+                      </div>
+                    </Reveal>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dark Green Footer with Aesthetic Texture */}
+            <div className="absolute bottom-0 left-0 w-full z-10 overflow-hidden">
+              <div className="relative">
+                <svg viewBox="0 0 1440 320" className="w-full h-auto translate-y-1 fill-primary">
+                  <path d="M0,80 C360,0 1080,0 1440,80 L1440,320 L0,320 Z" fill="#6B705C" /> 
+                </svg>
+                
+                {/* Texture Overlay (Paper Grain) */}
+                <div 
+                  className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+                  style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/felt-paper.png")' }}
+                />
+              </div>
+
+              <div className="w-full h-40 bg-primary -mt-1 relative">
+                {/* Continuing Texture */}
+                <div 
+                  className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+                  style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/felt-paper.png")' }}
+                />
+              </div>
             </div>
           </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           {/* Event Details */}
           <section id="event" className="py-24 px-6 space-y-16 relative overflow-hidden bg-[#F9F8F4]">
@@ -826,6 +906,7 @@ const App = () => {
                   className="w-full h-auto object-cover"
                 >
                   <source src="/video/video.mp4" type="video/mp4" />
+                  Browser Anda tidak mendukung pemutaran video.
                 </video>
               </div>
             </Reveal>
@@ -899,7 +980,7 @@ const App = () => {
           </section>
 
           {/* Prayer Section */}
-          <section className="py-24 px-8 relative overflow-hidden flex items-center justify-center min-h-[500px][600px]">
+          <section className="py-24 px-8 relative overflow-hidden flex items-center justify-center min-h-[600px]">
             {/* Gallery Slideshow Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
               <AnimatePresence mode="wait">
@@ -1372,7 +1453,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
       }
     } catch (err) {
       console.error('Error submitting wish:', err);
-      alert(`Gagal mengirim ucapan. Silakan coba lagi. Detail Error: ${err.message || 'Koneksi gagal/Database tidak ditemukan.'}`);
+      alert(`Gagal mengirim ucapan. Silakan coba lagi. Detail Error: ${(err as Error).message || 'Koneksi gagal/Database tidak ditemukan.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -1638,7 +1719,7 @@ const FloatingNav = () => {
   const navItems = [
     { icon: <Home size={20} />, label: 'Home', id: 'hero' },
     { icon: <Heart size={20} />, label: 'Couple', id: 'profile' },
-    { icon: <CalendarIcon size={20} />, label: 'Event', id: 'event' },
+    { icon: <Calendar size={20} />, label: 'Event', id: 'event' },
     { icon: <BookOpen size={20} />, label: 'Story', id: 'story' },
     { icon: <Camera size={20} />, label: 'Gallery', id: 'gallery' },
     { icon: <MessageSquare size={20} />, label: 'Wishes', id: 'wishes' },

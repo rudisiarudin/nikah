@@ -29,7 +29,7 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Lora", serif;
   --font-display: "Playfair Display", serif;
-  --font-script: "Great Vibes", cursive;
+  --font-script: "Charlotte Southern", cursive;
   --font-arabic: "Amiri", serif;
   --font-outfit: "Outfit", sans-serif;
 
@@ -131,10 +131,6 @@
   font-family: 'Cinzel', serif;
 }
 
-.cinzel-font {
-  font-family: 'Cinzel', serif;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 3px;
@@ -169,7 +165,7 @@
 
 /* Texture Overlay */
 .bg-texture {
-  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  background-image: url("/images/paper-fibers.png");
 }
 
 .mask-oval {
@@ -177,7 +173,7 @@
 }
 
 .mask-arch {
-  clip-path: polygon(0% 100%, 0% 20%, 5% 15%, 10% 10%, 20% 5%, 30% 2%, 50% 0%, 70% 2%, 80% 5%, 90% 10%, 95% 15%, 100% 20%, 100% 100%);
+  border-radius: 1000px 1000px 0 0;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
