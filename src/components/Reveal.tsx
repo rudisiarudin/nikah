@@ -14,8 +14,7 @@ export const Reveal: React.FC<{
     className={className}
     initial={{ opacity: 0, y, x, scale, willChange: "transform, opacity" }}
     whileInView={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-    animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-    viewport={{ once: true, amount: 0.05 }}
+    viewport={{ once: true, margin: "-50px" }}
     transition={{ 
       duration: duration * 1.1, 
       delay, 

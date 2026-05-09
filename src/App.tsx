@@ -16,7 +16,11 @@ import {
   Home,
   BookOpen,
   Lock,
-  Instagram
+  Instagram,
+  Check,
+  User,
+  Sparkles,
+  Mail
 } from 'lucide-react';
 import { Player } from '@lottiefiles/react-lottie-player';
 import birdAnimation from '../public/lottie_birds.json';
@@ -40,6 +44,645 @@ interface Wish {
 }
 
 // --- Components ---
+
+const FloatingNav = () => {
+  const [activeSection, setActiveSection] = useState('hero');
+  const navItems = [
+    { icon: <Home size={18} />, label: 'Home', id: 'hero' },
+    { icon: <Heart size={18} />, label: 'Couple', id: 'profile' },
+    { icon: <Calendar size={18} />, label: 'Event', id: 'event' },
+    { icon: <Camera size={18} />, label: 'Gallery', id: 'gallery' },
+    { icon: <MessageSquare size={18} />, label: 'Wish', id: 'wishes' },
+  ];
+
+  useEffect(() => {
+    const sectionIds = navItems.map(item => item.id);
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY + window.innerHeight * 0.35;
+      let current = sectionIds[0];
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) {
+          current = id;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  return (
+    <motion.nav
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="fixed bottom-6 left-1/2 z-[120] w-[min(94%,520px)] -translate-x-1/2"
+    >
+      <div className="bg-white/90 backdrop-blur-xl rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/50 px-2 py-2">
+        <div className="flex items-center justify-between gap-1">
+          {navItems.map((item, idx) => {
+            const isActive = activeSection === item.id;
+            return (
+              <motion.button
+                key={idx}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => scrollTo(item.id)}
+                className={cn(
+                  "relative flex flex-col items-center justify-center min-w-[65px] py-2 transition-all duration-300 rounded-full",
+                  isActive ? "text-[#b89e6a]" : "text-[#7C7567]"
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active"
+                    className="absolute inset-0 bg-[#fdf8ed] border border-[#f2e8d0] rounded-full z-0"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <div className="relative z-10 flex flex-col items-center gap-1">
+                  {item.icon}
+                  <span className="text-[10px] font-medium tracking-tight whitespace-nowrap">
+                    {item.label}
+                  </span>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+    </motion.nav>
+  );
+};
+
+const GiftModal = () => {
+  const [show, setShow] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <>
+      <motion.button
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setShow(true)}
+        className="px-10 py-5 bg-[#c6b793] text-[#50593f] rounded-[5px] font-bold text-[12px] tracking-[0.3em] uppercase shadow-xl hover:shadow-[#c6b793]/20 transition-all flex items-center gap-3 mx-auto"
+      >
+        <Gift size={16} />
+        KIRIM HADIAH
+      </motion.button>
+
+      {createPortal(
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[5000] bg-black/60 backdrop-blur-[20px] flex items-center justify-center p-4 sm:p-6"
+            >
+              <motion.div
+                initial={{ y: 80, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 80, opacity: 0 }}
+                className="bg-[#FDFBF7] w-full max-w-[400px] max-h-[85vh] rounded-[5px] relative text-primary shadow-2xl overflow-hidden flex flex-col border border-white/40"
+              >
+                {/* Absolute Header Area */}
+                <div className="absolute top-5 right-5 z-50">
+                  <button
+                    onClick={() => setShow(false)}
+                    className="w-10 h-10 bg-neutral/90 backdrop-blur-md border border-black/5 rounded-full flex items-center justify-center shadow-lg hover:bg-white active:scale-90 transition-all pointer-events-auto"
+                  >
+                    <X size={20} className="text-primary/70" />
+                  </button>
+                </div>
+
+                {/* Internal Scroll Area */}
+                <div className="overflow-y-auto w-full pt-16 pb-12 px-6 sm:px-10 custom-scrollbar">
+                  <div className="text-center mb-8">
+                    <h3 className="italiana-font text-3xl md:text-4xl text-primary mb-3">Wedding Gift</h3>
+                    <div className="h-[1px] w-10 bg-primary/20 mx-auto" />
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* BCA Blue Debit Card */}
+                    <div className="relative aspect-[1.586/1] w-full rounded-[5px] p-6 text-white shadow-[0_20px_40px_-15px_rgba(0,82,156,0.6)] overflow-hidden border border-white/20 select-none bg-gradient-to-br from-[#1b64a6] via-[#00529C] to-[#013366]">
+                      {/* Gloss / Card Texture Overlay */}
+                      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
+
+                      {/* Light reflection effect */}
+                      <div className="absolute top-0 right-[-30%] w-[150%] h-[150%] bg-gradient-to-bl from-white/10 via-transparent to-transparent rotate-[35deg] pointer-events-none" />
+
+                      <div className="relative z-10 h-full flex flex-col justify-between">
+                        {/* Top bar: Bank Logo & Debit Text */}
+                        <div className="flex justify-between items-start">
+                          <img src="/images/bca.png" alt="BCA" className="h-[22px] w-auto brightness-0 invert opacity-90" />
+                          <div className="bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-md text-[8px] font-bold tracking-[0.25em] outfit-font text-white uppercase shadow-sm">DEBIT</div>
+                        </div>
+
+                        {/* Microchip */}
+                        <div className="w-12 h-9 bg-gradient-to-br from-[#ffd700] via-[#eedd82] to-[#b8860b] rounded-[6px] shadow-sm border border-black/10 relative overflow-hidden flex flex-col justify-between p-[3px]">
+                          {/* Chip internal lines */}
+                          <div className="absolute inset-0 opacity-40">
+                            <div className="w-full h-full border-[0.5px] border-black/40 rounded-[4px]" />
+                            <div className="absolute top-1/2 left-0 w-full h-[0.5px] bg-black/40" />
+                            <div className="absolute top-0 left-1/2 w-[0.5px] h-full bg-black/40" />
+                            <div className="absolute top-1/4 left-0 w-full h-[0.5px] bg-black/40" />
+                            <div className="absolute bottom-1/4 left-0 w-full h-[0.5px] bg-black/40" />
+                          </div>
+                        </div>
+
+                        {/* Card Numbers & Bottom Bar */}
+                        <div className="space-y-3">
+                          <p className="text-[1.35rem] sm:text-[1.6rem] font-medium tracking-[0.25em] text-white/95 drop-shadow-md font-mono" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
+                            {WEDDING_CONFIG.bankAccount}
+                          </p>
+
+                          <div className="flex justify-between items-end">
+                            <p className="text-[12px] sm:text-[14px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
+                              {WEDDING_CONFIG.bankAccountName}
+                            </p>
+
+                            {/* Mastercard style circles */}
+                            <div className="flex -space-x-3 opacity-60">
+                              <div className="w-8 h-8 rounded-full bg-[#EB001B] mix-blend-screen" />
+                              <div className="w-8 h-8 rounded-full bg-[#F79E1B] mix-blend-screen" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Primary Color Copy Button */}
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
+                      className="w-full bg-[#50593f] hover:bg-[#50593f]/90 text-neutral py-[18px] rounded-[5px] flex items-center justify-center gap-3 shadow-xl shadow-[#50593f]/20 outfit-font text-[10px] font-bold tracking-[0.3em] uppercase transition-all border border-black/5"
+                    >
+                      <Copy size={16} />
+                      {copied ? 'BERHASIL DISALIN' : 'SALIN NO REKENING'}
+                    </motion.button>
+
+                    {/* Physical Gift Section */}
+                    <div className="bg-[#EFEDE7] rounded-[25px] p-7 space-y-5 border border-black/5">
+                      <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md text-primary">
+                          <Gift size={22} />
+                        </div>
+                        <p className="font-bold text-sm tracking-tight text-primary outfit-font">Kirim Hadiah Fisik</p>
+                      </div>
+                      <div className="pl-1 space-y-2">
+                        <p className="text-[12px] leading-6 text-primary/70 outfit-font italic font-medium">
+                          {WEDDING_CONFIG.physicalGiftAddress}
+                        </p>
+                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] pt-2">
+                          (Penerima: {WEDDING_CONFIG.bankAccountName})
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
+  );
+};
+
+const WISHES_PER_PAGE = 5;
+
+const Guestbook = ({ guestName }: { guestName: string }) => {
+  const [wishes, setWishes] = useState<Wish[]>([]);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'Hadir' | 'Tidak Hadir' | 'Masih Ragu'>('Hadir');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const displayName = guestName !== 'Tamu Undangan' ? guestName : '';
+
+  useEffect(() => {
+    fetchWishes();
+  }, []);
+
+  const fetchWishes = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('wishes')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data) {
+        const mappedWishes: Wish[] = data.map(item => ({
+          id: item.id,
+          name: item.name,
+          message: item.message,
+          status: item.status,
+          timestamp: new Date(item.created_at),
+          reply: item.reply
+        }));
+        setWishes(mappedWishes);
+      }
+    } catch (err) {
+      console.error('Error fetching wishes:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!displayName || !message || isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+      const { data, error } = await supabase
+        .from('wishes')
+        .insert([
+          {
+            name: displayName,
+            message,
+            status,
+            created_at: new Date().toISOString()
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+
+      if (data && data[0]) {
+        const newWish: Wish = {
+          id: data[0].id,
+          name: data[0].name,
+          message: data[0].message,
+          status: data[0].status,
+          timestamp: new Date(data[0].created_at),
+          reply: data[0].reply
+        };
+        setWishes(prev => [newWish, ...prev]);
+        setMessage('');
+        setCurrentPage(1);
+      }
+    } catch (err) {
+      console.error('Error submitting wish:', err);
+      alert(`Gagal mengirim ucapan. Silakan coba lagi. Detail Error: ${(err as Error).message || 'Koneksi gagal/Database tidak ditemukan.'}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const totalPages = Math.ceil(wishes.length / WISHES_PER_PAGE);
+  const paginatedWishes = wishes.slice(
+    (currentPage - 1) * WISHES_PER_PAGE,
+    currentPage * WISHES_PER_PAGE
+  );
+
+  return (
+    <div className="space-y-0">
+      {/* Vintage Letter Form */}
+      {!displayName ? (
+        <div className="max-w-md mx-auto py-8 px-4">
+          <div className="vintage-card-inset p-8 text-center space-y-4">
+             <div className="flex justify-center opacity-25 text-[#7c6a50]"><Lock size={28} /></div>
+             <p className="serif-font italic text-[13px] text-[#7c6a50]/50">Halaman ini tertutup untuk umum.</p>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto pb-8 px-2">
+          <Reveal y={20} duration={1.2}>
+          <div className="vintage-form-card relative">
+            {/* Corner ornaments */}
+            <div className="vintage-corner vintage-corner-tl" />
+            <div className="vintage-corner vintage-corner-tr" />
+            <div className="vintage-corner vintage-corner-bl" />
+            <div className="vintage-corner vintage-corner-br" />
+
+            {/* Inner header */}
+            <div className="text-center mb-7">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-6 h-[0.5px] bg-[#7c6a50]/20" />
+                <Mail size={16} className="text-[#9b8a6e]/50" />
+                <div className="w-6 h-[0.5px] bg-[#7c6a50]/20" />
+              </div>
+              <p className="cinzel-font text-[10px] uppercase tracking-[0.4em] text-[#7c6a50]/45 font-semibold">Tulis Pesan Anda</p>
+            </div>
+
+            <div className="space-y-5">
+              {/* Name field */}
+              <div className="space-y-2">
+                <label className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/50 font-semibold flex items-center gap-2">
+                  <User size={12} />
+                  Nama Tamu
+                </label>
+                <input
+                  type="text"
+                  value={displayName}
+                  readOnly
+                  className="vintage-input cursor-not-allowed opacity-70"
+                />
+              </div>
+
+              {/* Message field */}
+              <div className="space-y-2">
+                <label className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/50 font-semibold flex items-center gap-2">
+                  <BookOpen size={12} />
+                  Ucapan & Doa
+                </label>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="vintage-input resize-none min-h-[110px]"
+                  placeholder="Tulis doa dan harapan terbaik..."
+                  required
+                />
+              </div>
+
+              {/* Attendance field */}
+              <div className="space-y-2">
+                <label className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/50 font-semibold flex items-center gap-2">
+                  <Heart size={12} />
+                  Konfirmasi Kehadiran
+                </label>
+                <div className="flex gap-2">
+                  {(['Hadir', 'Tidak Hadir', 'Masih Ragu'] as const).map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setStatus(opt)}
+                      className={cn(
+                        "flex-1 py-2.5 rounded-[5px] cinzel-font text-[9px] tracking-wider uppercase border transition-all duration-300",
+                        status === opt
+                          ? "bg-[#50593f] text-[#f5ece0] border-[#50593f] shadow-md"
+                          : "bg-transparent text-[#7c6a50]/50 border-[#7c6a50]/15 hover:border-[#7c6a50]/30"
+                      )}
+                    >
+                      {opt === 'Tidak Hadir' ? 'Absen' : opt === 'Masih Ragu' ? 'Ragu' : opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Submit button */}
+            <div className="pt-7">
+              <motion.button
+                disabled={isSubmitting || !displayName}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.97 }}
+                className={cn(
+                  "w-full py-3.5 bg-[#50593f] text-[#f5ece0] rounded-[5px] cinzel-font text-[10px] tracking-[0.3em] uppercase shadow-lg shadow-[#50593f]/20 hover:shadow-[#50593f]/30 transition-all flex items-center justify-center gap-2.5 border border-[#3D4238]",
+                  (isSubmitting || !displayName) && "opacity-40 cursor-not-allowed"
+                )}
+              >
+                {isSubmitting ? (
+                  <div className="w-4 h-4 border-2 border-[#f5ece0]/30 border-t-[#f5ece0] rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <Send size={12} className="-rotate-12" />
+                    <span>Kirim Ucapan</span>
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+          </Reveal>
+        </form>
+      )}
+
+      {/* Vintage Feed Header */}
+      <div className="text-center pt-8 pb-4 px-4">
+        <Reveal>
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-8 h-[0.5px] bg-[#7c6a50]/20" />
+            <p className="cinzel-font text-[9px] uppercase tracking-[0.4em] text-[#7c6a50]/45 font-semibold">Pesan dari Tamu</p>
+            <div className="w-8 h-[0.5px] bg-[#7c6a50]/20" />
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Wishes Count */}
+      {!isLoading && wishes.length > 0 && (
+        <Reveal y={5}>
+          <div className="text-center pb-4">
+            <p className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/35 font-medium">
+              {wishes.length} Ucapan & Doa
+            </p>
+          </div>
+        </Reveal>
+      )}
+
+      {/* Vintage Wishes Feed */}
+      <div className="px-2 md:px-4">
+        {isLoading ? (
+          <div className="py-16 text-center space-y-3">
+            <div className="w-8 h-8 border-2 border-[#7c6a50]/15 border-t-[#7c6a50]/50 rounded-full animate-spin mx-auto" />
+            <p className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/35">Memuat...</p>
+          </div>
+        ) : wishes.length === 0 ? (
+          <div className="py-16 text-center opacity-35">
+            <BookOpen className="mx-auto mb-3 text-[#7c6a50]" size={24} />
+            <p className="serif-font italic text-[13px] text-[#7c6a50]">Jadilah yang pertama memberikan doa.</p>
+          </div>
+        ) : (
+          <>
+            <div className="max-w-md mx-auto space-y-3">
+              <AnimatePresence mode="popLayout">
+                {paginatedWishes.map((wish, idx) => (
+                  <motion.div
+                    key={wish.id}
+                    layout
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ delay: idx * 0.05 }}
+                  >
+                    <div className="vintage-wish-card">
+                      {/* Left vintage initial */}
+                      <div className="flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-[#ebe1cf] border border-[#7c6a50]/10 flex items-center justify-center">
+                          <span className="italiana-font text-lg text-[#7c6a50]/70">{wish.name.charAt(0).toUpperCase()}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h4 className="cinzel-font text-[12px] font-semibold text-[#5b4636] truncate">{wish.name}</h4>
+                          <span className="cinzel-font text-[8px] text-[#7c6a50]/30 tracking-wider whitespace-nowrap flex-shrink-0">
+                            {wish.timestamp.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                          </span>
+                        </div>
+                        <p className="serif-font text-[#5b4636]/70 text-[13px] leading-relaxed mt-1.5 italic">
+                          "{wish.message}"
+                        </p>
+
+                        {wish.reply && (
+                          <div className="mt-3 pt-3 border-t border-dashed border-[#7c6a50]/10 pl-3 border-l border-l-[#9b8a6e]/20">
+                            <p className="cinzel-font text-[8px] uppercase tracking-[0.25em] text-[#9b8a6e]/60 mb-0.5">Balasan Mempelai</p>
+                            <p className="serif-font text-[#5b4636]/55 italic text-[12px] leading-relaxed">{wish.reply}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Vintage Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-1.5 pt-6 pb-2">
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className={cn(
+                    "w-8 h-8 rounded-[5px] border flex items-center justify-center cinzel-font text-[10px] transition-all",
+                    currentPage === 1 ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
+                  )}
+                >‹</button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={cn(
+                      "w-8 h-8 rounded-[5px] flex items-center justify-center cinzel-font text-[10px] transition-all",
+                      currentPage === page
+                        ? "bg-[#50593f] text-[#f5ece0] shadow-md"
+                        : "border border-[#7c6a50]/10 text-[#7c6a50]/40 hover:border-[#7c6a50]/25"
+                    )}
+                  >{page}</button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className={cn(
+                    "w-8 h-8 rounded-[5px] border flex items-center justify-center cinzel-font text-[10px] transition-all",
+                    currentPage === totalPages ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
+                  )}
+                >›</button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GalleryItem = ({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.8,
+        delay: (index % 6) * 0.1,
+        ease: "easeOut"
+      }}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={cn(
+        "relative overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        className
+      )}
+    >
+      <motion.div
+        className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
+      />
+      <motion.img
+        layoutId={`image-${index}`}
+        src={WEDDING_CONFIG.galleryImages[index]}
+        alt={`Gallery ${index + 1}`}
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        loading="lazy"
+      />
+
+      {/* Subtle Overlay Label */}
+      <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+        <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/60 px-3 py-1 rounded-full">
+          Moment {index + 1}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+
+const CustomCursor = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsMobile(isMobileDevice);
+    if (isMobileDevice) return;
+
+    const updatePosition = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+
+      const target = e.target as HTMLElement;
+      setIsHovering(!!target.closest('button, a, input, select, textarea, .cursor-pointer'));
+    };
+
+    window.addEventListener('mousemove', updatePosition);
+    return () => window.removeEventListener('mousemove', updatePosition);
+  }, []);
+
+  if (isMobile) return null;
+
+  return (
+    <>
+      <motion.div
+        animate={{
+          x: position.x - 20,
+          y: position.y - 20,
+          scale: isHovering ? 1.5 : 1,
+          opacity: 1
+        }}
+        transition={{ type: "spring", damping: 30, stiffness: 200, mass: 0.5 }}
+        className="fixed top-0 left-0 w-10 h-10 border border-primary/20 rounded-full z-[9999] pointer-events-none mix-blend-difference"
+      />
+      <motion.div
+        animate={{
+          x: position.x - 4,
+          y: position.y - 4,
+          scale: isHovering ? 0 : 1
+        }}
+        transition={{ type: "spring", damping: 40, stiffness: 350 }}
+        className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full z-[10000] pointer-events-none"
+      />
+    </>
+  );
+};
+
+// --- Main App ---
+
 
 const Countdown = ({ targetDate, className }: { targetDate: string; className?: string }) => {
   const [timeLeft, setTimeLeft] = useState({
@@ -90,9 +733,14 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
             >
               {String(item.value).padStart(2, '0')}
             </motion.div>
-            <div className="outfit-font text-[7.5px] md:text-[9px] font-bold tracking-[0.25em] text-[#7c6d52]/60 mt-1.5 uppercase">
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="outfit-font text-[7.5px] md:text-[9px] font-bold tracking-[0.25em] text-[#7c6d52]/60 mt-1.5 uppercase"
+            >
               {item.label}
-            </div>
+            </motion.div>
           </div>
           {i < items.length - 1 && (
             <div className="h-8 md:h-10 w-[0.5px] bg-[#7c6d52]/20 mt-[-10px]" />
@@ -346,23 +994,25 @@ const App = () => {
       </AnimatePresence>
 
       {/* Main Content Wrapper */}
-      <div className="relative w-full h-screen bg-[#F9F8F4] flex flex-col lg:flex-row overflow-hidden">
+      <div className="relative w-full min-h-screen bg-[#F9F8F4] flex flex-col lg:flex-row">
         {/* Desktop Left Side (Fixed) */}
         {isOpen && (
-          <aside className="hidden lg:block lg:flex-1 h-full overflow-hidden bg-primary relative">
+          <aside className="hidden lg:block lg:w-[35%] lg:sticky lg:top-0 lg:h-screen overflow-hidden bg-primary relative">
             <DesktopSidebar guestName={guestName} />
           </aside>
         )}
 
         {/* Main Content (Scrollable) */}
         <main className={cn(
-          "relative bg-neutral shadow-2xl h-full overflow-y-auto overflow-x-hidden custom-scrollbar transition-all",
-          isOpen ? "w-full lg:flex-none border-l border-black/5" : "w-full max-w-[500px] mx-auto"
+          "relative bg-neutral shadow-2xl min-h-screen transition-all",
+          isOpen ? "w-full lg:w-[65%] lg:flex-none border-l border-black/5" : "w-full max-w-[500px] mx-auto"
         )}>
           <div className="absolute inset-0 bg-texture opacity-20 pointer-events-none" />
 
           {/* Hero Section */}
-          <section id="hero" className="relative h-screen flex items-center justify-center px-4 overflow-hidden bg-[#F9F8F4]">
+          {isOpen && (
+            <>
+              <section id="hero" className="relative h-screen flex items-center justify-center px-4 overflow-hidden bg-[#F9F8F4]">
             <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-0" />
             <div className="absolute top-0 left-0 w-[28%] max-w-[220px] pointer-events-none opacity-90">
               <img src={WEDDING_CONFIG.daunAtas} alt="Botanical Top Left" className="w-full h-full object-contain" />
@@ -395,7 +1045,7 @@ const App = () => {
             <div className="relative z-10 flex flex-col items-start justify-center w-full h-full max-w-5xl mx-auto px-6 md:px-16 pt-16 pb-28 md:py-24 text-left">
               <Reveal delay={0.2} y={15} duration={1.5}>
                 <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.5em] text-[#50593f] font-semibold mb-4 drop-shadow-sm">
-                  THE WEDDING OF
+                  PERNIKAHAN
                 </p>
               </Reveal>
 
@@ -456,7 +1106,7 @@ const App = () => {
                       };
                       window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                     }}
-                    className="btn-primary inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 rounded-full"
+                    className="btn-primary inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4"
                   >
                     <Calendar size={16} />
                     <span className="tracking-widest text-xs md:text-sm font-medium">SIMPAN KE KALENDER</span>
@@ -737,15 +1387,24 @@ const App = () => {
 
             <Reveal y={30}>
               <div className="text-center space-y-4 mb-16 relative z-10">
-                <p className="outfit-font text-[10px] uppercase tracking-[0.6em] text-primary/40 font-bold">Save the Date</p>
-                <h2 className="italiana-font text-4xl text-primary">Waktu & Tempat</h2>
-                <div className="h-[1px] w-12 bg-primary/20 mx-auto mt-4" />
+                <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Simpan Tanggalnya</p>
+                <div className="flex items-center justify-center gap-4">
+                  <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
+                  <Calendar size={14} className="text-[#c6b793]/60" />
+                  <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
+                </div>
+                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Waktu & Tempat</h2>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                  <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
+                  <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                </div>
               </div>
             </Reveal>
 
             <div className="max-w-3xl mx-auto relative z-10">
               <Reveal y={50}>
-                <div className="relative rounded-[25px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
+                <div className="relative rounded-[5px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 z-0">
                     <motion.img
@@ -767,9 +1426,9 @@ const App = () => {
 
                       <Reveal delay={0.4} scale={0.9} duration={1.5}>
                         <div className="flex items-center justify-center gap-6">
-                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">August</p>
+                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">Agustus</p>
                           <div className="flex flex-col items-center border-x border-white/20 px-6">
-                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Sun</p>
+                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Minggu</p>
                             <p className="cinzel-font text-3xl font-bold border-b-2 border-gold/60 pb-1">02</p>
                           </div>
                           <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">2026</p>
@@ -797,9 +1456,9 @@ const App = () => {
 
                       <Reveal delay={0.5} scale={0.9} duration={1.5}>
                         <div className="flex items-center justify-center gap-6">
-                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">August</p>
+                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">Agustus</p>
                           <div className="flex flex-col items-center border-x border-white/20 px-6">
-                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Sun</p>
+                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Minggu</p>
                             <p className="cinzel-font text-3xl font-bold border-b-2 border-gold/60 pb-1">02</p>
                           </div>
                           <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">2026</p>
@@ -827,7 +1486,7 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
                           <MapPin size={14} className="opacity-60" />
                           Peta Lokasi
@@ -837,7 +1496,7 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,0,0,0.1)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
                           <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
                           Live Streaming
@@ -860,14 +1519,18 @@ const App = () => {
             <Reveal y={30}>
               <div className="relative z-10 max-w-3xl mx-auto space-y-8">
                 <div className="space-y-4">
-                  <h2 className="italiana-font text-4xl text-neutral drop-shadow-sm">Dresscode</h2>
-                  <div className="flex items-center justify-center gap-4 opacity-40">
-                    <div className="h-[0.5px] w-8 bg-neutral" />
-                    <p className="outfit-font text-[9px] uppercase tracking-[0.4em] text-neutral/90 whitespace-nowrap">
-                      Suggested Color Palette
-                    </p>
-                    <div className="h-[0.5px] w-8 bg-neutral" />
-                  </div>
+                  <Reveal y={20}>
+                    <h2 className="italiana-font text-4xl text-neutral drop-shadow-sm">Dresscode</h2>
+                  </Reveal>
+                  <Reveal delay={0.2} y={15}>
+                    <div className="flex items-center justify-center gap-4 opacity-40">
+                      <div className="h-[0.5px] w-8 bg-neutral" />
+                      <p className="outfit-font text-[9px] uppercase tracking-[0.4em] text-neutral/90 whitespace-nowrap">
+                        Palet Warna yang Disarankan
+                      </p>
+                      <div className="h-[0.5px] w-8 bg-neutral" />
+                    </div>
+                  </Reveal>
                 </div>
 
                 <div className="grid grid-cols-2 gap-y-10 gap-x-12 max-w-[280px] mx-auto place-items-center">
@@ -903,9 +1566,11 @@ const App = () => {
                   ))}
                 </div>
 
-                <p className="serif-font text-sm italic text-neutral/60 pt-4 leading-relaxed max-w-sm mx-auto">
-                  "Khadirannya akan sangat melengkapi keindahan momen bahagia kami."
-                </p>
+                <Reveal delay={0.6} y={10}>
+                  <p className="serif-font text-sm italic text-neutral/60 pt-4 leading-relaxed max-w-sm mx-auto">
+                    "Khadirannya akan sangat melengkapi keindahan momen bahagia kami."
+                  </p>
+                </Reveal>
               </div>
             </Reveal>
           </section>
@@ -936,9 +1601,18 @@ const App = () => {
             <div className="relative z-10 max-w-2xl mx-auto">
               <Reveal>
                 <div className="text-center space-y-4 mb-16">
-                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">The Journey</p>
-                  <h2 className="italiana-font text-4xl md:text-5xl text-white drop-shadow-md">Our Love Story</h2>
-                  <div className="h-[1px] w-12 bg-[#c6b793] mx-auto mt-4" />
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Perjalanan Cinta Kami</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
+                    <Sparkles size={14} className="text-[#c6b793]/60" />
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
+                  </div>
+                  <h2 className="italiana-font text-4xl md:text-5xl text-white drop-shadow-md">Kisah Cinta Kami</h2>
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                    <Heart size={10} className="text-[#c6b793]" />
+                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                  </div>
                 </div>
               </Reveal>
 
@@ -994,11 +1668,16 @@ const App = () => {
 
             <Reveal y={30}>
               <div className="text-center space-y-4 mb-16 relative z-10">
-                <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Capturing</p>
-                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Our Moments</h2>
-                <div className="flex items-center justify-center gap-3 mt-4">
+                <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Mengabadikan</p>
+                <div className="flex items-center justify-center gap-4">
+                  <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
+                  <Camera size={14} className="text-[#c6b793]/60" />
+                  <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
+                </div>
+                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Momen Indah Kami</h2>
+                <div className="flex items-center justify-center gap-3">
                   <div className="h-[1px] w-8 bg-[#c6b793]/40" />
-                  <Heart size={10} className="text-[#c6b793]" />
+                  <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
                   <div className="h-[1px] w-8 bg-[#c6b793]/40" />
                 </div>
               </div>
@@ -1064,28 +1743,38 @@ const App = () => {
           </section>
 
           {/* Wedding Gift Section */}
-          <section className="py-20 px-8 text-center bg-neutral relative overflow-hidden">
-            {/* Floral Background Ornaments */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-multiply">
+          <section className="py-20 px-8 text-center bg-[#50593f] relative overflow-hidden">
+            {/* Texture and Pattern Ornaments */}
+            <div className="absolute inset-0 bg-texture opacity-[0.2] pointer-events-none z-0" />
+            <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-screen z-[1]">
+              <img src="/images/paper-fibers.png" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay z-[2]">
               <img src={WEDDING_CONFIG.floralBg} alt="" className="w-full h-full object-cover" />
             </div>
 
             <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-              <Reveal delay={0.2} scale={0.8} duration={1.5}>
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <Gift className="mx-auto mb-2 text-gold/60" size={40} />
-                </motion.div>
-              </Reveal>
+
 
               <Reveal delay={0.4} y={20} duration={1.5}>
-                <h2 className="italiana-font text-4xl mb-4 md:mb-6 text-primary">Wedding Gift</h2>
+                <div className="text-center space-y-4 mb-10 relative z-10">
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Wedding Gift</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
+                    <Gift size={16} className="text-[#c6b793]/60" />
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
+                  </div>
+                  <h2 className="italiana-font text-4xl text-[#f7f1e6] drop-shadow-sm">Kado Pernikahan</h2>
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                    <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
+                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                  </div>
+                </div>
               </Reveal>
 
               <Reveal delay={0.6} y={15} duration={1.5}>
-                <p className="sans-font text-[11px] text-primary/60 mb-10 md:mb-12 leading-relaxed italic px-2 max-w-lg mx-auto">
+                <p className="sans-font text-[11px] text-white/70 mb-10 md:mb-12 leading-relaxed italic px-2 max-w-lg mx-auto">
                   Apabila Bapak/Ibu/Saudara/i ingin mengirimkan hadiah tanda kasih, dapat melalui tautan di bawah ini.
                 </p>
               </Reveal>
@@ -1096,22 +1785,53 @@ const App = () => {
             </div>
           </section>
 
-          {/* Guestbook Section */}
-          <section id="wishes" className="py-16 px-3 md:px-8 bg-neutral relative">
-            <Reveal>
-              <div className="text-center space-y-3 mb-12 md:mb-16">
-                <motion.div
-                  animate={{ scale: [1, 1.15, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <MessageSquare className="mx-auto text-secondary" size={36} />
-                </motion.div>
-                <h2 className="italiana-font text-3xl text-primary tracking-wide">Guestbook</h2>
-                <p className="text-xs text-primary/60 serif-font italic">Berikan ucapan terbaik untuk kedua mempelai.</p>
-              </div>
-            </Reveal>
+          {/* Guestbook Section — Vintage Parchment */}
+          <section id="wishes" className="relative overflow-hidden">
+            {/* Aged parchment background */}
+            <div className="absolute inset-0 bg-[#f7f6f3] z-0" />
+            <div className="absolute inset-0 pointer-events-none z-[1] opacity-15 overflow-hidden scale-110">
+              <img src="/images/flower-tema-31.webp" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-[2]" />
+            <div className="absolute inset-0 pointer-events-none z-[3]" style={{ boxShadow: 'inset 0 0 80px rgba(91,70,54,0.05)' }} />
 
-            <Guestbook guestName={guestName} />
+            {/* Section Header */}
+            <div className="relative z-10 pt-20 pb-8 px-6">
+              <Reveal y={20} duration={1.5}>
+                <div className="text-center space-y-6 max-w-sm mx-auto">
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#50593f]/50 font-bold">Wedding Wishes</p>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#50593f]/15" />
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Heart size={12} className="text-[#94a27c]/40" />
+                    </motion.div>
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#50593f]/15" />
+                  </div>
+
+                  <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238] leading-tight">
+                    Ucapan & Doa
+                  </h2>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#50593f]/15" />
+                    <div className="w-1.5 h-1.5 rotate-45 border border-[#94a27c]/30" />
+                    <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#50593f]/15" />
+                  </div>
+
+                  <p className="serif-font italic text-[13px] text-[#50593f]/45 leading-relaxed">
+                    Berikan doa dan harapan terbaik untuk kami berdua
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+
+            <div className="relative z-10 px-3 md:px-6 pb-20">
+              <Guestbook guestName={guestName} />
+            </div>
           </section>
 
           {/* Prayer Section */}
@@ -1159,55 +1879,87 @@ const App = () => {
           </section>
 
           {/* Closing Section */}
-          <section className="py-24 px-8 text-center space-y-12 bg-neutral relative overflow-hidden">
-            {/* Layered Background Patterns */}
-            <div className="absolute inset-0 bg-texture opacity-10 pointer-events-none" />
-            <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-multiply">
+          <section className="py-28 px-8 text-center bg-[#fdfbf7] relative overflow-hidden">
+            {/* Elegant Background Elements */}
+            <div className="absolute inset-0 bg-texture opacity-[0.12] pointer-events-none z-0" />
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply z-[1]">
               <img src={WEDDING_CONFIG.floralBg} alt="" className="w-full h-full object-cover" />
             </div>
 
-            <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 text-primary opacity-[0.03]" rotate={-45} parallaxSpeed={-0.3} />
-            <LeafOrnament className="absolute -top-20 -right-20 w-80 h-80 text-primary opacity-[0.03]" rotate={135} parallaxSpeed={0.5} />
+            {/* Premium Botanical Ornaments */}
+            <div className="absolute -top-10 -left-10 w-64 h-64 opacity-[0.08] pointer-events-none z-[1] rotate-[-15deg]">
+              <img src="/images/flower-tema-31.webp" alt="" className="w-full h-full object-contain" />
+            </div>
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 opacity-[0.08] pointer-events-none z-[1] rotate-[165deg]">
+              <img src="/images/flower-tema-31.webp" alt="" className="w-full h-full object-contain" />
+            </div>
 
-            <div className="relative z-10 max-w-2xl mx-auto space-y-12">
-              <Reveal delay={0.2} y={20} duration={1.8}>
+            <div className="relative z-10 max-w-2xl mx-auto space-y-16">
+              {/* Closing Message */}
+              <Reveal delay={0.2} y={30} duration={1.5}>
                 <div className="space-y-6">
-                  <p className="serif-font text-sm italic leading-relaxed text-primary/80 px-2 max-w-md mx-auto">
+                  <div className="flex items-center justify-center gap-4 mb-4">
+                    <div className="w-12 h-[0.5px] bg-[#c6b793]/40" />
+                    <Heart size={14} className="text-[#c6b793]/60" />
+                    <div className="w-12 h-[0.5px] bg-[#c6b793]/40" />
+                  </div>
+                  <p className="serif-font text-[14px] md:text-base italic leading-[2] text-[#50593f]/80 px-4 max-w-lg mx-auto">
                     "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu."
+                  </p>
+                  <p className="serif-font text-base font-bold italic text-[#50593f]/90 pt-4">
+                    Wassalamu'alaikum Wr. Wb.
                   </p>
                 </div>
               </Reveal>
 
-              <div className="space-y-8">
-                <Reveal delay={0.6} y={15} duration={1.5}>
-                  <p className="outfit-font text-[12px] uppercase tracking-[0.6em] text-gold font-bold">Terima Kasih</p>
-                </Reveal>
-                <Reveal delay={0.8} scale={0.9} duration={2}>
-                  <h2 className="italiana-font text-5xl text-primary drop-shadow-sm">Ayu & Rudi</h2>
-                </Reveal>
-              </div>
-
-              {/* Refined Circular Couple Photo */}
-              <Reveal delay={1.2} scale={0.8} duration={1.5}>
-                <div className="flex justify-center">
-                  <div className="relative w-48 h-48 rounded-full p-[1px] bg-primary/20 shadow-2xl overflow-hidden group">
-                    <div className="w-full h-full rounded-full overflow-hidden border-[1px] border-primary/20">
+              {/* Circle Couple Photo */}
+              <Reveal delay={0.6} y={30} duration={1.8}>
+                <div className="flex justify-center -mt-4 mb-4">
+                  <div className="relative w-[280px] h-[280px] md:w-[350px] md:h-[350px] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
+                    <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                       <img
                         src="/images/couple.jpg"
                         alt="Ayu & Rudi"
-                        className="w-full h-full object-cover scale-[1.05] group-hover:scale-110 transition-transform duration-1000"
-                        style={{ objectPosition: 'center 35%' }}
+                        className="w-full h-full object-cover scale-[1.05] group-hover:scale-110 transition-transform duration-[4s] ease-out"
+                        style={{ objectPosition: 'center 20%' }}
                       />
                     </div>
+                    {/* Elegant Floating Ornament */}
+                    <motion.div 
+                      animate={{ 
+                        y: [0, -10, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute -top-2 -right-2 w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-xl z-20"
+                    >
+                      <Heart size={20} className="text-[#c6b793]" fill="#c6b793" fillOpacity={0.2} />
+                    </motion.div>
                   </div>
                 </div>
               </Reveal>
 
-              <Reveal delay={1.6} y={10} duration={1.5}>
-                <div className="space-y-12 pt-6">
-                  <p className="serif-font text-base font-bold italic text-primary/80">Wassalamu'alaikum Wr. Wb.</p>
-                </div>
-              </Reveal>
+              {/* Thank You Section / Signature */}
+              <div className="space-y-8">
+                <Reveal delay={1} y={15} duration={1.5}>
+                  <div className="flex flex-col items-center gap-3">
+                    <p className="outfit-font text-[10px] uppercase tracking-[0.6em] text-[#A68A4D] font-bold">Kami Yang Berbahagia</p>
+                    <div className="w-8 h-[0.5px] bg-[#c6b793]/30" />
+                  </div>
+                </Reveal>
+                
+                <Reveal delay={1.3} scale={0.98} duration={2}>
+                  <div className="relative inline-block px-4">
+                    <h2 className="italiana-font text-[2.8rem] md:text-[3.5rem] text-[#3D4238] drop-shadow-sm">Ayu & Rudi</h2>
+                    {/* Delicate under-text ornament */}
+                    <div className="flex items-center justify-center gap-4 mt-4 opacity-40">
+                      <div className="h-[0.5px] flex-1 bg-gradient-to-r from-transparent to-[#c6b793]" />
+                      <div className="w-1 h-1 rounded-full bg-[#c6b793]" />
+                      <div className="h-[0.5px] flex-1 bg-gradient-to-l from-transparent to-[#c6b793]" />
+                    </div>
+                  </div>
+                </Reveal>
+              </div>
             </div>
           </section>
 
@@ -1216,7 +1968,7 @@ const App = () => {
             <Reveal delay={0.2} y={15} duration={1.5}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold">Created with Love by</p>
+                  <p className="text-[10px] uppercase tracking-[0.4em] font-bold">Dibuat dengan Cinta oleh</p>
                   <p className="italiana-font text-xl text-secondary mt-2">IT Palugada</p>
                   <motion.a
                     href={`https://wa.me/${WEDDING_CONFIG.whatsappContact}`}
@@ -1228,10 +1980,14 @@ const App = () => {
                     {WEDDING_CONFIG.whatsappContactDisplay}
                   </motion.a>
                 </div>
-                <p className="text-[8px] uppercase tracking-widest pt-4">© 2026 IT PALUGADA. All rights reserved.</p>
+                <Reveal delay={0.4} y={10}>
+                  <p className="text-[8px] uppercase tracking-widest pt-4">© 2026 IT PALUGADA. All rights reserved.</p>
+                </Reveal>
               </div>
             </Reveal>
           </footer>
+          </>
+          )}
         </main>
       </div>
 
@@ -1276,661 +2032,9 @@ const App = () => {
   );
 };
 
-// --- Sub-components ---
 
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    setIsMobile(isMobileDevice);
-    if (isMobileDevice) return;
 
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
 
-      const target = e.target as HTMLElement;
-      setIsHovering(!!target.closest('button, a, input, select, textarea, .cursor-pointer'));
-    };
-
-    window.addEventListener('mousemove', updatePosition);
-    return () => window.removeEventListener('mousemove', updatePosition);
-  }, []);
-
-  if (isMobile) return null;
-
-  return (
-    <>
-      <motion.div
-        animate={{
-          x: position.x - 20,
-          y: position.y - 20,
-          scale: isHovering ? 1.5 : 1,
-          opacity: 1
-        }}
-        transition={{ type: "spring", damping: 30, stiffness: 200, mass: 0.5 }}
-        className="fixed top-0 left-0 w-10 h-10 border border-primary/20 rounded-full z-[9999] pointer-events-none mix-blend-difference"
-      />
-      <motion.div
-        animate={{
-          x: position.x - 4,
-          y: position.y - 4,
-          scale: isHovering ? 0 : 1
-        }}
-        transition={{ type: "spring", damping: 40, stiffness: 350 }}
-        className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full z-[10000] pointer-events-none"
-      />
-    </>
-  );
-};
-
-const GalleryItem = ({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.8,
-        delay: (index % 6) * 0.1,
-        ease: "easeOut"
-      }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className={cn(
-        "relative overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
-        className
-      )}
-    >
-      <motion.div
-        className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
-      />
-      <motion.img
-        layoutId={`image-${index}`}
-        src={WEDDING_CONFIG.galleryImages[index]}
-        alt={`Gallery ${index + 1}`}
-        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-        loading="lazy"
-      />
-
-      {/* Subtle Overlay Label */}
-      <div className="absolute bottom-4 left-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-        <p className="outfit-font text-[8px] uppercase tracking-[0.3em] text-white font-bold bg-black/60 px-3 py-1 rounded-full">
-          Moment {index + 1}
-        </p>
-      </div>
-    </motion.div>
-  );
-};
-
-const GiftModal = () => {
-  const [show, setShow] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <>
-      <motion.button
-        whileHover={{ scale: 1.05, y: -2 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShow(true)}
-        className="px-10 py-5 bg-primary text-neutral rounded-full font-bold text-[12px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
-      >
-        <Gift size={16} />
-        KIRIM HADIAH
-      </motion.button>
-
-      {createPortal(
-        <AnimatePresence>
-          {show && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[5000] bg-black/60 backdrop-blur-[20px] flex items-center justify-center p-4 sm:p-6"
-            >
-              <motion.div
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 80, opacity: 0 }}
-                className="bg-[#FDFBF7] w-full max-w-[400px] max-h-[85vh] rounded-[30px] relative text-primary shadow-2xl overflow-hidden flex flex-col border border-white/40"
-              >
-                {/* Absolute Header Area */}
-                <div className="absolute top-5 right-5 z-50">
-                  <button
-                    onClick={() => setShow(false)}
-                    className="w-10 h-10 bg-neutral/90 backdrop-blur-md border border-black/5 rounded-full flex items-center justify-center shadow-lg hover:bg-white active:scale-90 transition-all pointer-events-auto"
-                  >
-                    <X size={20} className="text-primary/70" />
-                  </button>
-                </div>
-
-                {/* Internal Scroll Area */}
-                <div className="overflow-y-auto w-full pt-16 pb-12 px-6 sm:px-10 custom-scrollbar">
-                  <div className="text-center mb-8">
-                    <h3 className="italiana-font text-3xl md:text-4xl text-primary mb-3">Wedding Gift</h3>
-                    <div className="h-[1px] w-10 bg-primary/20 mx-auto" />
-                  </div>
-
-                  <div className="space-y-6">
-                    {/* BCA Blue Debit Card */}
-                    <div className="relative aspect-[1.586/1] w-full rounded-[20px] p-6 text-white shadow-[0_20px_40px_-15px_rgba(0,82,156,0.6)] overflow-hidden border border-white/20 select-none bg-gradient-to-br from-[#1b64a6] via-[#00529C] to-[#013366]">
-                      {/* Gloss / Card Texture Overlay */}
-                      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-
-                      {/* Light reflection effect */}
-                      <div className="absolute top-0 right-[-30%] w-[150%] h-[150%] bg-gradient-to-bl from-white/10 via-transparent to-transparent rotate-[35deg] pointer-events-none" />
-
-                      <div className="relative z-10 h-full flex flex-col justify-between">
-                        {/* Top bar: Bank Logo & Debit Text */}
-                        <div className="flex justify-between items-start">
-                          <img src="/images/bca.png" alt="BCA" className="h-[22px] w-auto brightness-0 invert opacity-90" />
-                          <div className="bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-md text-[8px] font-bold tracking-[0.25em] outfit-font text-white uppercase shadow-sm">DEBIT</div>
-                        </div>
-
-                        {/* Microchip */}
-                        <div className="w-12 h-9 bg-gradient-to-br from-[#ffd700] via-[#eedd82] to-[#b8860b] rounded-[6px] shadow-sm border border-black/10 relative overflow-hidden flex flex-col justify-between p-[3px]">
-                          {/* Chip internal lines */}
-                          <div className="absolute inset-0 opacity-40">
-                            <div className="w-full h-full border-[0.5px] border-black/40 rounded-[4px]" />
-                            <div className="absolute top-1/2 left-0 w-full h-[0.5px] bg-black/40" />
-                            <div className="absolute top-0 left-1/2 w-[0.5px] h-full bg-black/40" />
-                            <div className="absolute top-1/4 left-0 w-full h-[0.5px] bg-black/40" />
-                            <div className="absolute bottom-1/4 left-0 w-full h-[0.5px] bg-black/40" />
-                          </div>
-                        </div>
-
-                        {/* Card Numbers & Bottom Bar */}
-                        <div className="space-y-3">
-                          <p className="text-[1.35rem] sm:text-[1.6rem] font-medium tracking-[0.25em] text-white/95 drop-shadow-md font-mono" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
-                            {WEDDING_CONFIG.bankAccount}
-                          </p>
-
-                          <div className="flex justify-between items-end">
-                            <p className="text-[12px] sm:text-[14px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
-                              {WEDDING_CONFIG.bankAccountName}
-                            </p>
-
-                            {/* Mastercard style circles */}
-                            <div className="flex -space-x-3 opacity-60">
-                              <div className="w-8 h-8 rounded-full bg-[#EB001B] mix-blend-screen" />
-                              <div className="w-8 h-8 rounded-full bg-[#F79E1B] mix-blend-screen" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Primary Color Copy Button */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
-                      className="w-full bg-primary hover:bg-primary/90 text-neutral py-[18px] rounded-full flex items-center justify-center gap-3 shadow-xl shadow-primary/20 outfit-font text-[10px] font-bold tracking-[0.3em] uppercase transition-all border border-black/5"
-                    >
-                      <Copy size={16} />
-                      {copied ? 'BERHASIL DISALIN' : 'SALIN NO REKENING'}
-                    </motion.button>
-
-                    {/* Physical Gift Section */}
-                    <div className="bg-[#EFEDE7] rounded-[25px] p-7 space-y-5 border border-black/5">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md text-primary">
-                          <Gift size={22} />
-                        </div>
-                        <p className="font-bold text-sm tracking-tight text-primary outfit-font">Kirim Hadiah Fisik</p>
-                      </div>
-                      <div className="pl-1 space-y-2">
-                        <p className="text-[12px] leading-6 text-primary/70 outfit-font italic font-medium">
-                          {WEDDING_CONFIG.physicalGiftAddress}
-                        </p>
-                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] pt-2">
-                          (Penerima: {WEDDING_CONFIG.bankAccountName})
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
-    </>
-  );
-};
-
-const WISHES_PER_PAGE = 5;
-
-const Guestbook = ({ guestName }: { guestName: string }) => {
-  const [wishes, setWishes] = useState<Wish[]>([]);
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState<'Hadir' | 'Tidak Hadir' | 'Masih Ragu'>('Hadir');
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const displayName = guestName !== 'Tamu Undangan' ? guestName : '';
-
-  useEffect(() => {
-    fetchWishes();
-  }, []);
-
-  const fetchWishes = async () => {
-    try {
-      setIsLoading(true);
-      const { data, error } = await supabase
-        .from('wishes')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      if (data) {
-        const mappedWishes: Wish[] = data.map(item => ({
-          id: item.id,
-          name: item.name,
-          message: item.message,
-          status: item.status,
-          timestamp: new Date(item.created_at),
-          reply: item.reply
-        }));
-        setWishes(mappedWishes);
-      }
-    } catch (err) {
-      console.error('Error fetching wishes:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!displayName || !message || isSubmitting) return;
-
-    try {
-      setIsSubmitting(true);
-      const { data, error } = await supabase
-        .from('wishes')
-        .insert([
-          {
-            name: displayName,
-            message,
-            status,
-            created_at: new Date().toISOString()
-          }
-        ])
-        .select();
-
-      if (error) throw error;
-
-      if (data && data[0]) {
-        const newWish: Wish = {
-          id: data[0].id,
-          name: data[0].name,
-          message: data[0].message,
-          status: data[0].status,
-          timestamp: new Date(data[0].created_at),
-          reply: data[0].reply
-        };
-        setWishes(prev => [newWish, ...prev]);
-        setMessage('');
-        setCurrentPage(1);
-      }
-    } catch (err) {
-      console.error('Error submitting wish:', err);
-      alert(`Gagal mengirim ucapan. Silakan coba lagi. Detail Error: ${(err as Error).message || 'Koneksi gagal/Database tidak ditemukan.'}`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const totalPages = Math.ceil(wishes.length / WISHES_PER_PAGE);
-  const paginatedWishes = wishes.slice(
-    (currentPage - 1) * WISHES_PER_PAGE,
-    currentPage * WISHES_PER_PAGE
-  );
-
-  return (
-    <div className="space-y-6 md:space-y-8">
-      {/* Elegant Minimalist Form */}
-      {/* Modern Card Form Option */}
-      {!displayName ? (
-        <div className="max-w-xl mx-auto py-10 relative z-10 px-4">
-          <div className="bg-[#fcfbf9] border border-dashed border-[#C19A5B]/50 rounded-[20px] p-8 md:p-12 text-center space-y-6 shadow-sm">
-            <div className="flex justify-center">
-              <Lock size={32} className="text-[#C19A5B] opacity-80" />
-            </div>
-            <p className="outfit-font text-[11px] md:text-sm text-primary/70 font-medium leading-[1.8] max-w-sm mx-auto">
-              Mohon maaf, fitur pengiriman ucapan hanya tersedia bagi tamu undangan yang menerima tautan khusus.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto pb-4 relative z-10 px-0 sm:px-4">
-          <div className="bg-white/95 backdrop-blur-md rounded-[25px] sm:rounded-[30px] p-6 sm:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-primary/5 space-y-8 w-full">
-
-            <div className="space-y-3 relative">
-              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2">Nama Lengkap</label>
-              <div className="bg-primary/5 rounded-[15px] px-5 py-4 border border-transparent">
-                <input
-                  type="text"
-                  value={displayName}
-                  readOnly
-                  className="w-full bg-transparent text-lg italic serif-font text-primary/80 focus:outline-none cursor-not-allowed placeholder:opacity-0"
-                  placeholder="Nama dari undangan"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2 block">Kehadiran</label>
-              <div className="flex gap-2.5">
-                {(['Hadir', 'Tidak Hadir', 'Masih Ragu'] as const).map((opt) => (
-                  <button
-                    key={opt}
-                    type="button"
-                    onClick={() => setStatus(opt)}
-                    className={cn(
-                      "flex-1 py-4 px-2 outfit-font text-[9px] rounded-[15px] transition-all font-bold uppercase tracking-[0.15em] flex items-center justify-center gap-2",
-                      status === opt
-                        ? "bg-primary text-[#FDFBF7] shadow-lg shadow-primary/20 border border-primary"
-                        : "bg-white text-primary/40 border border-primary/10 shadow-sm hover:border-primary/30"
-                    )}
-                  >
-                    <span className="text-[10px] leading-none opacity-80 mt-[1px]">
-                      {opt === 'Hadir' ? '✓' : opt === 'Tidak Hadir' ? '✕' : '?'}
-                    </span>
-                    {opt === 'Hadir' ? 'Hadir' : opt === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3 relative">
-              <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2">Ucapan & Doa Restu</label>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full bg-white border border-primary/10 rounded-[15px] px-5 py-5 text-base italic focus:outline-none focus:border-primary/40 transition-colors resize-none serif-font text-primary placeholder:text-primary/30 shadow-sm"
-                placeholder="Tuliskan pesan & doa tulus Anda..."
-                rows={3}
-                required
-              />
-            </div>
-
-            <div className="pt-2">
-              <motion.button
-                disabled={isSubmitting || !displayName}
-                whileHover={isSubmitting || !displayName ? {} : { scale: 1.02, y: -2 }}
-                whileTap={isSubmitting || !displayName ? {} : { scale: 0.98 }}
-                className={cn(
-                  "w-full py-5 bg-primary text-[#FDFBF7] rounded-full font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center justify-center gap-3",
-                  (isSubmitting || !displayName) && "opacity-50 cursor-not-allowed pointer-events-none"
-                )}
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                    Mengirim...
-                  </div>
-                ) : (
-                  <>
-                    <Send size={15} className="opacity-80" />
-                    <span className="mt-[1px]">Kirim Ucapan Terbaik</span>
-                  </>
-                )}
-              </motion.button>
-            </div>
-          </div>
-        </form>
-      )}
-
-      {/* Wishes Count */}
-      {!isLoading && wishes.length > 0 && (
-        <div className="text-center">
-          <p className="outfit-font text-[10px] uppercase tracking-[0.3em] text-primary/40 font-bold">
-            {wishes.length} Ucapan & Doa
-          </p>
-        </div>
-      )}
-
-      {/* Modern Wishes Feed */}
-      <div className="space-y-6 md:space-y-8 px-0">
-        {isLoading ? (
-          <div className="py-20 text-center space-y-4">
-            <div className="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin mx-auto" />
-            <p className="outfit-font text-[10px] uppercase tracking-[0.3em] text-primary/40 font-bold">Memuat Ucapan...</p>
-          </div>
-        ) : wishes.length === 0 ? (
-          <div className="py-20 text-center opacity-40">
-            <MessageSquare className="mx-auto mb-4" size={32} />
-            <p className="serif-font italic">Belum ada ucapan. Jadilah yang pertama memberikan doa!</p>
-          </div>
-        ) : (
-          <>
-            <AnimatePresence mode="popLayout">
-              {paginatedWishes.map((wish) => (
-                <motion.div
-                  key={wish.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="bg-white/95 backdrop-blur-md rounded-[25px] p-6 shadow-sm border border-primary/5 group relative"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center flex-shrink-0 border border-transparent">
-                      <span className="italiana-font text-2xl text-primary/60 mt-1">
-                        {wish.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-
-                    <div className="flex-1 space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <h4 className="serif-font text-xl md:text-2xl text-primary">{wish.name}</h4>
-                        <div className="flex items-center gap-2">
-                          <span className="text-primary/40 outfit-font text-[8.5px] uppercase tracking-[0.2em] mt-1">
-                            {wish.timestamp.toLocaleDateString('id-ID', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric'
-                            })}
-                          </span>
-                          <span className="w-1 h-1 bg-primary/20 rounded-full hidden sm:block mt-1" />
-                          <span className={cn(
-                            "px-2 py-1 rounded-[10px] text-[8.5px] font-bold uppercase tracking-[0.15em] outfit-font flex items-center gap-1 mt-1",
-                            wish.status === 'Hadir' ? "bg-primary/5 text-primary" :
-                              wish.status === 'Tidak Hadir' ? "bg-white border border-primary/10 text-primary/40" :
-                                "bg-white border border-primary/10 text-primary/50"
-                          )}>
-                            <span className="text-[10px] leading-none opacity-80 mt-[1px]">
-                              {wish.status === 'Hadir' ? '✓' : wish.status === 'Tidak Hadir' ? '✕' : '?'}
-                            </span>
-                            {wish.status === 'Hadir' ? 'Hadir' : wish.status === 'Tidak Hadir' ? 'Absen' : 'Ragu'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="relative pt-1">
-                        <p className="serif-font text-primary/80 italic text-base md:text-lg leading-relaxed">
-                          "{wish.message}"
-                        </p>
-                      </div>
-
-                      {/* Reply Box */}
-                      {wish.reply && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          className="mt-6 p-4 md:p-5 bg-primary/5 rounded-[15px] relative"
-                        >
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              <Heart size={10} fill="currentColor" className="text-primary/30" />
-                              <p className="outfit-font text-[8px] font-bold uppercase tracking-[0.3em] text-primary/40">Balasan Mempelai</p>
-                            </div>
-                            <p className="text-base text-primary/70 italic serif-font leading-relaxed pl-1">
-                              {wish.reply}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 pt-8">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className={cn(
-                    "w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold transition-all",
-                    currentPage === 1
-                      ? "opacity-30 cursor-not-allowed border-primary/10"
-                      : "border-primary/20 hover:bg-primary hover:text-neutral"
-                  )}
-                >
-                  ‹
-                </motion.button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <motion.button
-                    key={page}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setCurrentPage(page)}
-                    className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center outfit-font text-xs font-bold transition-all",
-                      currentPage === page
-                        ? "bg-primary text-neutral shadow-lg shadow-primary/20"
-                        : "border border-primary/10 text-primary/50 hover:border-primary/30"
-                    )}
-                  >
-                    {page}
-                  </motion.button>
-                ))}
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className={cn(
-                    "w-10 h-10 rounded-full border flex items-center justify-center text-xs font-bold transition-all",
-                    currentPage === totalPages
-                      ? "opacity-30 cursor-not-allowed border-primary/10"
-                      : "border-primary/20 hover:bg-primary hover:text-neutral"
-                  )}
-                >
-                  ›
-                </motion.button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const FloatingNav = () => {
-  const [activeSection, setActiveSection] = useState('hero');
-  const navItems = [
-    { icon: <Home size={18} />, label: 'Home', id: 'hero' },
-    { icon: <Heart size={18} />, label: 'Couple', id: 'profile' },
-    { icon: <Calendar size={18} />, label: 'Event', id: 'event' },
-    { icon: <Camera size={18} />, label: 'Gallery', id: 'gallery' },
-    { icon: <MessageSquare size={18} />, label: 'Wish', id: 'wishes' },
-  ];
-
-  useEffect(() => {
-    const mainElement = document.querySelector('main');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        threshold: 0,
-        rootMargin: "-30% 0px -30% 0px",
-        root: mainElement
-      }
-    );
-
-    navItems.forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  return (
-    <motion.nav
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-6 left-1/2 z-[120] w-[min(94%,520px)] -translate-x-1/2"
-    >
-      <div className="bg-white/90 backdrop-blur-xl rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/50 px-2 py-2">
-        <div className="flex items-center justify-between gap-1">
-          {navItems.map((item, idx) => {
-            const isActive = activeSection === item.id;
-            return (
-              <motion.button
-                key={idx}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => scrollTo(item.id)}
-                className={cn(
-                  "relative flex flex-col items-center justify-center min-w-[65px] py-2 transition-all duration-300 rounded-full",
-                  isActive ? "text-[#b89e6a]" : "text-[#7C7567]"
-                )}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-active"
-                    className="absolute inset-0 bg-[#fdf8ed] border border-[#f2e8d0] rounded-full z-0"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <div className="relative z-10 flex flex-col items-center gap-1">
-                  {item.icon}
-                  <span className="text-[10px] font-medium tracking-tight whitespace-nowrap">
-                    {item.label}
-                  </span>
-                </div>
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
-    </motion.nav>
-  );
-};
 
 export default App;

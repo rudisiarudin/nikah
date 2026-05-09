@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Lateef:wght@400;700&family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap');
+@import "tailwindcss";
 
 @font-face {
   font-family: 'Charlotte Southern';
@@ -87,7 +87,7 @@
 }
 
 .btn-primary {
-  @apply bg-[#50593f] text-white px-8 py-4 rounded-full font-semibold text-[11px] tracking-[0.32em] uppercase transition-all shadow-[0_18px_40px_-30px_rgba(80,89,63,0.32)];
+  @apply bg-[#50593f] text-white px-8 py-4 rounded-[5px] font-semibold text-[11px] tracking-[0.32em] uppercase transition-all shadow-[0_18px_40px_-30px_rgba(80,89,63,0.32)];
 }
 
 .btn-primary:hover {
@@ -246,3 +246,115 @@
               radial-gradient(circle at 100% 50%, transparent 15px, black 16px);
   mask-composite: intersect;
 }
+
+/* === Vintage Guestbook Styles === */
+.vintage-form-card {
+  background:
+    url('/images/paper-fibers.png'),
+    linear-gradient(170deg, #faf5eb 0%, #f3ead8 50%, #ede3cf 100%);
+  background-blend-mode: overlay;
+  background-size: cover, auto;
+  border: 1px solid rgba(124, 106, 80, 0.15);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.6) inset,
+    0 12px 35px -10px rgba(124, 106, 80, 0.12),
+    0 2px 8px rgba(124, 106, 80, 0.06);
+  padding: 1.75rem 1.5rem;
+  border-radius: 4px;
+  position: relative;
+}
+
+.vintage-card-inset {
+  background: linear-gradient(170deg, #f3ead8, #ede3cf);
+  border: 1px solid rgba(124, 106, 80, 0.12);
+  box-shadow: inset 0 2px 8px rgba(124, 106, 80, 0.08);
+  border-radius: 4px;
+}
+
+.vintage-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.vintage-corner::before,
+.vintage-corner::after {
+  content: '';
+  position: absolute;
+  background: rgba(124, 106, 80, 0.18);
+}
+
+.vintage-corner::before {
+  width: 100%;
+  height: 0.5px;
+}
+
+.vintage-corner::after {
+  width: 0.5px;
+  height: 100%;
+}
+
+.vintage-corner-tl { top: 8px; left: 8px; }
+.vintage-corner-tl::before { top: 0; left: 0; }
+.vintage-corner-tl::after { top: 0; left: 0; }
+
+.vintage-corner-tr { top: 8px; right: 8px; }
+.vintage-corner-tr::before { top: 0; right: 0; }
+.vintage-corner-tr::after { top: 0; right: 0; }
+
+.vintage-corner-bl { bottom: 8px; left: 8px; }
+.vintage-corner-bl::before { bottom: 0; left: 0; }
+.vintage-corner-bl::after { bottom: 0; left: 0; }
+
+.vintage-corner-br { bottom: 8px; right: 8px; }
+.vintage-corner-br::before { bottom: 0; right: 0; }
+.vintage-corner-br::after { bottom: 0; right: 0; }
+
+.vintage-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(124, 106, 80, 0.1);
+  border-bottom: 1px solid rgba(124, 106, 80, 0.2);
+  border-radius: 4px;
+  padding: 0.65rem 0.85rem;
+  font-family: 'Lora', serif;
+  font-size: 13px;
+  color: #5b4636;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.vintage-input::placeholder {
+  color: rgba(124, 106, 80, 0.25);
+  font-style: italic;
+}
+
+.vintage-input:focus {
+  border-color: rgba(124, 106, 80, 0.3);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(124, 106, 80, 0.06);
+}
+
+.vintage-wish-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background:
+    url('/images/paper-fibers.png'),
+    linear-gradient(175deg, rgba(250, 245, 235, 0.85), rgba(243, 234, 216, 0.7));
+  background-blend-mode: overlay;
+  background-size: cover, auto;
+  border: 1px solid rgba(124, 106, 80, 0.08);
+  border-bottom: 1px solid rgba(124, 106, 80, 0.12);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.vintage-wish-card:hover {
+  background: linear-gradient(175deg, rgba(250, 245, 235, 0.9), rgba(243, 234, 216, 0.7));
+  box-shadow: 0 4px 12px rgba(124, 106, 80, 0.06);
+}
+

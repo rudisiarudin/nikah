@@ -92,10 +92,10 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
               onClick={onOpen}
               whileHover={{ scale: 1.02, boxShadow: "0 20px 35px rgba(255,255,255,0.18)" }}
               whileTap={{ scale: 0.96 }}
-              className="mx-auto flex items-center justify-center gap-3 cursor-pointer bg-white/15 border border-white/25 text-white text-[11px] font-semibold tracking-[0.35em] px-10 py-4 rounded-full shadow-[0_15px_35px_-20px_rgba(255,255,255,0.9)] transition-all duration-300 backdrop-blur-lg"
+              className="mx-auto flex items-center justify-center gap-3 cursor-pointer bg-white/15 border border-white/25 text-white text-[11px] font-semibold tracking-[0.35em] px-10 py-4 rounded-[5px] shadow-[0_15px_35px_-20px_rgba(255,255,255,0.9)] transition-all duration-300 backdrop-blur-lg"
             >
               <MessageSquare size={16} />
-              OPEN INVITATION
+              BUKA UNDANGAN
             </motion.button>
           </Reveal>
         </div>

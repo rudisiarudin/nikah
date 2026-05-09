@@ -76,6 +76,11 @@ export const WEDDING_CONFIG = {
     '/images/galeri4.jpeg',
     '/images/galeri5.jpeg',
     '/images/galeri6.jpeg',
-    '/images/galeri7.jpeg'
+    '/images/galeri7.jpeg',
+    '/images/galeri8.jpeg',
+    '/images/galeri9.jpeg',
+    '/images/galeri10.jpeg',
+    '/images/galeri11.jpeg',
+    '/images/galeri12.jpeg'
   ]
 };
