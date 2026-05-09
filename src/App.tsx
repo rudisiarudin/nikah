@@ -1700,39 +1700,35 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="columns-2 gap-4 md:gap-8 space-y-8 md:space-y-12 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
+            <div className="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
               {WEDDING_CONFIG.galleryImages.map((_, i) => {
                 // Determine a slight random-looking rotation for the polaroid
-                const rotations = [-4, 5, -6, 3, 6, -5, 4, -3];
+                const rotations = [-3, 3, -4, 4, -2, 2, -3, 3, -4, 4, -2, 2];
                 const finalRotate = rotations[i % rotations.length];
 
                 return (
-                  <div key={i} className="break-inside-avoid pt-2">
+                  <div key={i} className="pt-2">
                     <motion.div
-                      initial={{ opacity: 0, scale: 1.5, rotate: finalRotate - 15, y: 150 }}
+                      initial={{ opacity: 0, scale: 0.9, rotate: finalRotate - 5, y: 50 }}
                       whileInView={{ opacity: 1, scale: 1, rotate: finalRotate, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{
                         type: "spring",
-                        stiffness: 120,
-                        damping: 14,
-                        delay: (i % 4) * 0.15
+                        stiffness: 100,
+                        damping: 15,
+                        delay: (i % 2) * 0.1
                       }}
-                      className="bg-[#fcfbf9] p-2 pb-10 md:p-3 md:pb-14 shadow-[0_15px_30px_rgba(0,0,0,0.15)] border border-black/5 group cursor-pointer hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:z-50 transition-shadow duration-500 relative"
+                      className="bg-[#fcfbf9] p-2 pb-8 md:p-3 md:pb-12 shadow-[0_15px_30px_rgba(0,0,0,0.1)] border border-black/5 group cursor-pointer hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] hover:z-50 transition-shadow duration-500 relative"
                       style={{ transformOrigin: 'center center' }}
                     >
                       {/* Subtle tape effect at top */}
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 backdrop-blur-sm border border-white/20 rotate-[-2deg] shadow-sm z-20 opacity-70" />
 
-                      <div className="overflow-hidden bg-neutral/10">
+                      <div className="overflow-hidden bg-neutral/10 aspect-square md:aspect-[4/5]">
                         <GalleryItem
                           index={i}
                           onClick={() => setSelectedGalleryImage(i)}
-                          className={cn(
-                            "w-full filter contrast-[1.05] brightness-[1.02] transform group-hover:scale-105 transition-transform duration-700",
-                            i % 3 === 0 ? "aspect-[3/4]" :
-                              i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
-                          )}
+                          className="w-full h-full filter contrast-[1.05] brightness-[1.02] transform group-hover:scale-105 transition-transform duration-700"
                         />
                       </div>
                     </motion.div>
