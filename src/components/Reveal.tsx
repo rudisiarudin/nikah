@@ -12,10 +12,15 @@ export const Reveal: React.FC<{
 }> = ({ children, delay = 0, y = 10, x = 0, scale = 0.95, duration = 1.2, className }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y, x, scale }}
+    initial={{ opacity: 0, y, x, scale, willChange: "transform, opacity" }}
     whileInView={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-    viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-    transition={{ duration, delay, ease: [0.16, 1, 0.3, 1] }}
+    animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
+    viewport={{ once: true, amount: 0.05 }}
+    transition={{ 
+      duration: duration * 1.1, 
+      delay, 
+      ease: [0.22, 1, 0.36, 1] 
+    }}
   >
     {children}
   </motion.div>

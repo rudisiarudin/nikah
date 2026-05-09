@@ -15,8 +15,11 @@ import {
   VolumeX,
   Home,
   BookOpen,
-  Lock
+  Lock,
+  Instagram
 } from 'lucide-react';
+import { Player } from '@lottiefiles/react-lottie-player';
+import birdAnimation from '../public/lottie_birds.json';
 import { QRCodeSVG } from 'qrcode.react';
 import { cn } from './lib/utils';
 import { WEDDING_CONFIG } from './config';
@@ -75,16 +78,26 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
   ];
 
   return (
-    <div className={cn("flex gap-3 md:gap-5", className || "justify-start")}>
+    <div className={cn("flex items-center justify-center gap-4 md:gap-8 py-4", className)}>
       {items.map((item, i) => (
-        <div key={i} className="text-center flex flex-col items-center">
-          <div className="cinzel-font text-[22px] md:text-[26px] font-bold text-gold leading-none">
-            {String(item.value).padStart(2, '0')}
+        <React.Fragment key={i}>
+          <div className="flex flex-col items-center min-w-[55px] md:min-w-[70px]">
+            <motion.div
+              key={item.value}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="cinzel-font text-[28px] md:text-[40px] font-bold text-[#7c6d52] leading-none drop-shadow-sm"
+            >
+              {String(item.value).padStart(2, '0')}
+            </motion.div>
+            <div className="outfit-font text-[7.5px] md:text-[9px] font-bold tracking-[0.25em] text-[#7c6d52]/60 mt-1.5 uppercase">
+              {item.label}
+            </div>
           </div>
-          <div className="outfit-font text-[7px] md:text-[8px] font-bold tracking-[0.25em] text-primary/40 mt-2 uppercase">
-            {item.label}
-          </div>
-        </div>
+          {i < items.length - 1 && (
+            <div className="h-8 md:h-10 w-[0.5px] bg-[#7c6d52]/20 mt-[-10px]" />
+          )}
+        </React.Fragment>
       ))}
     </div>
   );
@@ -126,7 +139,7 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
 
       <div className="relative z-10 space-y-8">
         <Reveal delay={0.2} y={20}>
-          <p className="outfit-font text-xs uppercase tracking-[0.8em] opacity-80">The Wedding of</p>
+          <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.8em] opacity-80">The Wedding of</p>
         </Reveal>
         <Reveal delay={0.4} scale={0.9} y={30} duration={1}>
           <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl">
@@ -134,7 +147,7 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
           </h1>
         </Reveal>
         <Reveal delay={0.6} y={10}>
-          <p className="serif-font text-lg lg:text-2xl tracking-[0.5em] font-light opacity-90">02 . 08 . 2026</p>
+          <p className="serif-font text-xl lg:text-3xl tracking-[0.5em] font-light opacity-90">02 . 08 . 2026</p>
         </Reveal>
 
         <div className="pt-12">
@@ -257,32 +270,68 @@ const App = () => {
         <motion.button
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={toggleMusic}
-          className="fixed bottom-24 right-6 md:right-[2%] z-[100] w-14 h-14 bg-primary/95 backdrop-blur-xl text-neutral rounded-full flex items-center justify-center shadow-2xl border border-neutral/20 group overflow-hidden"
+          className="fixed bottom-32 right-6 md:right-8 z-[100] w-14 h-14 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-white/20 group"
         >
-          <div className="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-          {isPlaying ? (
-            <div className="relative flex items-end gap-[3px] h-4">
-              {[0.6, 1, 0.4, 0.8, 0.5, 0.9, 0.4].map((h, i) => (
-                <motion.div
-                  key={i}
-                  animate={{
-                    height: ["20%", "100%", "20%"],
-                    opacity: [0.4, 1, 0.4]
-                  }}
-                  transition={{
-                    duration: 0.5 + i * 0.1,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="w-[1.5px] bg-neutral rounded-full"
-                  style={{ height: `${h * 100}%` }}
-                />
-              ))}
-            </div>
-          ) : (
-            <VolumeX size={20} className="relative z-10" />
+          {/* Pulsing effect when playing */}
+          {isPlaying && (
+            <motion.div
+              animate={{
+                scale: [1, 1.5],
+                opacity: [0.5, 0]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeOut"
+              }}
+              className="absolute inset-0 rounded-full border border-white/30"
+            />
           )}
+
+          <div className="relative z-10 flex items-center justify-center w-full h-full">
+            {isPlaying ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="w-8 h-8 rounded-full border-[1.5px] border-white/30 flex items-center justify-center relative bg-gradient-to-br from-black/60 to-black/20 shadow-inner"
+              >
+                {/* Vinyl Grooves */}
+                <div className="absolute inset-[3px] rounded-full border border-white/5" />
+                <div className="absolute inset-[6px] rounded-full border border-white/5" />
+                {/* Center dot */}
+                <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
+
+                {/* Floating Note Ornaments */}
+                {[...Array(2)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{
+                      y: [-10, -30],
+                      x: [i === 0 ? -10 : 10, i === 0 ? -20 : 20],
+                      opacity: [0, 1, 0],
+                      scale: [0.5, 1, 0.5]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 1,
+                      ease: "easeOut"
+                    }}
+                    className="absolute text-[10px] text-white/40"
+                  >
+                    ♪
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <div className="relative">
+                <VolumeX size={20} className="text-white/80" />
+              </div>
+            )}
+          </div>
         </motion.button>
       )}
 
@@ -313,127 +362,151 @@ const App = () => {
           <div className="absolute inset-0 bg-texture opacity-20 pointer-events-none" />
 
           {/* Hero Section */}
-          <section id="hero" className="relative h-screen flex flex-col justify-center px-10 overflow-hidden bg-[#fcfcfc]">
-            {/* Floral Background Ornament */}
-            <div className="absolute top-0 right-[-20%] w-[100%] h-full pointer-events-none z-0 opacity-40 mix-blend-multiply">
+          <section id="hero" className="relative h-screen flex items-center justify-center px-4 overflow-hidden bg-[#F9F8F4]">
+            <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-0" />
+            <div className="absolute top-0 left-0 w-[28%] max-w-[220px] pointer-events-none opacity-90">
+              <img src={WEDDING_CONFIG.daunAtas} alt="Botanical Top Left" className="w-full h-full object-contain" />
+            </div>
+
+            <div className="absolute left-0 bottom-0 w-[28%] max-w-[220px] pointer-events-none opacity-85">
+              <img src={WEDDING_CONFIG.profileBg} alt="Botanical Bottom Left" className="w-full h-full object-contain rotate-[-10deg]" />
+            </div>
+
+            <div className="absolute -right-24 top-0 h-full w-[80%] min-w-[420px] pointer-events-none opacity-72 overflow-visible">
               <img
                 src={WEDDING_CONFIG.floralBg}
                 alt="Floral Ornament"
-                className="w-full h-full object-cover object-left scale-110 origin-right"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: '100% 40%' }}
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#fcfcfc] via-[#fcfcfc]/80 to-transparent" />
             </div>
 
-            {/* Lottie Birds for Premium Feel */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 z-0">
-              <Lottie animationData={birdsData} loop={true} className="w-full h-full object-cover scale-[1.5]" />
+            {/* Lottie Bird Animation */}
+            <div className="absolute top-[8%] right-[-5%] md:right-[2%] w-[250px] md:w-[380px] pointer-events-none opacity-80 z-20" style={{ transform: 'scaleX(-1)' }}>
+              <Player
+                autoplay
+                loop
+                src={birdAnimation}
+                style={{ width: '100%', height: '100%' }}
+              />
             </div>
 
-            <div className="relative z-10 space-y-6 max-w-[340px]">
-              <div className="space-y-3 text-left">
-                <Reveal delay={0.2} y={15} duration={1.5}>
-                  <p className="cinzel-font text-[11px] uppercase tracking-[0.5em] text-primary/60 font-bold mb-1">
-                    The Wedding of
-                  </p>
-                </Reveal>
-                <Reveal delay={0.5} scale={1} y={30} duration={1.8}>
-                  <h1 className="italiana-font text-[52px] leading-none text-[#4A4E3F] flex items-center justify-start gap-4">
-                    <span>Ayu</span>
-                    <span className="text-3xl text-primary/30 font-light italic">&</span>
-                    <span>Rudi</span>
-                  </h1>
+            <div className="relative z-10 flex flex-col items-start justify-center w-full h-full max-w-5xl mx-auto px-6 md:px-16 pt-16 pb-28 md:py-24 text-left">
+              <Reveal delay={0.2} y={15} duration={1.5}>
+                <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.5em] text-[#50593f] font-semibold mb-4 drop-shadow-sm">
+                  THE WEDDING OF
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.5} scale={1.02} y={20} duration={1.8}>
+                <h1 className="italiana-font text-[4rem] md:text-[6.5rem] leading-[0.9] text-[#3D4238] drop-shadow-md">
+                  <div className="mb-1 md:mb-4 text-[#3D4238]">Ayu</div>
+                  <div className="flex items-center gap-3 md:gap-6">
+                    <span className="text-[2.2rem] md:text-[4.5rem] text-[#BDA76E] font-light italic">&</span>
+                    <span className="text-[#3D4238]">Rudi</span>
+                  </div>
+                </h1>
+              </Reveal>
+
+              <Reveal delay={0.8} y={20} duration={1.5}>
+                <div className="mt-8 w-full">
+                  <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-4 md:gap-12" />
+                </div>
+              </Reveal>
+
+              <div className="mt-10 max-w-xl">
+                <Reveal delay={1.1} x={-20} duration={1.5}>
+                  <div className="pl-4 md:pl-5 border-l-[3px] border-[#A68A4D]/60 py-1">
+                    <p className="serif-font text-[14px] md:text-lg italic leading-relaxed text-[#4B4A42] drop-shadow-sm">
+                      "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
+                    </p>
+                    <p className="outfit-font text-[10px] md:text-[12px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
+                      QS. Adz Zariyat : 49
+                    </p>
+                  </div>
                 </Reveal>
               </div>
 
-              <Reveal delay={0.8} y={20} duration={1.5}>
+              <div className="mt-10 space-y-6 flex flex-col items-start">
+                <Reveal delay={1.5} y={20} duration={1.5}>
+                  <div className="flex flex-col items-start gap-2">
+                    <p className="outfit-font text-[12px] md:text-lg uppercase tracking-[0.3em] text-[#50593f] font-bold drop-shadow-sm flex items-center gap-3">
+                      <span>MINGGU</span>
+                      <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
+                      <span className="cinzel-font text-[14px] md:text-xl text-[#BDA76E]">02</span>
+                      <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
+                      <span>AGUSTUS 2026</span>
+                    </p>
+                    <div className="w-10 md:w-12 h-[2px] bg-[#BDA76E]/80" />
+                  </div>
+                </Reveal>
+
+                <Reveal delay={1.7} y={20} duration={1.5}>
+                  <motion.button
+                    whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(80,89,63,0.2)' }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      const event = {
+                        title: "Pernikahan Ayu & Rudi",
+                        start: "20260802T080000",
+                        end: "20260802T210000",
+                        location: "Jakarta",
+                        description: "Mohon doa restu atas pernikahan kami."
+                      };
+                      window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
+                    }}
+                    className="btn-primary inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 rounded-full"
+                  >
+                    <Calendar size={16} />
+                    <span className="tracking-widest text-xs md:text-sm font-medium">SIMPAN KE KALENDER</span>
+                  </motion.button>
+                </Reveal>
+              </div>
+            </div>
+          </section>
+
+          {/* Quote Section with Cinematic Background */}
+          <section className="relative min-h-[45vh] md:min-h-[55vh] flex items-center justify-center py-20 px-8 overflow-hidden bg-black">
+            {/* Animated Background Image - Smooth Looping Zoom */}
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.12, 1] }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="absolute inset-0 z-0"
+            >
+              <div className="absolute inset-0 bg-black/40 z-10" />
+              <img
+                src="/images/couple-hand.png"
+                alt="Background"
+                className="w-full h-full object-cover object-bottom"
+              />
+            </motion.div>
+
+            <div className="relative z-20 w-full max-w-5xl mx-auto space-y-6 md:space-y-8 text-white text-center px-4">
+              <Reveal delay={0.2} scale={0.8} duration={1.5}>
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Countdown targetDate="2026-08-02T08:00:00" className="gap-4 justify-start" />
+                  <Heart className="mx-auto text-[#c6b793] drop-shadow-md" size={24} />
                 </motion.div>
               </Reveal>
 
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <Reveal delay={1.2} x={-20} duration={1.5}>
-                    <p className="serif-font text-[12px] leading-relaxed italic text-primary font-medium border-l-2 border-primary/20 pl-4 py-1">
-                      "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
-                    </p>
-                  </Reveal>
-                  <Reveal delay={1.4} x={-20} duration={1.5}>
-                    <p className="serif-font text-[10px] text-primary/80 font-medium pl-4">
-                      (QS. Adz Zariyat : 49)
-                    </p>
-                  </Reveal>
-                </div>
-
-                <div className="space-y-4">
-                  <Reveal delay={1.6} y={15} duration={1.5}>
-                    <h3 className="cinzel-font text-base font-bold text-primary tracking-[0.2em] uppercase whitespace-nowrap">
-                      Minggu, 02 Agustus 2026
-                    </h3>
-                  </Reveal>
-                  <Reveal delay={1.8} y={20} duration={1.5}>
-                    <motion.button
-                      whileHover={{ scale: 1.05, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.1)" }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        const event = {
-                          title: "Pernikahan Ayu & Rudi",
-                          start: "20260802T080000",
-                          end: "20260802T210000",
-                          location: "Jakarta",
-                          description: "Mohon doa restu atas pernikahan kami."
-                        };
-                        window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
-                      }}
-                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary/80 text-primary rounded-full outfit-font text-[9.5px] font-bold uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300"
-                    >
-                      <Calendar size={18} />
-                      Simpan Ke Kalender
-                    </motion.button>
-                  </Reveal>
-                </div>
-              </div>
-            </div>
-
-            {/* Scroll Down Indicator */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute bottom-10 right-10 flex flex-col items-center gap-1 opacity-30"
-            >
-              <p className="outfit-font text-[8px] uppercase tracking-[0.3em] font-bold">Scroll</p>
-              <ChevronDown size={14} />
-            </motion.div>
-          </section>
-
-          {/* Quote Section */}
-          <section className="py-24 px-8 bg-primary text-neutral text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-texture opacity-10 pointer-events-none" />
-
-            <div className="max-w-4xl mx-auto space-y-8">
-              <Reveal delay={0.2} scale={0.8} duration={1.5}>
-                <motion.div
-                  animate={{ y: [0, -8, 0], scale: [1, 1.12, 1] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <Heart className="mx-auto text-neutral/40" size={32} />
-                </motion.div>
-              </Reveal>
-
-              <Reveal delay={0.5} y={30} duration={2}>
-                <p className="serif-font text-lg italic leading-relaxed md:leading-[1.8]">
+              <Reveal delay={0.5} y={20} duration={2}>
+                <p className="serif-font text-sm md:text-xl italic leading-relaxed md:leading-[1.8] text-white/95 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] max-w-3xl mx-auto">
                   "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir"
                 </p>
               </Reveal>
 
-              <Reveal delay={1.2} y={15} duration={1.5}>
+              <Reveal delay={1.2} y={10} duration={1.5}>
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-12 h-[1px] bg-neutral/20" />
-                  <p className="outfit-font text-[10px] uppercase tracking-[0.4em] font-bold opacity-50">
+                  <div className="w-12 h-[1px] bg-[#c6b793]/40 shadow-sm" />
+                  <p className="outfit-font text-[9px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#c6b793] drop-shadow-md">
                     QS. AR-RUM : 21
                   </p>
                 </div>
@@ -442,175 +515,196 @@ const App = () => {
           </section>
 
           {/* Greeting + Couple Profile Section */}
-          <section id="profile" className="pt-10 pb-0 px-4 relative overflow-hidden bg-neutral">
-            {/* Soft Radial Glow behind content */}
-            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[150%] aspect-square bg-gradient-radial from-white via-transparent to-transparent opacity-80 pointer-events-none z-0" />
+          <section id="profile" className="pt-8 md:pt-16 pb-0 relative overflow-hidden bg-[#F9F8F4]">
+            {/* Texture Overlay */}
+            <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-0" />
 
-            {/* Top Left Botanical Watercolor Ornament (daun-atas.png) - Shrunk & Subtle */}
-            <motion.div 
+            {/* Top Left Botanical Watercolor Ornament */}
+            <motion.div
               initial={{ opacity: 0, x: -20, y: -20 }}
-              whileInView={{ opacity: 1, x: 0, y: 0 }}
+              whileInView={{ opacity: 0.6, x: 0, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.5, ease: "easeOut" }}
-              className="absolute top-0 left-0 w-[45%] max-w-[240px] pointer-events-none z-10 opacity-40"
+              className="absolute top-0 left-0 w-[45%] max-w-[240px] pointer-events-none z-10"
             >
               <img src={WEDDING_CONFIG.daunAtas} alt="" className="w-full h-auto object-contain" />
             </motion.div>
 
-            <div className="max-w-md mx-auto relative z-30">
-              {/* Bismillah Section - Compact & High */}
-              <div className="space-y-1 mb-5 flex flex-col items-center">
+            <div className="max-w-md mx-auto relative z-30 px-6">
+              {/* Bismillah Section */}
+              <div className="flex flex-col items-center mb-8">
                 <Reveal y={10} duration={1.5}>
-                  <div className="px-10">
-                    <img 
-                      src={WEDDING_CONFIG.bismillahImage} 
-                      alt="Bismillah" 
-                      className="w-full max-w-[150px] h-auto object-contain"
-                      style={{ filter: 'brightness(0) saturate(100%) invert(29%) sepia(93%) saturate(545%) hue-rotate(346deg) brightness(88%) contrast(92%)' }}
-                    />
-                  </div>
-                </Reveal>
-                
-                <Reveal delay={0.2} scale={0} duration={1}>
-                  <div className="flex justify-center -mt-2">
-                    <img 
-                      src={WEDDING_CONFIG.lineLove} 
-                      alt="" 
-                      className="w-32 h-auto object-contain opacity-100" 
-                      style={{ filter: 'brightness(0.5)' }}
+                  <div className="px-10 mb-2">
+                    <img
+                      src={WEDDING_CONFIG.bismillahImage}
+                      alt="Bismillah"
+                      className="w-full max-w-[180px] h-auto object-contain opacity-80"
+                      style={{ filter: 'invert(45%) sepia(12%) saturate(757%) hue-rotate(5deg) brightness(95%) contrast(87%)' }}
                     />
                   </div>
                 </Reveal>
 
-                <div className="space-y-1 pt-1">
-                  <Reveal delay={0.4} y={10} duration={1.2}>
-                    <h2 className="serif-font text-[13px] font-bold text-center text-[#333333] tracking-wide">Assalamu'alaikum Wr. Wb.</h2>
-                  </Reveal>
+                <Reveal delay={0.4} y={10} duration={1.2}>
+                  <h2 className="italiana-font text-2xl font-bold text-center text-[#3D4238] tracking-widest mb-3">Assalamu'alaikum Wr. Wb.</h2>
+                </Reveal>
 
-                  <Reveal delay={0.6} y={10} duration={1.5}>
-                    <p className="sans-font text-[11.5px] leading-relaxed text-primary/70 font-medium text-center max-w-[320px] mx-auto">
-                      Dengan memohon rahmat dan ridho Allah SWT. Kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
-                    </p>
-                  </Reveal>
-                </div>
+                <Reveal delay={0.6} y={10} duration={1.5}>
+                  <p className="serif-font text-[14px] md:text-[16px] leading-relaxed text-primary/70 italic text-center max-w-[340px] mx-auto">
+                    Dengan memohon rahmat dan ridho Allah SWT. Kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
+                  </p>
+                </Reveal>
               </div>
+              {/* Photo Section - Responsive sizes */}
+              <div className="relative mx-auto max-w-[240px] md:max-w-[320px] mt-6 md:mt-10 mb-0 px-4 z-30">
 
-              {/* Photo Section */}
-              <div className="relative mx-auto max-w-[250px] pt-1 pb-6">
-                
-                {/* Ornaments - Floating Animation */}
-                <motion.div 
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute bottom-[5%] -left-10 w-32 h-auto pointer-events-none z-30 opacity-80"
+                {/* Botanical Ornaments - Now behind the photo frame */}
+                <motion.div
+                  animate={{ y: [0, -10, 0], rotate: [-15, -12, -15] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-[15%] -left-14 md:-left-20 w-36 md:w-52 h-auto pointer-events-none z-10 opacity-60 mix-blend-multiply"
                 >
                   <img src={WEDDING_CONFIG.ornamenKiri} alt="" className="w-full h-auto object-contain" />
                 </motion.div>
-                
-                <motion.div 
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute bottom-[10%] -right-10 w-32 h-auto pointer-events-none z-30 opacity-80"
+
+                <motion.div
+                  animate={{ y: [0, 10, 0], rotate: [10, 13, 10] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-[0%] -right-14 md:-right-20 w-40 md:w-56 h-auto pointer-events-none z-10 opacity-60 mix-blend-multiply"
                 >
                   <img src={WEDDING_CONFIG.ornamenKanan} alt="" className="w-full h-auto object-contain" />
                 </motion.div>
 
-                {/* Couple Photo - Zoom Animation */}
-                <div className="relative z-20 mx-auto w-full">
-                  <div className="overflow-hidden w-full shadow-lg">
-                    <motion.img
-                      initial={{ opacity: 0, scale: 1.1 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 2, ease: "easeOut" }}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2 }}
+                  className="relative z-20"
+                >
+                  <div className="relative overflow-hidden shadow-2xl">
+                    <img
                       src={WEDDING_CONFIG.couplePhoto}
                       alt="Ayu & Rudi"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </div>
-                </div>
 
-                {/* Wedding Rings - Scale & Bounce Animation */}
-                <motion.div 
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1, duration: 1, type: "spring", stiffness: 100 }}
-                  className="absolute -bottom-6 left-1/2 -translate-x-[52%] w-32 h-auto z-40 pointer-events-none"
-                >
-                  <img src={WEDDING_CONFIG.ringsImage} alt="" className="w-full h-auto object-contain drop-shadow-md" />
+                  {/* Wedding Rings Overlayed on Photo Bottom */}
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    animate={{ y: [0, -6, 0] }}
+                    viewport={{ once: true }}
+                    transition={{
+                      scale: { delay: 0.8, duration: 1, type: "spring" },
+                      opacity: { delay: 0.8, duration: 1 },
+                      y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    className="absolute -bottom-16 md:-bottom-20 left-[48%] -translate-x-1/2 w-32 md:w-40 h-auto z-40 pointer-events-none"
+                  >
+                    <img src={WEDDING_CONFIG.ringsImage} alt="" className="w-full h-auto object-contain drop-shadow-2xl" />
+                  </motion.div>
                 </motion.div>
               </div>
 
-              {/* Names Section - Groom on Left, Bride on Right */}
-              <div className="pt-0 pb-16 relative z-50">
-                <div className="flex items-center justify-center gap-2">
-                  {/* Groom Column (Rudi) */}
-                  <div className="flex-1 text-center">
-                    <Reveal delay={1.1} y={20} duration={1.2}>
-                      <div className="space-y-0">
-                        <h3 className="italiana-font text-[19px] text-neutral tracking-[0.08em] font-medium">Rudi</h3>
-                        <p className="script-font text-[30px] text-neutral/90 leading-none mt-[-4px]">Si'arudin</p>
-                      </div>
-                      <div className="mt-2 space-y-0.5">
-                        <p className="outfit-font text-[6px] text-neutral/50 uppercase tracking-[0.2em] font-bold">Putra Terakhir dari</p>
-                        <p className="serif-font text-[8.5px] text-neutral/80 italic leading-relaxed">
-                          Bapak Ohan (Alm.) & Ibu Onih (Alm.)
-                        </p>
-                      </div>
-                    </Reveal>
-                  </div>
+            </div>
 
-                  <div className="flex flex-col items-center px-1">
-                    <div className="w-[0.3px] h-10 bg-neutral/50" />
-                    <Reveal delay={1.4} scale={0} duration={0.8}>
-                      <div className="py-0.5">
-                        <Heart size={7} strokeWidth={0.5} className="text-neutral/60" />
-                      </div>
-                    </Reveal>
-                    <div className="w-[0.3px] h-10 bg-neutral/50" />
-                  </div>
+            {/* Names Section with Concave "Smile" Curve */}
+            <div className="relative mt-[-50px] md:mt-[-70px] z-20">
+              {/* The Curve Transition */}
+              <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] translate-y-[-99%]">
+                <svg viewBox="0 0 1440 120" className="relative block w-full h-auto" preserveAspectRatio="none">
+                  <defs>
+                    <pattern id="curve-texture" patternUnits="userSpaceOnUse" width="400" height="400">
+                      <image href="/images/paper-fibers.png" width="400" height="400" preserveAspectRatio="none" />
+                    </pattern>
+                  </defs>
+                  <path
+                    d="M0,0 Q720,120 1440,0 L1440,120 L0,120 Z"
+                    fill="#50593f"
+                  />
+                  <path
+                    d="M0,0 Q720,120 1440,0 L1440,120 L0,120 Z"
+                    fill="url(#curve-texture)"
+                    opacity="0.4"
+                    style={{ mixBlendMode: 'overlay' }}
+                  />
+                </svg>
+              </div>
 
-                  {/* Bride Column (Ayu Dewi) */}
-                  <div className="flex-1 text-center">
-                    <Reveal delay={1.2} y={20} duration={1.2}>
-                      <div className="space-y-0">
-                        <h3 className="italiana-font text-[19px] text-neutral tracking-[0.08em] font-medium">Ayu Dewi</h3>
-                        <p className="script-font text-[30px] text-neutral/90 leading-none mt-[-4px]">Saputri</p>
+              {/* Names Content Area */}
+              <div className="bg-[#50593f] text-[#f7f1e6] pt-24 md:pt-32 pb-20 md:pb-24 px-4 relative z-20">
+                {/* Paper Texture Overlay */}
+                <div
+                  className="absolute inset-0 pointer-events-none z-0 opacity-40 mix-blend-overlay"
+                  style={{ backgroundImage: "url('/images/paper-fibers.png')", backgroundRepeat: 'repeat' }}
+                />
+
+                <div className="max-w-md mx-auto relative z-10">
+                  <div className="flex items-start justify-center gap-1 md:gap-3">
+                    {/* Groom Column */}
+                    <div className="flex-1 text-center">
+                      <Reveal delay={0.2} y={20}>
+                        <div className="space-y-0 flex flex-col items-center">
+                          <h3 className="italiana-font text-[24px] md:text-[34px] text-white tracking-wide font-normal leading-tight">
+                            {WEDDING_CONFIG.groomNickname}
+                          </h3>
+                          <p className="script-font text-[28px] md:text-[40px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
+                            {WEDDING_CONFIG.groomName.split(WEDDING_CONFIG.groomNickname)[1]?.trim() || "Siarudin"}
+                          </p>
+                        </div>
+
+                        <div className="mt-6 md:mt-8 space-y-1.5">
+                          <p className="outfit-font text-[10px] md:text-[12px] text-white/50 tracking-[0.2em] font-bold uppercase">Putra Terakhir dari</p>
+                          <p className="serif-font text-[12px] md:text-[15px] text-white italic leading-relaxed px-1">
+                            {WEDDING_CONFIG.groomParents}
+                          </p>
+                        </div>
+                      </Reveal>
+                    </div>
+
+                    {/* Vertical Divider */}
+                    <div className="flex flex-col items-center px-1 md:px-3 shrink-0 pt-3 md:pt-5 opacity-40">
+                      <div className="w-[1px] h-14 md:h-20 bg-[#c6b793]" />
+                      <div className="py-1.5 md:py-2.5">
+                        <Heart size={10} fill="#c6b793" className="text-[#c6b793]" />
                       </div>
-                      <div className="mt-2 space-y-0.5">
-                        <p className="outfit-font text-[6px] text-neutral/50 uppercase tracking-[0.2em] font-bold">Putri Pertama dari</p>
-                        <p className="serif-font text-[8.5px] text-neutral/80 italic leading-relaxed">
-                          Bapak Murdiono & Ibu Kriswati
-                        </p>
-                      </div>
-                    </Reveal>
+                      <div className="w-[1px] h-14 md:h-20 bg-[#c6b793]" />
+                    </div>
+
+                    {/* Bride Column */}
+                    <div className="flex-1 text-center">
+                      <Reveal delay={0.4} y={20}>
+                        <div className="space-y-0 flex flex-col items-center">
+                          <h3 className="italiana-font text-[24px] md:text-[34px] text-white tracking-wide font-normal leading-tight">
+                            {WEDDING_CONFIG.brideNickname}
+                          </h3>
+                          <p className="script-font text-[28px] md:text-[40px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
+                            {WEDDING_CONFIG.brideName.split(WEDDING_CONFIG.brideNickname)[1]?.trim() || "Saputri"}
+                          </p>
+                        </div>
+
+                        <div className="mt-6 md:mt-8 space-y-1.5">
+                          <p className="outfit-font text-[10px] md:text-[12px] text-white/50 tracking-[0.2em] font-bold uppercase">Putri Pertama dari</p>
+                          <p className="serif-font text-[12px] md:text-[15px] text-white italic leading-relaxed px-1">
+                            {WEDDING_CONFIG.brideParents}
+                          </p>
+                        </div>
+                      </Reveal>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Dark Green Footer with Aesthetic Texture */}
-            <div className="absolute bottom-0 left-0 w-full z-10 overflow-hidden">
-              <div className="relative">
-                <svg viewBox="0 0 1440 320" className="w-full h-auto translate-y-1 fill-primary">
-                  <path d="M0,80 C360,0 1080,0 1440,80 L1440,320 L0,320 Z" fill="#6B705C" /> 
+              {/* Bottom Transition Curve */}
+              <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] translate-y-[99%]">
+                <svg viewBox="0 0 1440 120" className="relative block w-full h-auto rotate-180" preserveAspectRatio="none">
+                  <path
+                    d="M0,0 Q720,120 1440,0 L1440,120 L0,120 Z"
+                    fill="#50593f"
+                  />
                 </svg>
-                
-                {/* Texture Overlay (Paper Grain) */}
-                <div 
-                  className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-                  style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/felt-paper.png")' }}
-                />
-              </div>
-
-              <div className="w-full h-40 bg-primary -mt-1 relative">
-                {/* Continuing Texture */}
-                <div 
-                  className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-                  style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/felt-paper.png")' }}
-                />
               </div>
             </div>
           </section>
@@ -644,7 +738,7 @@ const App = () => {
             <Reveal y={30}>
               <div className="text-center space-y-4 mb-16 relative z-10">
                 <p className="outfit-font text-[10px] uppercase tracking-[0.6em] text-primary/40 font-bold">Save the Date</p>
-                <h2 className="display-font text-4xl text-primary italic">Waktu & Tempat</h2>
+                <h2 className="italiana-font text-4xl text-primary">Waktu & Tempat</h2>
                 <div className="h-[1px] w-12 bg-primary/20 mx-auto mt-4" />
               </div>
             </Reveal>
@@ -654,7 +748,9 @@ const App = () => {
                 <div className="relative rounded-[25px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 z-0">
-                    <img
+                    <motion.img
+                      animate={{ scale: [1, 1.15, 1] }}
+                      transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
                       src={WEDDING_CONFIG.eventBg}
                       alt="Event Background"
                       className="w-full h-full object-cover brightness-[0.4] contrast-[1.1]"
@@ -774,10 +870,9 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-x-6 gap-y-8 max-w-sm mx-auto">
+                <div className="grid grid-cols-2 gap-y-10 gap-x-12 max-w-[280px] mx-auto place-items-center">
                   {[
                     { color: '#422B1E', name: 'DEEP EARTH' },
-                    { color: '#722B14', name: 'BURNT SIENNA' },
                     { color: '#8A5A2E', name: 'TERRACOTTA' },
                     { color: '#968D60', name: 'SAGE LEAF' },
                     { color: '#E3BE8D', name: 'WARM SAND' }
@@ -786,24 +881,22 @@ const App = () => {
                       key={idx}
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
+                      transition={{ delay: idx * 0.15, duration: 0.8, ease: "easeOut" }}
                       viewport={{ once: true }}
-                      className="flex flex-col items-center gap-3 group w-[80px]"
+                      className="flex flex-col items-center gap-4 group"
                     >
-                      <div className="relative">
-                        {/* Designer Ring Effect */}
-                        <div className="absolute -inset-1.5 rounded-full border border-neutral/20 group-hover:border-neutral/40 transition-colors duration-500" />
-
+                      {/* Premium Ring Container */}
+                      <div className="relative p-[5px] rounded-full border-[0.5px] border-neutral/20 group-hover:border-[#c6b793] transition-all duration-700">
                         <motion.div
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          className="w-12 h-12 rounded-full border-2 border-white shadow-xl relative z-10 cursor-help"
+                          whileHover={{ scale: 1.05 }}
+                          className="w-11 h-11 md:w-12 md:h-12 rounded-full border border-white/20 shadow-inner relative z-10"
                           style={{
                             backgroundColor: item.color,
-                            boxShadow: `0 8px 20px -5px ${item.color}88`
+                            boxShadow: `0 4px 15px -3px ${item.color}88, inset 0 2px 4px rgba(255,255,255,0.15)`
                           }}
                         />
                       </div>
-                      <span className="outfit-font text-[7.5px] font-bold uppercase tracking-[0.25em] text-neutral/50 transition-colors duration-300">
+                      <span className="outfit-font text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] text-neutral/60 transition-colors duration-500 group-hover:text-[#c6b793] text-center w-[120px]">
                         {item.name}
                       </span>
                     </motion.div>
@@ -819,7 +912,7 @@ const App = () => {
 
 
           {/* Love Story Section */}
-          <section id="story" className="py-16 px-8 relative overflow-hidden">
+          <section id="story" className="py-24 px-6 md:px-12 relative overflow-hidden bg-black">
             <div className="absolute inset-0 z-0 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.img
@@ -829,50 +922,61 @@ const App = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.05 }}
                   transition={{ duration: 2, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-125"
                 />
               </AnimatePresence>
-              <div className="absolute inset-0 bg-neutral/70 backdrop-blur-[3px]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/90 backdrop-blur-[2px]" />
+
               {/* Lottie Birds Overlay */}
-              <div className="absolute inset-0 z-10 pointer-events-none opacity-40">
+              <div className="absolute inset-0 z-10 pointer-events-none opacity-30 mix-blend-screen filter invert">
                 <Lottie animationData={birdsData} loop={true} className="w-full h-full object-cover" />
               </div>
             </div>
 
-            <div className="relative z-10">
+            <div className="relative z-10 max-w-2xl mx-auto">
               <Reveal>
-                <div className="text-center space-y-3 mb-12 md:mb-16">
-                  <h2 className="italiana-font text-3xl text-[#4A4E3F]">Our Love Story</h2>
-                  <div className="h-[1.5px] w-10 bg-secondary mx-auto" />
+                <div className="text-center space-y-4 mb-16">
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">The Journey</p>
+                  <h2 className="italiana-font text-4xl md:text-5xl text-white drop-shadow-md">Our Love Story</h2>
+                  <div className="h-[1px] w-12 bg-[#c6b793] mx-auto mt-4" />
                 </div>
               </Reveal>
 
-              <div className="space-y-10 relative">
-                <div className="absolute left-4 top-0 bottom-0 w-[1px] bg-primary/10" />
+              <div className="space-y-12 md:space-y-16 relative">
+                {/* Elegant Connecting Line */}
+                <div className="absolute left-[20px] md:left-[28px] top-4 bottom-4 w-[1px] bg-gradient-to-b from-transparent via-[#c6b793]/40 to-transparent" />
 
                 {[
                   {
+                    chapter: 'CHAPTER I',
                     title: 'Awal Bertemu',
                     desc: 'Di penghujung tahun 2022, kisah ini bermula. Jarak Jakarta dan Lampung menjadi saksi perjalanan kami. Meski terpisah oleh ruang, langkah tak pernah ragu—Rudi beberapa kali menempuh perjalanan menuju Lampung hanya untuk bertemu Ayu. Dari pertemuan sederhana, tumbuh rasa yang perlahan menjadi istimewa.'
                   },
                   {
+                    chapter: 'CHAPTER II',
                     title: 'Tunangan',
                     desc: 'Waktu menguatkan keyakinan kami. Tepat H+3 Lebaran tahun 2026, Rudi bersama keluarga datang ke Sragen, Jawa Tengah, untuk bertemu keluarga besar Ayu. Dalam suasana hangat dan penuh kebersamaan, kami mengikat janji dalam sebuah pertunangan—sebuah langkah pasti menuju masa depan bersama.'
                   },
                   {
+                    chapter: 'CHAPTER III',
                     title: 'Pernikahan',
                     desc: 'Di tahun yang sama, pada bulan Agustus 2026, dengan hati yang mantap dan doa yang mengiringi, kami memutuskan untuk melangkah ke jenjang pernikahan. Semoga perjalanan ini menjadi awal dari kebahagiaan yang tak berujung, serta senantiasa dilimpahi rahmat dan karunia Allah SWT.'
                   }
                 ].map((story, idx) => (
                   <Reveal key={idx} delay={idx * 0.2} y={30}>
-                    <div className="relative pl-12">
-                      <div className="absolute left-0 top-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-neutral text-[10px] font-bold">
-                        0{idx + 1}
-                      </div>
-                      <div className="bg-white/80 backdrop-blur-sm rounded-[10px] border border-primary/5 shadow-lg p-8 relative overflow-hidden group">
-                        <h3 className="serif-font text-xl italic font-bold text-[#2D2D2D]">{story.title}</h3>
-                        <p className="text-[12px] text-primary/80 leading-[1.8] italic serif-font">
-                          {story.desc}
+                    <div className="relative pl-12 md:pl-16">
+                      {/* Timeline Dot */}
+                      <div className="absolute left-[18px] md:left-[26px] top-6 w-[5px] h-[5px] rounded-full bg-[#c6b793] shadow-[0_0_10px_rgba(198,183,147,0.8)]" />
+
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 relative overflow-hidden group hover:bg-white/10 transition-colors duration-500 shadow-2xl">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#c6b793]/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+
+                        <p className="outfit-font text-[8px] text-[#c6b793] font-bold tracking-[0.4em] uppercase mb-2">
+                          {story.chapter}
+                        </p>
+                        <h3 className="italiana-font text-2xl md:text-3xl text-white mb-4 drop-shadow-sm">{story.title}</h3>
+                        <p className="text-[12px] md:text-[13px] text-white/80 leading-[2] serif-font font-light italic">
+                          "{story.desc}"
                         </p>
                       </div>
                     </div>
@@ -883,27 +987,33 @@ const App = () => {
           </section>
 
           {/* Gallery Section */}
-          <section id="gallery" className="py-20 px-4 space-y-10 bg-primary/5 relative overflow-hidden">
-            <div className="absolute inset-0 bg-texture opacity-10 pointer-events-none" />
-            <LeafOrnament className="absolute -top-20 -right-20 w-64 h-64 text-primary opacity-5" rotate={120} parallaxSpeed={0.4} />
+          <section id="gallery" className="py-24 px-4 space-y-12 bg-[#F9F8F4] relative overflow-hidden">
+            <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none" />
+            <LeafOrnament className="absolute -top-20 -right-20 w-64 h-64 text-[#50593f] opacity-5" rotate={120} parallaxSpeed={0.4} />
+            <LeafOrnament className="absolute -bottom-20 -left-20 w-80 h-80 text-[#50593f] opacity-5" rotate={-45} parallaxSpeed={0.3} />
 
             <Reveal y={30}>
-              <div className="text-center space-y-3 mb-12 md:mb-16">
-                <p className="outfit-font text-[9px] uppercase tracking-[0.8em] opacity-40">Our Moments</p>
-                <h2 className="italiana-font text-4xl text-primary">Our Gallery</h2>
-                <div className="h-[1px] w-10 bg-secondary/30 mx-auto" />
+              <div className="text-center space-y-4 mb-16 relative z-10">
+                <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Capturing</p>
+                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Our Moments</h2>
+                <div className="flex items-center justify-center gap-3 mt-4">
+                  <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                  <Heart size={10} className="text-[#c6b793]" />
+                  <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                </div>
               </div>
             </Reveal>
 
             {/* Cinematic Video */}
             <Reveal y={30} delay={0.2}>
-              <div className="relative rounded-[10px] overflow-hidden border border-primary/10 shadow-lg mb-6">
+              <div className="relative max-w-4xl mx-auto rounded-[5px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] mb-12 group bg-black">
+                <div className="absolute inset-0 border border-white/20 rounded-[5px] z-10 pointer-events-none mix-blend-overlay" />
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
                 >
                   <source src="/video/video.mp4" type="video/mp4" />
                   Browser Anda tidak mendukung pemutaran video.
@@ -911,20 +1021,45 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="columns-2 gap-1.5 space-y-1.5 md:columns-3 md:gap-3 md:space-y-3 px-2">
-              {WEDDING_CONFIG.galleryImages.map((_, i) => (
-                <div key={i} className="break-inside-avoid">
-                  <GalleryItem
-                    index={i}
-                    onClick={() => setSelectedGalleryImage(i)}
-                    className={cn(
-                      "w-full",
-                      i % 3 === 0 ? "aspect-[3/4]" :
-                        i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
-                    )}
-                  />
-                </div>
-              ))}
+            <div className="columns-2 gap-4 md:gap-8 space-y-8 md:space-y-12 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
+              {WEDDING_CONFIG.galleryImages.map((_, i) => {
+                // Determine a slight random-looking rotation for the polaroid
+                const rotations = [-4, 5, -6, 3, 6, -5, 4, -3];
+                const finalRotate = rotations[i % rotations.length];
+
+                return (
+                  <div key={i} className="break-inside-avoid pt-2">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 1.5, rotate: finalRotate - 15, y: 150 }}
+                      whileInView={{ opacity: 1, scale: 1, rotate: finalRotate, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 120,
+                        damping: 14,
+                        delay: (i % 4) * 0.15
+                      }}
+                      className="bg-[#fcfbf9] p-2 pb-10 md:p-3 md:pb-14 shadow-[0_15px_30px_rgba(0,0,0,0.15)] border border-black/5 group cursor-pointer hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:z-50 transition-shadow duration-500 relative"
+                      style={{ transformOrigin: 'center center' }}
+                    >
+                      {/* Subtle tape effect at top */}
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 backdrop-blur-sm border border-white/20 rotate-[-2deg] shadow-sm z-20 opacity-70" />
+
+                      <div className="overflow-hidden bg-neutral/10">
+                        <GalleryItem
+                          index={i}
+                          onClick={() => setSelectedGalleryImage(i)}
+                          className={cn(
+                            "w-full filter contrast-[1.05] brightness-[1.02] transform group-hover:scale-105 transition-transform duration-700",
+                            i % 3 === 0 ? "aspect-[3/4]" :
+                              i % 3 === 1 ? "aspect-square" : "aspect-[2/3]"
+                          )}
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
@@ -1197,8 +1332,8 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ 
-        duration: 0.8, 
+      transition={{
+        duration: 0.8,
         delay: (index % 6) * 0.1,
         ease: "easeOut"
       }}
@@ -1206,7 +1341,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "relative rounded-[15px] overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        "relative overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
         className
       )}
     >
@@ -1247,7 +1382,7 @@ const GiftModal = () => {
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setShow(true)}
-        className="px-10 py-5 bg-primary text-neutral rounded-full font-bold text-[10px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
+        className="px-10 py-5 bg-primary text-neutral rounded-full font-bold text-[12px] tracking-[0.3em] uppercase shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-3 mx-auto"
       >
         <Gift size={16} />
         KIRIM HADIAH
@@ -1320,7 +1455,7 @@ const GiftModal = () => {
                           </p>
 
                           <div className="flex justify-between items-end">
-                            <p className="text-[11px] sm:text-[13px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
+                            <p className="text-[12px] sm:text-[14px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
                               {WEDDING_CONFIG.bankAccountName}
                             </p>
 
@@ -1354,7 +1489,7 @@ const GiftModal = () => {
                         <p className="font-bold text-sm tracking-tight text-primary outfit-font">Kirim Hadiah Fisik</p>
                       </div>
                       <div className="pl-1 space-y-2">
-                        <p className="text-[11px] leading-6 text-primary/70 outfit-font italic font-medium">
+                        <p className="text-[12px] leading-6 text-primary/70 outfit-font italic font-medium">
                           {WEDDING_CONFIG.physicalGiftAddress}
                         </p>
                         <p className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] pt-2">
@@ -1483,7 +1618,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
       ) : (
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto pb-4 relative z-10 px-0 sm:px-4">
           <div className="bg-white/95 backdrop-blur-md rounded-[25px] sm:rounded-[30px] p-6 sm:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-primary/5 space-y-8 w-full">
-            
+
             <div className="space-y-3 relative">
               <label className="outfit-font text-[9.5px] uppercase tracking-[0.3em] font-bold text-primary/40 pl-2">Nama Lengkap</label>
               <div className="bg-primary/5 rounded-[15px] px-5 py-4 border border-transparent">
@@ -1614,8 +1749,8 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                           <span className={cn(
                             "px-2 py-1 rounded-[10px] text-[8.5px] font-bold uppercase tracking-[0.15em] outfit-font flex items-center gap-1 mt-1",
                             wish.status === 'Hadir' ? "bg-primary/5 text-primary" :
-                            wish.status === 'Tidak Hadir' ? "bg-white border border-primary/10 text-primary/40" :
-                            "bg-white border border-primary/10 text-primary/50"
+                              wish.status === 'Tidak Hadir' ? "bg-white border border-primary/10 text-primary/40" :
+                                "bg-white border border-primary/10 text-primary/50"
                           )}>
                             <span className="text-[10px] leading-none opacity-80 mt-[1px]">
                               {wish.status === 'Hadir' ? '✓' : wish.status === 'Tidak Hadir' ? '✕' : '?'}
@@ -1630,7 +1765,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                           "{wish.message}"
                         </p>
                       </div>
-                      
+
                       {/* Reply Box */}
                       {wish.reply && (
                         <motion.div
@@ -1717,12 +1852,11 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
 const FloatingNav = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const navItems = [
-    { icon: <Home size={20} />, label: 'Home', id: 'hero' },
-    { icon: <Heart size={20} />, label: 'Couple', id: 'profile' },
-    { icon: <Calendar size={20} />, label: 'Event', id: 'event' },
-    { icon: <BookOpen size={20} />, label: 'Story', id: 'story' },
-    { icon: <Camera size={20} />, label: 'Gallery', id: 'gallery' },
-    { icon: <MessageSquare size={20} />, label: 'Wishes', id: 'wishes' },
+    { icon: <Home size={18} />, label: 'Home', id: 'hero' },
+    { icon: <Heart size={18} />, label: 'Couple', id: 'profile' },
+    { icon: <Calendar size={18} />, label: 'Event', id: 'event' },
+    { icon: <Camera size={18} />, label: 'Gallery', id: 'gallery' },
+    { icon: <MessageSquare size={18} />, label: 'Wish', id: 'wishes' },
   ];
 
   useEffect(() => {
@@ -1736,7 +1870,8 @@ const FloatingNav = () => {
         });
       },
       {
-        threshold: 0.3,
+        threshold: 0,
+        rootMargin: "-30% 0px -30% 0px",
         root: mainElement
       }
     );
@@ -1752,38 +1887,49 @@ const FloatingNav = () => {
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   return (
-    <motion.div
+    <motion.nav
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] w-[92%] max-w-[380px] lg:max-w-none lg:w-[400px] lg:left-auto lg:translate-x-0 lg:right-[25px]"
+      className="fixed bottom-6 left-1/2 z-[120] w-[min(94%,520px)] -translate-x-1/2"
     >
-      <div className="w-full bg-[#FDFBF7]/90 backdrop-blur-md rounded-full px-3 md:px-6 py-2.5 md:py-3 flex items-center justify-between shadow-xl border border-[#E8E1D5] relative overflow-hidden">
-        {navItems.map((item, idx) => (
-          <motion.button
-            key={idx}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => scrollTo(item.id)}
-            className={cn(
-              "relative flex items-center justify-center transition-all duration-300",
-              activeSection === item.id ? "text-[#C19A5B] bg-primary/5 px-4 py-1.5 rounded-full" : "text-[#8C8479] hover:text-[#C19A5B] px-2 py-1.5"
-            )}
-          >
-            <span className="relative z-10 scale-90 md:scale-100">{item.icon}</span>
-            <span className={cn(
-              "hidden md:block uppercase tracking-wider font-medium whitespace-nowrap transition-all duration-300 overflow-hidden",
-              activeSection === item.id ? "max-w-[100px] opacity-100 ml-2 text-[9px]" : "max-w-0 opacity-0 ml-0 text-[0px]"
-            )}>
-              {item.label}
-            </span>
-          </motion.button>
-        ))}
+      <div className="bg-white/90 backdrop-blur-xl rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/50 px-2 py-2">
+        <div className="flex items-center justify-between gap-1">
+          {navItems.map((item, idx) => {
+            const isActive = activeSection === item.id;
+            return (
+              <motion.button
+                key={idx}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => scrollTo(item.id)}
+                className={cn(
+                  "relative flex flex-col items-center justify-center min-w-[65px] py-2 transition-all duration-300 rounded-full",
+                  isActive ? "text-[#b89e6a]" : "text-[#7C7567]"
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active"
+                    className="absolute inset-0 bg-[#fdf8ed] border border-[#f2e8d0] rounded-full z-0"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <div className="relative z-10 flex flex-col items-center gap-1">
+                  {item.icon}
+                  <span className="text-[10px] font-medium tracking-tight whitespace-nowrap">
+                    {item.label}
+                  </span>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
-    </motion.div>
+    </motion.nav>
   );
 };
 

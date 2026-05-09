@@ -1,7 +1,7 @@
 export const WEDDING_CONFIG = {
   // Informasi Utama
   brideName: 'Ayu Dewi Saputri',
-  brideNickname: 'Ayu',
+  brideNickname: 'Ayu Dewi',
   brideParents: 'Bapak Murdiono & Ibu Kriswati',
   brideInstagram: 'https://instagram.com/ayudewi',
   bridePhoto: '/images/ayu.jpg',

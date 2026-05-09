@@ -19,7 +19,7 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
       className="fixed inset-0 z-[1000] flex flex-col lg:flex-row overflow-hidden bg-black"
     >
       {/* Panel Kiri (Mobil Full, Desktop 35%) */}
-      <div className="relative z-20 w-full lg:w-[35%] h-full flex flex-col items-center justify-between text-center overflow-hidden text-white" style={{ padding: "16vh 20px 8vh 20px", boxSizing: "border-box" }}>
+      <div className="relative z-20 w-full lg:w-[35%] h-full flex flex-col items-center justify-between text-center overflow-hidden text-white" style={{ padding: "14vh 24px 8vh 24px", boxSizing: "border-box", background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.70) 100%)" }}>
         
         {/* Lottie Birds Overlay Left */}
         <div className="absolute inset-0 z-[1] pointer-events-none opacity-40">
@@ -90,12 +90,11 @@ export const OpeningUI: React.FC<OpeningUIProps> = ({ onOpen, guestName }) => {
           <Reveal delay={1.6} y={20}>
             <motion.button
               onClick={onOpen}
-              whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.15)", borderColor: "rgba(255, 255, 255, 0.8)", letterSpacing: "0.38em" }}
-              whileTap={{ scale: 0.95 }}
-              className="mx-auto flex items-center justify-center gap-[15px] cursor-pointer backdrop-blur-[12px] transition-all duration-500 uppercase w-fit text-[#fff] text-[10.5px] font-bold tracking-[0.35em] px-[45px] py-[15px] rounded-full"
-              style={{ background: "rgba(255, 255, 255, 0.1)", border: "1px solid rgba(255, 255, 255, 0.35)" }}
+              whileHover={{ scale: 1.02, boxShadow: "0 20px 35px rgba(255,255,255,0.18)" }}
+              whileTap={{ scale: 0.96 }}
+              className="mx-auto flex items-center justify-center gap-3 cursor-pointer bg-white/15 border border-white/25 text-white text-[11px] font-semibold tracking-[0.35em] px-10 py-4 rounded-full shadow-[0_15px_35px_-20px_rgba(255,255,255,0.9)] transition-all duration-300 backdrop-blur-lg"
             >
-              <MessageSquare size={14} />
+              <MessageSquare size={16} />
               OPEN INVITATION
             </motion.button>
           </Reveal>
