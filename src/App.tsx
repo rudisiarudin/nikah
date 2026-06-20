@@ -28,7 +28,6 @@ import { QRCodeSVG } from 'qrcode.react';
 import { cn } from './lib/utils';
 import { WEDDING_CONFIG } from './config';
 import { Reveal } from './components/Reveal';
-import { OpeningUI } from './components/OpeningUI';
 import Lottie from 'lottie-react';
 import birdsData from '../public/lottie_birds.json';
 import { supabase } from './lib/supabase';
@@ -87,7 +86,7 @@ const FloatingNav = () => {
     <motion.nav
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-6 left-1/2 z-[120] w-[min(94%,520px)] -translate-x-1/2"
+      className="fixed bottom-6 left-1/2 lg:hidden z-[120] w-[min(94%,520px)] -translate-x-1/2"
     >
       <div className="bg-white/90 backdrop-blur-xl rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/50 px-2 py-2">
         <div className="flex items-center justify-between gap-1">
@@ -126,7 +125,7 @@ const FloatingNav = () => {
 };
 
 const GiftModal = () => {
-  const [show, setShow] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = (text: string) => {
@@ -136,135 +135,92 @@ const GiftModal = () => {
   };
 
   return (
-    <>
-      <motion.button
-        whileHover={{ scale: 1.05, y: -2 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShow(true)}
-        className="px-10 py-5 bg-[#c6b793] text-[#50593f] rounded-[5px] font-bold text-[12px] tracking-[0.3em] uppercase shadow-xl hover:shadow-[#c6b793]/20 transition-all flex items-center gap-3 mx-auto"
-      >
-        <Gift size={16} />
-        KIRIM HADIAH
-      </motion.button>
-
-      {createPortal(
-        <AnimatePresence>
-          {show && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[5000] bg-black/60 backdrop-blur-[20px] flex items-center justify-center p-4 sm:p-6"
-            >
-              <motion.div
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 80, opacity: 0 }}
-                className="bg-[#FDFBF7] w-full max-w-[400px] max-h-[85vh] rounded-[5px] relative text-primary shadow-2xl overflow-hidden flex flex-col border border-white/40"
+    <div className="w-full flex flex-col items-center justify-center min-h-[50px] relative">
+      <AnimatePresence>
+        {!isOpen ? (
+          <motion.button
+            key="btn"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, position: 'absolute' }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsOpen(true)}
+            className="px-8 py-3.5 bg-[#50593f] text-[#F9F8F4] border border-[#50593f]/20 rounded-full font-serif text-[12px] tracking-widest uppercase transition-colors hover:bg-[#3D4238] shadow-xl relative z-10"
+          >
+            SEND GIFT
+          </motion.button>
+        ) : (
+          <motion.div
+            key="card"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
+            className="w-full max-w-[400px] bg-[#FDFBF7]/90 backdrop-blur-md rounded-[16px] border border-[#50593f]/10 overflow-hidden shadow-2xl relative z-20"
+          >
+            {/* CLOSE button row */}
+            <div className="flex justify-end p-5 pb-0">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-[#50593f]/50 hover:text-[#50593f] uppercase tracking-widest text-[10px] italic underline underline-offset-4 decoration-[#50593f]/20 transition-colors font-semibold"
               >
-                {/* Absolute Header Area */}
-                <div className="absolute top-5 right-5 z-50">
-                  <button
-                    onClick={() => setShow(false)}
-                    className="w-10 h-10 bg-neutral/90 backdrop-blur-md border border-black/5 rounded-full flex items-center justify-center shadow-lg hover:bg-white active:scale-90 transition-all pointer-events-auto"
-                  >
-                    <X size={20} className="text-primary/70" />
-                  </button>
-                </div>
+                CLOSE
+              </button>
+            </div>
 
-                {/* Internal Scroll Area */}
-                <div className="overflow-y-auto w-full pt-16 pb-12 px-6 sm:px-10 custom-scrollbar">
-                  <div className="text-center mb-8">
-                    <h3 className="italiana-font text-3xl md:text-4xl text-primary mb-3">Wedding Gift</h3>
-                    <div className="h-[1px] w-10 bg-primary/20 mx-auto" />
+            {/* Content List */}
+            <div className="flex flex-col px-6 pb-6 mt-2">
+              
+              {/* Row 1: BCA */}
+              <div className="flex items-center justify-between py-5 border-b border-[#50593f]/10">
+                <div className="flex items-center gap-5">
+                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-[#50593f]/5">
+                    <img src="/images/bca.png" alt="BCA" className="w-full h-full object-contain" />
                   </div>
-
-                  <div className="space-y-6">
-                    {/* BCA Blue Debit Card */}
-                    <div className="relative aspect-[1.586/1] w-full rounded-[5px] p-6 text-white shadow-[0_20px_40px_-15px_rgba(0,82,156,0.6)] overflow-hidden border border-white/20 select-none bg-gradient-to-br from-[#1b64a6] via-[#00529C] to-[#013366]">
-                      {/* Gloss / Card Texture Overlay */}
-                      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-
-                      {/* Light reflection effect */}
-                      <div className="absolute top-0 right-[-30%] w-[150%] h-[150%] bg-gradient-to-bl from-white/10 via-transparent to-transparent rotate-[35deg] pointer-events-none" />
-
-                      <div className="relative z-10 h-full flex flex-col justify-between">
-                        {/* Top bar: Bank Logo & Debit Text */}
-                        <div className="flex justify-between items-start">
-                          <img src="/images/bca.png" alt="BCA" className="h-[22px] w-auto brightness-0 invert opacity-90" />
-                          <div className="bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 rounded-md text-[8px] font-bold tracking-[0.25em] outfit-font text-white uppercase shadow-sm">DEBIT</div>
-                        </div>
-
-                        {/* Microchip */}
-                        <div className="w-12 h-9 bg-gradient-to-br from-[#ffd700] via-[#eedd82] to-[#b8860b] rounded-[6px] shadow-sm border border-black/10 relative overflow-hidden flex flex-col justify-between p-[3px]">
-                          {/* Chip internal lines */}
-                          <div className="absolute inset-0 opacity-40">
-                            <div className="w-full h-full border-[0.5px] border-black/40 rounded-[4px]" />
-                            <div className="absolute top-1/2 left-0 w-full h-[0.5px] bg-black/40" />
-                            <div className="absolute top-0 left-1/2 w-[0.5px] h-full bg-black/40" />
-                            <div className="absolute top-1/4 left-0 w-full h-[0.5px] bg-black/40" />
-                            <div className="absolute bottom-1/4 left-0 w-full h-[0.5px] bg-black/40" />
-                          </div>
-                        </div>
-
-                        {/* Card Numbers & Bottom Bar */}
-                        <div className="space-y-3">
-                          <p className="text-[1.35rem] sm:text-[1.6rem] font-medium tracking-[0.25em] text-white/95 drop-shadow-md font-mono" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
-                            {WEDDING_CONFIG.bankAccount}
-                          </p>
-
-                          <div className="flex justify-between items-end">
-                            <p className="text-[12px] sm:text-[14px] font-bold tracking-widest uppercase outfit-font text-white/90 drop-shadow-sm">
-                              {WEDDING_CONFIG.bankAccountName}
-                            </p>
-
-                            {/* Mastercard style circles */}
-                            <div className="flex -space-x-3 opacity-60">
-                              <div className="w-8 h-8 rounded-full bg-[#EB001B] mix-blend-screen" />
-                              <div className="w-8 h-8 rounded-full bg-[#F79E1B] mix-blend-screen" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Primary Color Copy Button */}
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
-                      className="w-full bg-[#50593f] hover:bg-[#50593f]/90 text-neutral py-[18px] rounded-[5px] flex items-center justify-center gap-3 shadow-xl shadow-[#50593f]/20 outfit-font text-[10px] font-bold tracking-[0.3em] uppercase transition-all border border-black/5"
-                    >
-                      <Copy size={16} />
-                      {copied ? 'BERHASIL DISALIN' : 'SALIN NO REKENING'}
-                    </motion.button>
-
-                    {/* Physical Gift Section */}
-                    <div className="bg-[#EFEDE7] rounded-[25px] p-7 space-y-5 border border-black/5">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md text-primary">
-                          <Gift size={22} />
-                        </div>
-                        <p className="font-bold text-sm tracking-tight text-primary outfit-font">Kirim Hadiah Fisik</p>
-                      </div>
-                      <div className="pl-1 space-y-2">
-                        <p className="text-[12px] leading-6 text-primary/70 outfit-font italic font-medium">
-                          {WEDDING_CONFIG.physicalGiftAddress}
-                        </p>
-                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] pt-2">
-                          (Penerima: {WEDDING_CONFIG.bankAccountName})
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex flex-col text-left">
+                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-0.5">{WEDDING_CONFIG.bankAccountName}</p>
+                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">{WEDDING_CONFIG.bankAccount}</p>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
-    </>
+                <button
+                  onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
+                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  title="Salin Rekening"
+                >
+                  {copied ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                </button>
+              </div>
+
+              {/* Row 2: Physical Gift */}
+              <div className="flex items-center justify-between py-5">
+                <div className="flex items-center gap-5">
+                  <div className="w-11 h-11 bg-[#50593f]/5 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center shrink-0 shadow-sm">
+                    <Gift size={18} className="text-[#50593f]/70" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-1">Send Gift</p>
+                    <p className="text-[#50593f]/70 text-[11px] leading-relaxed max-w-[190px]">
+                      Ayu & Rudi<br/>
+                      {WEDDING_CONFIG.physicalGiftAddress}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => copyToClipboard(WEDDING_CONFIG.physicalGiftAddress)}
+                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  title="Salin Alamat"
+                >
+                  {copied ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                </button>
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
@@ -724,12 +680,12 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
     <div className={cn("flex items-center justify-center gap-4 md:gap-8 py-4", className)}>
       {items.map((item, i) => (
         <React.Fragment key={i}>
-          <div className="flex flex-col items-center min-w-[55px] md:min-w-[70px]">
+          <div className="flex flex-col items-center min-w-[50px] sm:min-w-[55px]">
             <motion.div
               key={item.value}
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              className="cinzel-font text-[28px] md:text-[40px] font-bold text-[#7c6d52] leading-none drop-shadow-sm"
+              className="cinzel-font text-[24px] sm:text-[28px] font-bold text-[#7c6d52] leading-none drop-shadow-sm"
             >
               {String(item.value).padStart(2, '0')}
             </motion.div>
@@ -772,9 +728,9 @@ const LeafOrnament = ({ className, rotate = 0, delay = 0, parallaxSpeed = 0 }: {
   );
 };
 
-const DesktopSidebar = ({ guestName }: { guestName: string }) => {
+const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOpen: boolean; onOpen: () => void }) => {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-12 text-white">
+    <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 md:p-16 text-white overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img
           src={WEDDING_CONFIG.coverImageLeft}
@@ -782,37 +738,88 @@ const DesktopSidebar = ({ guestName }: { guestName: string }) => {
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       </div>
 
-      <div className="relative z-10 space-y-8">
+      <div className="relative z-10 w-full max-w-2xl flex flex-col items-center">
         <Reveal delay={0.2} y={20}>
-          <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.8em] opacity-80">The Wedding of</p>
+          <div className="flex items-center justify-center gap-4 mb-8 w-full">
+            <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.4em] font-semibold">THE WEDDING OF</p>
+            <div className="w-16 md:w-32 h-[1px] bg-white/40" />
+          </div>
         </Reveal>
-        <Reveal delay={0.4} scale={0.9} y={30} duration={1}>
-          <h1 className="italiana-font text-6xl lg:text-8xl text-white drop-shadow-2xl">
-            Ayu <span className="text-4xl lg:text-5xl opacity-40 font-light italic align-middle mx-4">&</span> Rudi
+        
+        <Reveal delay={0.4} scale={0.9} y={30} duration={1.2}>
+          <h1 className="italiana-font text-[5rem] md:text-[7rem] leading-[0.85] text-white drop-shadow-2xl flex flex-col items-center text-center w-full">
+            <span className="pr-12 md:pr-24">Ayu</span>
+            <span className="text-4xl md:text-6xl opacity-50 font-light italic my-2 md:my-4">&</span>
+            <span className="pl-12 md:pl-24">Rudi</span>
           </h1>
         </Reveal>
-        <Reveal delay={0.6} y={10}>
-          <p className="serif-font text-xl lg:text-3xl tracking-[0.5em] font-light opacity-90">02 . 08 . 2026</p>
-        </Reveal>
 
-        <div className="pt-12">
-          <Reveal delay={0.8} y={20}>
-            <div className="w-24 h-[1px] bg-white/30 mx-auto mb-8" />
-            <p className="serif-font text-lg italic opacity-80">Hello, {guestName}</p>
-            <p className="outfit-font text-[10px] uppercase tracking-[0.3em] opacity-60 mt-4">
-              Scroll to explore our invitation
-            </p>
-          </Reveal>
-        </div>
+        <Reveal delay={0.6} y={10}>
+          <div className="flex items-center justify-center gap-4 mt-12 w-full">
+            <div className="w-16 md:w-32 h-[1px] bg-white/40" />
+            <p className="outfit-font text-[9px] md:text-xs uppercase tracking-[0.3em] font-medium">02 AGUSTUS 2026</p>
+          </div>
+        </Reveal>
+      </div>
+
+      <div className="relative z-10 w-full pt-16 mt-8">
+        <AnimatePresence mode="wait">
+          {!isOpen ? (
+            <motion.div
+              key="opening"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col items-center text-center space-y-6"
+            >
+              <div className="space-y-2">
+                <p className="serif-font text-sm md:text-base italic">Dear,</p>
+                <p className="outfit-font text-2xl md:text-3xl font-bold">{guestName}</p>
+              </div>
+              <div className="w-full max-w-[250px] h-[1px] bg-white/30" />
+              <p className="outfit-font text-[9px] md:text-[10px] italic opacity-80 mt-[-10px]">
+                Tanpa mengurangi rasa hormat, mohon maaf bila ada kesalahan penulisan nama/gelar.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onOpen}
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 rounded-sm text-white inline-flex items-center justify-center gap-3 px-6 py-3 mt-4 transition-colors w-fit"
+              >
+                <Mail size={16} />
+                <span className="tracking-widest text-xs font-bold uppercase">Buka Undangan</span>
+              </motion.button>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="scroll"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="flex flex-col items-center"
+            >
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-center gap-2 text-white/80"
+              >
+                <span className="outfit-font text-[10px] tracking-[0.4em] font-semibold uppercase">Scroll</span>
+                <ChevronDown size={16} />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
 };
 
 const App = () => {
+  const [isPreloading, setIsPreloading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [guestName, setGuestName] = useState('Tamu Undangan');
@@ -839,6 +846,13 @@ const App = () => {
   // State previously declared above
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPreloading(false);
+    }, 3800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const storyInterval = setInterval(() => {
       setCurrentStoryIndex((prev) => (prev + 1) % (WEDDING_CONFIG.storyImages?.length || 1));
     }, 5000);
@@ -850,6 +864,17 @@ const App = () => {
       clearInterval(galleryInterval);
     };
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = '';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   const handleOpenInvitation = () => {
     setIsOpen(true);
@@ -897,6 +922,60 @@ const App = () => {
 
   return (
     <div className="relative w-full min-h-screen font-sans text-primary selection:bg-tertiary/30">
+      {/* Black Preloader */}
+      <AnimatePresence>
+        {isPreloading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.0, ease: "easeInOut" }}
+            className="fixed inset-0 z-[9999] bg-[#111111] flex flex-col items-center justify-center text-white pointer-events-none"
+          >
+            {/* "THE WEDDING OF" Phase */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 1.5, times: [0, 0.2, 0.66, 1], ease: "easeInOut" }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <p className="outfit-font text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/60">
+                THE WEDDING OF
+              </p>
+            </motion.div>
+
+            {/* "AR" and Names Phase */}
+            <div className="flex flex-col items-center relative top-[-10px]">
+              <div className="flex items-center justify-center mb-6 overflow-visible">
+                <motion.span
+                  initial={{ opacity: 0, x: 25 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1.2, duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+                  className="italiana-font text-6xl md:text-7xl text-white inline-block"
+                >
+                  A
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0, x: -25 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1.2, duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+                  className="italiana-font text-6xl md:text-7xl text-white inline-block"
+                >
+                  R
+                </motion.span>
+              </div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 1.2, ease: "easeOut" }}
+                className="outfit-font text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/80"
+              >
+                AYU & RUDI
+              </motion.p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Scroll Progress Bar */}
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-1 z-[110] pointer-events-none">
@@ -986,33 +1065,40 @@ const App = () => {
       {/* Custom Desktop Cursor */}
       <CustomCursor />
 
-      {/* Opening UI (Sampul) */}
-      <AnimatePresence>
-        {!isOpen && (
-          <OpeningUI onOpen={handleOpenInvitation} guestName={guestName} />
-        )}
-      </AnimatePresence>
-
       {/* Main Content Wrapper */}
-      <div className="relative w-full min-h-screen bg-[#F9F8F4] flex flex-col lg:flex-row">
-        {/* Desktop Left Side (Fixed) */}
-        {isOpen && (
-          <aside className="hidden lg:block lg:w-[35%] lg:sticky lg:top-0 lg:h-screen overflow-hidden bg-primary relative">
-            <DesktopSidebar guestName={guestName} />
-          </aside>
-        )}
+      <div className="relative w-full min-h-screen bg-[#F9F8F4] flex flex-col lg:flex-row-reverse overflow-x-hidden">
+        {/* Desktop Sidebar (Cover) */}
+        <aside className={cn(
+          "hidden lg:block lg:sticky lg:top-0 lg:h-screen overflow-hidden bg-primary relative transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)]",
+          !isOpen ? "lg:w-full" : "lg:w-[calc(100vw-500px)] lg:flex-none"
+        )}>
+          <DesktopSidebar guestName={guestName} isOpen={isOpen} onOpen={handleOpenInvitation} />
+        </aside>
 
         {/* Main Content (Scrollable) */}
         <main className={cn(
-          "relative bg-neutral shadow-2xl min-h-screen transition-all",
-          isOpen ? "w-full lg:w-[65%] lg:flex-none border-l border-black/5" : "w-full max-w-[500px] mx-auto"
+          "relative shadow-2xl min-h-screen border-r border-black/5 bg-[#e8e3d8] transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)] origin-left",
+          !isOpen ? "w-full lg:w-0 lg:opacity-0 lg:overflow-hidden lg:pointer-events-none" : "w-full lg:w-[500px] lg:flex-none lg:opacity-100"
         )}>
           <div className="absolute inset-0 bg-texture opacity-20 pointer-events-none" />
 
           {/* Hero Section */}
-          {isOpen && (
-            <>
-              <section id="hero" className="relative h-screen flex items-center justify-center px-4 overflow-hidden bg-[#F9F8F4]">
+          <section id="hero" className="relative h-screen flex items-center justify-center px-4 overflow-hidden bg-[#F9F8F4] lg:hidden">
+            <AnimatePresence>
+              {!isOpen && (
+                <motion.div
+                  key="hero-photo"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  className="absolute inset-0 z-[5]"
+                >
+                  <img src={WEDDING_CONFIG.coverImageLeft} alt="Cover" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-0" />
             <div className="absolute top-0 left-0 w-[28%] max-w-[220px] pointer-events-none opacity-90">
               <img src={WEDDING_CONFIG.daunAtas} alt="Botanical Top Left" className="w-full h-full object-contain" />
@@ -1033,7 +1119,7 @@ const App = () => {
             </div>
 
             {/* Lottie Bird Animation */}
-            <div className="absolute top-[8%] right-[-5%] md:right-[2%] w-[250px] md:w-[380px] pointer-events-none opacity-80 z-20" style={{ transform: 'scaleX(-1)' }}>
+            <div className="absolute top-[8%] right-[-5%] md:right-[2%] w-[250px] md:w-[380px] pointer-events-none opacity-80 z-[6]" style={{ transform: 'scaleX(-1)' }}>
               <Player
                 autoplay
                 loop
@@ -1043,30 +1129,141 @@ const App = () => {
             </div>
 
             <div className="relative z-10 flex flex-col items-start justify-center w-full h-full max-w-5xl mx-auto px-6 md:px-16 pt-16 pb-28 md:py-24 text-left">
-              <Reveal delay={0.2} y={15} duration={1.5}>
-                <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.5em] text-[#50593f] font-semibold mb-4 drop-shadow-sm">
-                  PERNIKAHAN
-                </p>
-              </Reveal>
-
-              <Reveal delay={0.5} scale={1.02} y={20} duration={1.8}>
-                <h1 className="italiana-font text-[4rem] md:text-[6.5rem] leading-[0.9] text-[#3D4238] drop-shadow-md">
-                  <div className="mb-1 md:mb-4 text-[#3D4238]">Ayu</div>
-                  <div className="flex items-center gap-3 md:gap-6">
-                    <span className="text-[2.2rem] md:text-[4.5rem] text-[#BDA76E] font-light italic">&</span>
-                    <span className="text-[#3D4238]">Rudi</span>
+              <div className="w-full mt-4 md:mt-12">
+                <Reveal delay={0.2} x={-20}>
+                  <div className="flex items-center gap-4 mb-3">
+                    <p className={cn("outfit-font text-[10px] md:text-sm uppercase tracking-[0.4em] font-semibold transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>THE WEDDING OF</p>
+                    <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
                   </div>
-                </h1>
-              </Reveal>
+                </Reveal>
+                <Reveal delay={0.4} y={30} duration={1.2}>
+                  <h1 className={cn("italiana-font leading-[0.85] transition-colors duration-1000 flex flex-col w-full", !isOpen ? "text-white drop-shadow-2xl" : "text-[#3D4238] drop-shadow-md")}>
+                    <span className="text-[5.5rem] md:text-[7rem]">Ayu</span>
+                    <div className="flex items-center ml-[3.5rem] md:ml-[6rem] -mt-1 md:-mt-2">
+                      <span className="text-[3.5rem] md:text-[5rem] opacity-60 font-light italic mr-4 md:mr-6">&</span>
+                      <span className="text-[5.5rem] md:text-[7rem]">Rudi</span>
+                    </div>
+                  </h1>
+                </Reveal>
+                <Reveal delay={0.6} x={20}>
+                  <div className="flex items-center gap-4 mt-6 md:mt-10 w-full">
+                    <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
+                    <p className={cn("outfit-font text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>02 AGUSTUS 2026</p>
+                  </div>
+                </Reveal>
+              </div>
 
-              <Reveal delay={0.8} y={20} duration={1.5}>
-                <div className="mt-8 w-full">
-                  <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-4 md:gap-12" />
+              <div className="w-full relative mt-8 flex-1 min-h-[300px]">
+                <AnimatePresence mode="wait">
+                  {!isOpen ? (
+                    <motion.div
+                      key="opening"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+                      transition={{ duration: 0.8 }}
+                      className="absolute inset-0 flex flex-col justify-end pb-8 w-full lg:hidden items-center text-center"
+                    >
+                      <div className="space-y-1 mb-3">
+                        <p className="serif-font text-[15px] md:text-lg italic text-white/90">Dear,</p>
+                        <p className="outfit-font text-[28px] md:text-[32px] font-bold text-white drop-shadow-md tracking-tight">{guestName}</p>
+                      </div>
+                      <div className="w-full max-w-[280px] h-[1px] bg-white/40 mb-3" />
+                      <p className="outfit-font text-[9px] md:text-[10px] font-semibold italic opacity-90 text-white max-w-[280px] mb-6 tracking-wide">
+                        We apologize if there is any misspelling of name or title.
+                      </p>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleOpenInvitation}
+                        className="bg-white/30 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-sm text-white inline-flex items-center justify-center gap-3 px-8 py-3.5 transition-colors w-fit shadow-2xl"
+                      >
+                        <Mail size={16} />
+                        <span className="tracking-[0.2em] text-[10px] md:text-xs font-bold uppercase">OPEN INVITATION</span>
+                      </motion.button>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="content"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, delay: 0.2 }}
+                      className="absolute inset-0 flex flex-col justify-start pb-8 w-full items-start"
+                    >
+                      <Reveal delay={0.2} y={20} duration={1.5}>
+                        <div className="w-full pr-4 mt-8 md:mt-12">
+                          <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-3 md:gap-6" />
+                        </div>
+                      </Reveal>
+
+                      <div className="mt-8 max-w-xl">
+                        <Reveal delay={0.5} x={-20} duration={1.5}>
+                          <div className="pl-4 md:pl-5 border-l-[3px] border-[#A68A4D]/60 py-1">
+                            <p className="serif-font text-[14px] md:text-lg italic leading-relaxed text-[#4B4A42] drop-shadow-sm">
+                              "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
+                            </p>
+                            <p className="outfit-font text-[10px] md:text-[12px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
+                              QS. Adz Zariyat : 49
+                            </p>
+                          </div>
+                        </Reveal>
+                      </div>
+
+                      <div className="mt-8 space-y-6 flex flex-col items-start mb-auto">
+                        <Reveal delay={1.0} y={20} duration={1.5}>
+                          <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(80,89,63,0.2)' }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              const event = {
+                                title: "Pernikahan Ayu & Rudi",
+                                start: "20260802T080000",
+                                end: "20260802T210000",
+                                location: "Jakarta",
+                                description: "Mohon doa restu atas pernikahan kami."
+                              };
+                              window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
+                            }}
+                            className="bg-[#50593f] text-white hover:bg-[#3D4238] backdrop-blur-md border border-[#50593f]/40 rounded-sm inline-flex items-center justify-center gap-2 px-5 py-3 shadow-md"
+                          >
+                            <Calendar size={14} />
+                            <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SIMPAN KE KALENDER</span>
+                          </motion.button>
+                        </Reveal>
+                      </div>
+
+                      <motion.div
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        className="flex flex-col items-center gap-2 text-[#50593f]/80 w-full mt-auto"
+                      >
+                        <span className="outfit-font text-[10px] tracking-[0.4em] font-semibold uppercase">Scroll</span>
+                        <ChevronDown size={16} />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </section>
+
+          {/* ↓ Portrait column starts here (all content below hero) */}
+          <div className="w-full">
+          
+          {/* Welcome Info Section (Desktop Only) */}
+          <section className="relative py-16 px-6 bg-[#F9F8F4] overflow-hidden hidden lg:block">
+            <div className="absolute top-0 right-0 w-32 opacity-30 pointer-events-none">
+              <img src={WEDDING_CONFIG.daunAtas} alt="Ornament" className="w-full h-full object-contain rotate-90" />
+            </div>
+            <div className="relative z-10">
+              <Reveal delay={0.2} y={20} duration={1.5}>
+                <div className="w-full pr-4">
+                  <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-3 md:gap-6" />
                 </div>
               </Reveal>
 
               <div className="mt-10 max-w-xl">
-                <Reveal delay={1.1} x={-20} duration={1.5}>
+                <Reveal delay={0.5} x={-20} duration={1.5}>
                   <div className="pl-4 md:pl-5 border-l-[3px] border-[#A68A4D]/60 py-1">
                     <p className="serif-font text-[14px] md:text-lg italic leading-relaxed text-[#4B4A42] drop-shadow-sm">
                       "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
@@ -1079,12 +1276,12 @@ const App = () => {
               </div>
 
               <div className="mt-10 space-y-6 flex flex-col items-start">
-                <Reveal delay={1.5} y={20} duration={1.5}>
+                <Reveal delay={0.8} y={20} duration={1.5}>
                   <div className="flex flex-col items-start gap-2">
-                    <p className="outfit-font text-[12px] md:text-lg uppercase tracking-[0.3em] text-[#50593f] font-bold drop-shadow-sm flex items-center gap-3">
+                    <p className="outfit-font text-[11px] md:text-[13px] uppercase tracking-[0.25em] text-[#50593f] font-bold drop-shadow-sm flex items-center gap-2 md:gap-3 flex-wrap">
                       <span>MINGGU</span>
                       <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
-                      <span className="cinzel-font text-[14px] md:text-xl text-[#BDA76E]">02</span>
+                      <span className="cinzel-font text-[14px] md:text-[16px] text-[#BDA76E]">02</span>
                       <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
                       <span>AGUSTUS 2026</span>
                     </p>
@@ -1092,7 +1289,7 @@ const App = () => {
                   </div>
                 </Reveal>
 
-                <Reveal delay={1.7} y={20} duration={1.5}>
+                <Reveal delay={1.0} y={20} duration={1.5}>
                   <motion.button
                     whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(80,89,63,0.2)' }}
                     whileTap={{ scale: 0.95 }}
@@ -1106,10 +1303,10 @@ const App = () => {
                       };
                       window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                     }}
-                    className="btn-primary inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4"
+                    className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3"
                   >
-                    <Calendar size={16} />
-                    <span className="tracking-widest text-xs md:text-sm font-medium">SIMPAN KE KALENDER</span>
+                    <Calendar size={14} />
+                    <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SIMPAN KE KALENDER</span>
                   </motion.button>
                 </Reveal>
               </div>
@@ -1148,7 +1345,7 @@ const App = () => {
               </Reveal>
 
               <Reveal delay={0.5} y={20} duration={2}>
-                <p className="serif-font text-sm md:text-xl italic leading-relaxed md:leading-[1.8] text-white/95 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] max-w-3xl mx-auto">
+                <p className="serif-font text-[13px] sm:text-[14px] italic leading-relaxed sm:leading-[1.8] text-white/95 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] max-w-3xl mx-auto px-2">
                   "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir"
                 </p>
               </Reveal>
@@ -1440,7 +1637,7 @@ const App = () => {
                           <p className="outfit-font text-sm font-bold tracking-[0.1em]">{WEDDING_CONFIG.akadTime}</p>
                           <div className="space-y-1 opacity-90">
                             <p className="italiana-font text-lg font-bold tracking-wide">{WEDDING_CONFIG.akadLocationName}</p>
-                            <p className="serif-font text-[11px] italic max-w-[280px] mx-auto leading-relaxed opacity-70">
+                            <p className="serif-font text-[11px] italic max-w-[280px] sm:max-w-md mx-auto leading-relaxed opacity-70">
                               {WEDDING_CONFIG.akadLocationAddress}
                             </p>
                           </div>
@@ -1470,7 +1667,7 @@ const App = () => {
                           <p className="outfit-font text-sm font-bold tracking-[0.1em]">{WEDDING_CONFIG.resepsiTime}</p>
                           <div className="space-y-1 opacity-90">
                             <p className="italiana-font text-lg font-bold tracking-wide">{WEDDING_CONFIG.resepsiLocationName}</p>
-                            <p className="serif-font text-[11px] italic max-w-[280px] mx-auto leading-relaxed opacity-70">
+                            <p className="serif-font text-[11px] italic max-w-[280px] sm:max-w-md mx-auto leading-relaxed opacity-70">
                               {WEDDING_CONFIG.resepsiLocationAddress}
                             </p>
                           </div>
@@ -1533,7 +1730,7 @@ const App = () => {
                   </Reveal>
                 </div>
 
-                <div className="grid grid-cols-2 gap-y-10 gap-x-12 max-w-[280px] mx-auto place-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-10 gap-x-6 sm:gap-x-12 max-w-[280px] sm:max-w-2xl mx-auto place-items-center">
                   {[
                     { color: '#422B1E', name: 'DEEP EARTH' },
                     { color: '#8A5A2E', name: 'TERRACOTTA' },
@@ -1700,7 +1897,7 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
               {WEDDING_CONFIG.galleryImages.map((_, i) => {
                 // Determine a slight random-looking rotation for the polaroid
                 const rotations = [-3, 3, -4, 4, -2, 2, -3, 3, -4, 4, -2, 2];
@@ -1724,7 +1921,7 @@ const App = () => {
                       {/* Subtle tape effect at top */}
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 backdrop-blur-sm border border-white/20 rotate-[-2deg] shadow-sm z-20 opacity-70" />
 
-                      <div className="overflow-hidden bg-neutral/10 aspect-square md:aspect-[4/5]">
+                      <div className="overflow-hidden bg-neutral/10 aspect-square">
                         <GalleryItem
                           index={i}
                           onClick={() => setSelectedGalleryImage(i)}
@@ -1911,7 +2108,7 @@ const App = () => {
               {/* Circle Couple Photo */}
               <Reveal delay={0.6} y={30} duration={1.8}>
                 <div className="flex justify-center -mt-4 mb-4">
-                  <div className="relative w-[280px] h-[280px] md:w-[350px] md:h-[350px] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
+                  <div className="relative w-[clamp(240px,70vw,350px)] h-[clamp(240px,70vw,350px)] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
                     <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                       <img
                         src="/images/couple.jpg"
@@ -1982,8 +2179,7 @@ const App = () => {
               </div>
             </Reveal>
           </footer>
-          </>
-          )}
+          </div>{/* /portrait-column-inner */}
         </main>
       </div>
 
