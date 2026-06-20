@@ -87,7 +87,7 @@
 }
 
 .btn-primary {
-  @apply bg-[#50593f] text-white px-8 py-4 rounded-[5px] font-semibold text-[11px] tracking-[0.32em] uppercase transition-all shadow-[0_18px_40px_-30px_rgba(80,89,63,0.32)];
+  @apply bg-[#50593f] text-white px-8 py-4 rounded-full font-semibold text-[11px] tracking-[0.32em] uppercase transition-all shadow-[0_18px_40px_-30px_rgba(80,89,63,0.32)];
 }
 
 .btn-primary:hover {
@@ -107,7 +107,7 @@
 }
 
 .btn-outlined {
-  @apply border border-primary/20 text-primary px-8 py-4 rounded-[12px] font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/10 active:scale-95;
+  @apply border border-primary/20 text-primary px-8 py-4 rounded-full font-bold text-[10px] tracking-[0.3em] uppercase transition-all hover:bg-primary/10 active:scale-95;
 }
 
 .section-card {

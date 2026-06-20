@@ -126,12 +126,12 @@ const FloatingNav = () => {
 
 const GiftModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(null), 2000);
   };
 
   return (
@@ -140,33 +140,34 @@ const GiftModal = () => {
         {!isOpen ? (
           <motion.button
             key="btn"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, position: 'absolute' }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, position: 'absolute' }}
             transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="px-8 py-3.5 bg-[#50593f] text-[#F9F8F4] border border-[#50593f]/20 rounded-full font-serif text-[12px] tracking-widest uppercase transition-colors hover:bg-[#3D4238] shadow-xl relative z-10"
+            className="px-8 py-3.5 bg-[#fcfbf9] text-[#3D4238] border border-white/20 rounded-full font-serif text-[12px] tracking-widest uppercase transition-colors hover:bg-white shadow-[0_10px_25px_rgba(0,0,0,0.2)] relative z-10"
           >
             SEND GIFT
           </motion.button>
         ) : (
           <motion.div
             key="card"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
+            initial={{ opacity: 0, y: 15, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.98 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="w-full max-w-[400px] bg-[#FDFBF7]/90 backdrop-blur-md rounded-[16px] border border-[#50593f]/10 overflow-hidden shadow-2xl relative z-20"
           >
             {/* CLOSE button row */}
-            <div className="flex justify-end p-5 pb-0">
+            <div className="flex justify-end p-4 pb-0 relative z-30">
               <button
-                onClick={() => setIsOpen(false)}
-                className="text-[#50593f]/50 hover:text-[#50593f] uppercase tracking-widest text-[10px] italic underline underline-offset-4 decoration-[#50593f]/20 transition-colors font-semibold"
+                onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+                className="w-8 h-8 rounded-full bg-[#50593f]/5 hover:bg-[#50593f]/10 flex items-center justify-center transition-colors group"
+                aria-label="Close"
               >
-                CLOSE
+                <X size={14} className="text-[#50593f]/60 group-hover:text-[#50593f] transition-colors" />
               </button>
             </div>
 
@@ -181,7 +182,7 @@ const GiftModal = () => {
                   </div>
                   <div className="flex flex-col text-left">
                     <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-0.5">{WEDDING_CONFIG.bankAccountName}</p>
-                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">{WEDDING_CONFIG.bankAccount}</p>
+                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">{WEDDING_CONFIG.bankAccount} - BCA</p>
                   </div>
                 </div>
                 <button
@@ -189,7 +190,27 @@ const GiftModal = () => {
                   className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
                   title="Salin Rekening"
                 >
-                  {copied ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                  {copiedText === WEDDING_CONFIG.bankAccountToCopy ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                </button>
+              </div>
+
+              {/* Row 2: SeaBank */}
+              <div className="flex items-center justify-between py-5 border-b border-[#50593f]/10">
+                <div className="flex items-center gap-5">
+                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-[#50593f]/5">
+                    <img src="https://assets.zonalogo.com/finance/seabank.co.id/logo-1772115609286-848.svg" alt="SeaBank" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-0.5">Ayu Dewi Saputri</p>
+                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">901364511113 - SeaBank</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => copyToClipboard('901364511113')}
+                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  title="Salin Rekening"
+                >
+                  {copiedText === '901364511113' ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
                 </button>
               </div>
 
@@ -212,7 +233,7 @@ const GiftModal = () => {
                   className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
                   title="Salin Alamat"
                 >
-                  {copied ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                  {copiedText === WEDDING_CONFIG.physicalGiftAddress ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
                 </button>
               </div>
 
@@ -364,7 +385,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
               <div className="space-y-2">
                 <label className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/50 font-semibold flex items-center gap-2">
                   <BookOpen size={12} />
-                  Ucapan & Doa
+                  Wedding Wishes
                 </label>
                 <textarea
                   value={message}
@@ -379,7 +400,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
               <div className="space-y-2">
                 <label className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/50 font-semibold flex items-center gap-2">
                   <Heart size={12} />
-                  Konfirmasi Kehadiran
+                  RSVP Confirmation
                 </label>
                 <div className="flex gap-2">
                   {(['Hadir', 'Tidak Hadir', 'Masih Ragu'] as const).map((opt) => (
@@ -388,7 +409,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                       type="button"
                       onClick={() => setStatus(opt)}
                       className={cn(
-                        "flex-1 py-2.5 rounded-[5px] cinzel-font text-[9px] tracking-wider uppercase border transition-all duration-300",
+                        "flex-1 py-2.5 rounded-full cinzel-font text-[9px] tracking-wider uppercase border transition-all duration-300",
                         status === opt
                           ? "bg-[#50593f] text-[#f5ece0] border-[#50593f] shadow-md"
                           : "bg-transparent text-[#7c6a50]/50 border-[#7c6a50]/15 hover:border-[#7c6a50]/30"
@@ -408,7 +429,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.97 }}
                 className={cn(
-                  "w-full py-3.5 bg-[#50593f] text-[#f5ece0] rounded-[5px] cinzel-font text-[10px] tracking-[0.3em] uppercase shadow-lg shadow-[#50593f]/20 hover:shadow-[#50593f]/30 transition-all flex items-center justify-center gap-2.5 border border-[#3D4238]",
+                  "w-full py-3.5 bg-[#50593f] text-[#f5ece0] rounded-full cinzel-font text-[10px] tracking-[0.3em] uppercase shadow-lg shadow-[#50593f]/20 hover:shadow-[#50593f]/30 transition-all flex items-center justify-center gap-2.5 border border-[#3D4238]",
                   (isSubmitting || !displayName) && "opacity-40 cursor-not-allowed"
                 )}
               >
@@ -417,7 +438,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                 ) : (
                   <>
                     <Send size={12} className="-rotate-12" />
-                    <span>Kirim Ucapan</span>
+                    <span>Send Wish</span>
                   </>
                 )}
               </motion.button>
@@ -432,7 +453,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
         <Reveal>
           <div className="flex items-center justify-center gap-3">
             <div className="w-8 h-[0.5px] bg-[#7c6a50]/20" />
-            <p className="cinzel-font text-[9px] uppercase tracking-[0.4em] text-[#7c6a50]/45 font-semibold">Pesan dari Tamu</p>
+            <p className="cinzel-font text-[9px] uppercase tracking-[0.4em] text-[#7c6a50]/45 font-semibold">Messages from Guests</p>
             <div className="w-8 h-[0.5px] bg-[#7c6a50]/20" />
           </div>
         </Reveal>
@@ -443,7 +464,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
         <Reveal y={5}>
           <div className="text-center pb-4">
             <p className="cinzel-font text-[9px] uppercase tracking-[0.3em] text-[#7c6a50]/35 font-medium">
-              {wishes.length} Ucapan & Doa
+              {wishes.length} Wedding Wishes
             </p>
           </div>
         </Reveal>
@@ -496,7 +517,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
 
                         {wish.reply && (
                           <div className="mt-3 pt-3 border-t border-dashed border-[#7c6a50]/10 pl-3 border-l border-l-[#9b8a6e]/20">
-                            <p className="cinzel-font text-[8px] uppercase tracking-[0.25em] text-[#9b8a6e]/60 mb-0.5">Balasan Mempelai</p>
+                            <p className="cinzel-font text-[8px] uppercase tracking-[0.25em] text-[#9b8a6e]/60 mb-0.5">Couple's Reply</p>
                             <p className="serif-font text-[#5b4636]/55 italic text-[12px] leading-relaxed">{wish.reply}</p>
                           </div>
                         )}
@@ -514,7 +535,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                   className={cn(
-                    "w-8 h-8 rounded-[5px] border flex items-center justify-center cinzel-font text-[10px] transition-all",
+                    "w-8 h-8 rounded-full border flex items-center justify-center cinzel-font text-[10px] transition-all",
                     currentPage === 1 ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
                   )}
                 >‹</button>
@@ -524,7 +545,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                     key={page}
                     onClick={() => setCurrentPage(page)}
                     className={cn(
-                      "w-8 h-8 rounded-[5px] flex items-center justify-center cinzel-font text-[10px] transition-all",
+                      "w-8 h-8 rounded-full flex items-center justify-center cinzel-font text-[10px] transition-all",
                       currentPage === page
                         ? "bg-[#50593f] text-[#f5ece0] shadow-md"
                         : "border border-[#7c6a50]/10 text-[#7c6a50]/40 hover:border-[#7c6a50]/25"
@@ -536,7 +557,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                   className={cn(
-                    "w-8 h-8 rounded-[5px] border flex items-center justify-center cinzel-font text-[10px] transition-all",
+                    "w-8 h-8 rounded-full border flex items-center justify-center cinzel-font text-[10px] transition-all",
                     currentPage === totalPages ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
                   )}
                 >›</button>
@@ -693,7 +714,7 @@ const Countdown = ({ targetDate, className }: { targetDate: string; className?: 
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="outfit-font text-[7.5px] md:text-[9px] font-bold tracking-[0.25em] text-[#7c6d52]/60 mt-1.5 uppercase"
+              className="outfit-font text-[7.5px] md:text-[9px] lg:text-[7.5px] font-bold tracking-[0.25em] text-[#7c6d52]/60 mt-1.5 uppercase"
             >
               {item.label}
             </motion.div>
@@ -744,15 +765,15 @@ const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOp
       <div className="relative z-10 w-full max-w-2xl flex flex-col items-center">
         <Reveal delay={0.2} y={20}>
           <div className="flex items-center justify-center gap-4 mb-8 w-full">
-            <p className="outfit-font text-[10px] md:text-sm uppercase tracking-[0.4em] font-semibold">THE WEDDING OF</p>
+            <p className="outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase tracking-[0.4em] font-semibold">THE WEDDING OF</p>
             <div className="w-16 md:w-32 h-[1px] bg-white/40" />
           </div>
         </Reveal>
         
         <Reveal delay={0.4} scale={0.9} y={30} duration={1.2}>
-          <h1 className="italiana-font text-[5rem] md:text-[7rem] leading-[0.85] text-white drop-shadow-2xl flex flex-col items-center text-center w-full">
+          <h1 className="italiana-font text-[5rem] md:text-[7rem] lg:text-[5rem] leading-[0.85] text-white drop-shadow-2xl flex flex-col items-center text-center w-full">
             <span className="pr-12 md:pr-24">Ayu</span>
-            <span className="text-4xl md:text-6xl opacity-50 font-light italic my-2 md:my-4">&</span>
+            <span className="text-4xl md:text-6xl lg:text-4xl opacity-50 font-light italic my-2 md:my-4">&</span>
             <span className="pl-12 md:pl-24">Rudi</span>
           </h1>
         </Reveal>
@@ -760,14 +781,14 @@ const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOp
         <Reveal delay={0.6} y={10}>
           <div className="flex items-center justify-center gap-4 mt-12 w-full">
             <div className="w-16 md:w-32 h-[1px] bg-white/40" />
-            <p className="outfit-font text-[9px] md:text-xs uppercase tracking-[0.3em] font-medium">02 AGUSTUS 2026</p>
+            <p className="outfit-font text-[9px] md:text-xs lg:text-[9px] uppercase tracking-[0.3em] font-medium">02 AGUSTUS 2026</p>
           </div>
         </Reveal>
       </div>
 
       <div className="relative z-10 w-full pt-16 mt-8">
         <AnimatePresence mode="wait">
-          {!isOpen ? (
+          {!isOpen && (
             <motion.div
               key="opening"
               initial={{ opacity: 0, y: 20 }}
@@ -777,39 +798,22 @@ const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOp
               className="flex flex-col items-center text-center space-y-6"
             >
               <div className="space-y-2">
-                <p className="serif-font text-sm md:text-base italic">Dear,</p>
-                <p className="outfit-font text-2xl md:text-3xl font-bold">{guestName}</p>
+                <p className="serif-font text-sm md:text-base lg:text-sm italic">Dear,</p>
+                <p className="outfit-font text-2xl md:text-3xl lg:text-2xl font-bold">{guestName}</p>
               </div>
               <div className="w-full max-w-[250px] h-[1px] bg-white/30" />
-              <p className="outfit-font text-[9px] md:text-[10px] italic opacity-80 mt-[-10px]">
+              <p className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] italic opacity-80 mt-[-10px]">
                 Tanpa mengurangi rasa hormat, mohon maaf bila ada kesalahan penulisan nama/gelar.
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onOpen}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 rounded-sm text-white inline-flex items-center justify-center gap-3 px-6 py-3 mt-4 transition-colors w-fit"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 rounded-full text-white inline-flex items-center justify-center gap-3 px-6 py-3 mt-4 transition-colors w-fit"
               >
                 <Mail size={16} />
-                <span className="tracking-widest text-xs font-bold uppercase">Buka Undangan</span>
+                <span className="tracking-widest text-xs font-bold uppercase">OPEN INVITATION</span>
               </motion.button>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="scroll"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="flex flex-col items-center"
-            >
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="flex flex-col items-center gap-2 text-white/80"
-              >
-                <span className="outfit-font text-[10px] tracking-[0.4em] font-semibold uppercase">Scroll</span>
-                <ChevronDown size={16} />
-              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -938,7 +942,7 @@ const App = () => {
               transition={{ duration: 1.5, times: [0, 0.2, 0.66, 1], ease: "easeInOut" }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <p className="outfit-font text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/60">
+              <p className="outfit-font text-[10px] md:text-xs lg:text-[10px] uppercase tracking-[0.4em] text-white/60">
                 THE WEDDING OF
               </p>
             </motion.div>
@@ -950,7 +954,7 @@ const App = () => {
                   initial={{ opacity: 0, x: 25 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.2, duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
-                  className="italiana-font text-6xl md:text-7xl text-white inline-block"
+                  className="italiana-font text-6xl md:text-7xl lg:text-6xl text-white inline-block"
                 >
                   A
                 </motion.span>
@@ -958,7 +962,7 @@ const App = () => {
                   initial={{ opacity: 0, x: -25 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.2, duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
-                  className="italiana-font text-6xl md:text-7xl text-white inline-block"
+                  className="italiana-font text-6xl md:text-7xl lg:text-6xl text-white inline-block"
                 >
                   R
                 </motion.span>
@@ -967,7 +971,7 @@ const App = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5, duration: 1.2, ease: "easeOut" }}
-                className="outfit-font text-[10px] md:text-xs uppercase tracking-[0.4em] text-white/80"
+                className="outfit-font text-[10px] md:text-xs lg:text-[10px] uppercase tracking-[0.4em] text-white/80"
               >
                 AYU & RUDI
               </motion.p>
@@ -1066,10 +1070,10 @@ const App = () => {
       <CustomCursor />
 
       {/* Main Content Wrapper */}
-      <div className="relative w-full min-h-screen bg-[#F9F8F4] flex flex-col lg:flex-row-reverse overflow-x-hidden">
+      <div className="relative w-full min-h-screen bg-[#F9F8F4] flex flex-col overflow-x-hidden">
         {/* Desktop Sidebar (Cover) */}
         <aside className={cn(
-          "hidden lg:block lg:sticky lg:top-0 lg:h-screen overflow-hidden bg-primary relative transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)]",
+          "hidden lg:block lg:fixed lg:right-0 lg:top-0 lg:h-screen overflow-hidden bg-primary transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)] z-0",
           !isOpen ? "lg:w-full" : "lg:w-[calc(100vw-500px)] lg:flex-none"
         )}>
           <DesktopSidebar guestName={guestName} isOpen={isOpen} onOpen={handleOpenInvitation} />
@@ -1077,7 +1081,7 @@ const App = () => {
 
         {/* Main Content (Scrollable) */}
         <main className={cn(
-          "relative shadow-2xl min-h-screen border-r border-black/5 bg-[#e8e3d8] transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)] origin-left",
+          "relative shadow-2xl min-h-screen border-r border-black/5 bg-[#e8e3d8] transition-all duration-[1200ms] ease-[cubic-bezier(0.77,0,0.175,1)] origin-left z-10",
           !isOpen ? "w-full lg:w-0 lg:opacity-0 lg:overflow-hidden lg:pointer-events-none" : "w-full lg:w-[500px] lg:flex-none lg:opacity-100"
         )}>
           <div className="absolute inset-0 bg-texture opacity-20 pointer-events-none" />
@@ -1132,23 +1136,23 @@ const App = () => {
               <div className="w-full mt-4 md:mt-12">
                 <Reveal delay={0.2} x={-20}>
                   <div className="flex items-center gap-4 mb-3">
-                    <p className={cn("outfit-font text-[10px] md:text-sm uppercase tracking-[0.4em] font-semibold transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>THE WEDDING OF</p>
+                    <p className={cn("outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase tracking-[0.4em] font-semibold transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>THE WEDDING OF</p>
                     <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
                   </div>
                 </Reveal>
                 <Reveal delay={0.4} y={30} duration={1.2}>
                   <h1 className={cn("italiana-font leading-[0.85] transition-colors duration-1000 flex flex-col w-full", !isOpen ? "text-white drop-shadow-2xl" : "text-[#3D4238] drop-shadow-md")}>
-                    <span className="text-[5.5rem] md:text-[7rem]">Ayu</span>
+                    <span className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]">Ayu</span>
                     <div className="flex items-center ml-[3.5rem] md:ml-[6rem] -mt-1 md:-mt-2">
-                      <span className="text-[3.5rem] md:text-[5rem] opacity-60 font-light italic mr-4 md:mr-6">&</span>
-                      <span className="text-[5.5rem] md:text-[7rem]">Rudi</span>
+                      <span className="text-[3.5rem] md:text-[5rem] lg:text-[3.5rem] opacity-60 font-light italic mr-4 md:mr-6">&</span>
+                      <span className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]">Rudi</span>
                     </div>
                   </h1>
                 </Reveal>
                 <Reveal delay={0.6} x={20}>
                   <div className="flex items-center gap-4 mt-6 md:mt-10 w-full">
                     <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
-                    <p className={cn("outfit-font text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>02 AGUSTUS 2026</p>
+                    <p className={cn("outfit-font text-[9px] md:text-[11px] lg:text-[9px] uppercase tracking-[0.3em] font-medium transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>02 AGUSTUS 2026</p>
                   </div>
                 </Reveal>
               </div>
@@ -1165,21 +1169,21 @@ const App = () => {
                       className="absolute inset-0 flex flex-col justify-end pb-8 w-full lg:hidden items-center text-center"
                     >
                       <div className="space-y-1 mb-3">
-                        <p className="serif-font text-[15px] md:text-lg italic text-white/90">Dear,</p>
-                        <p className="outfit-font text-[28px] md:text-[32px] font-bold text-white drop-shadow-md tracking-tight">{guestName}</p>
+                        <p className="serif-font text-[15px] md:text-lg lg:text-[15px] italic text-white/90">Dear,</p>
+                        <p className="outfit-font text-[28px] md:text-[32px] lg:text-[28px] font-bold text-white drop-shadow-md tracking-tight">{guestName}</p>
                       </div>
                       <div className="w-full max-w-[280px] h-[1px] bg-white/40 mb-3" />
-                      <p className="outfit-font text-[9px] md:text-[10px] font-semibold italic opacity-90 text-white max-w-[280px] mb-6 tracking-wide">
+                      <p className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] font-semibold italic opacity-90 text-white max-w-[280px] mb-6 tracking-wide">
                         We apologize if there is any misspelling of name or title.
                       </p>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={handleOpenInvitation}
-                        className="bg-white/30 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-sm text-white inline-flex items-center justify-center gap-3 px-8 py-3.5 transition-colors w-fit shadow-2xl"
+                        className="bg-white/30 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-full text-white inline-flex items-center justify-center gap-3 px-8 py-3.5 transition-colors w-fit shadow-2xl"
                       >
                         <Mail size={16} />
-                        <span className="tracking-[0.2em] text-[10px] md:text-xs font-bold uppercase">OPEN INVITATION</span>
+                        <span className="tracking-[0.2em] text-[10px] md:text-xs lg:text-[10px] font-bold uppercase">OPEN INVITATION</span>
                       </motion.button>
                     </motion.div>
                   ) : (
@@ -1199,10 +1203,10 @@ const App = () => {
                       <div className="mt-8 max-w-xl">
                         <Reveal delay={0.5} x={-20} duration={1.5}>
                           <div className="pl-4 md:pl-5 border-l-[3px] border-[#A68A4D]/60 py-1">
-                            <p className="serif-font text-[14px] md:text-lg italic leading-relaxed text-[#4B4A42] drop-shadow-sm">
+                            <p className="serif-font text-[12.5px] md:text-lg lg:text-[12.5px] italic leading-[1.8] text-[#4B4A42] drop-shadow-sm">
                               "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
                             </p>
-                            <p className="outfit-font text-[10px] md:text-[12px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
+                            <p className="outfit-font text-[9.5px] md:text-[12px] lg:text-[9.5px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
                               QS. Adz Zariyat : 49
                             </p>
                           </div>
@@ -1224,10 +1228,10 @@ const App = () => {
                               };
                               window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                             }}
-                            className="bg-[#50593f] text-white hover:bg-[#3D4238] backdrop-blur-md border border-[#50593f]/40 rounded-sm inline-flex items-center justify-center gap-2 px-5 py-3 shadow-md"
+                            className="bg-[#50593f] text-white hover:bg-[#3D4238] backdrop-blur-md border border-[#50593f]/40 rounded-full inline-flex items-center justify-center gap-2 px-5 py-3 shadow-md"
                           >
                             <Calendar size={14} />
-                            <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SIMPAN KE KALENDER</span>
+                            <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SAVE TO CALENDAR</span>
                           </motion.button>
                         </Reveal>
                       </div>
@@ -1235,7 +1239,7 @@ const App = () => {
                       <motion.div
                         animate={{ y: [0, 10, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="flex flex-col items-center gap-2 text-[#50593f]/80 w-full mt-auto"
+                        className="flex flex-col items-center gap-2 text-[#50593f]/80 w-full mt-auto pt-10"
                       >
                         <span className="outfit-font text-[10px] tracking-[0.4em] font-semibold uppercase">Scroll</span>
                         <ChevronDown size={16} />
@@ -1251,11 +1255,43 @@ const App = () => {
           <div className="w-full">
           
           {/* Welcome Info Section (Desktop Only) */}
-          <section className="relative py-16 px-6 bg-[#F9F8F4] overflow-hidden hidden lg:block">
-            <div className="absolute top-0 right-0 w-32 opacity-30 pointer-events-none">
-              <img src={WEDDING_CONFIG.daunAtas} alt="Ornament" className="w-full h-full object-contain rotate-90" />
+          <section className="relative min-h-screen hidden lg:flex flex-col justify-center px-6 py-20 bg-[#F9F8F4] overflow-hidden">
+            <div className="absolute inset-0 bg-texture opacity-[0.15] pointer-events-none z-0" />
+            <div className="absolute top-0 left-0 w-[28%] max-w-[220px] pointer-events-none opacity-90 z-0">
+              <img src={WEDDING_CONFIG.daunAtas} alt="Botanical Top Left" className="w-full h-full object-contain" />
             </div>
-            <div className="relative z-10">
+            <div className="absolute left-0 bottom-0 w-[28%] max-w-[220px] pointer-events-none opacity-85 z-0">
+              <img src={WEDDING_CONFIG.profileBg} alt="Botanical Bottom Left" className="w-full h-full object-contain rotate-[-10deg]" />
+            </div>
+            <div className="absolute -right-24 top-0 h-full w-[80%] min-w-[420px] pointer-events-none opacity-72 overflow-visible z-0">
+              <img
+                src={WEDDING_CONFIG.floralBg}
+                alt="Floral Ornament"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: '100% 40%' }}
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="relative z-10 w-full mb-auto mt-10">
+              {/* Couple Names for Desktop */}
+              <div className="w-full mb-16">
+                <Reveal delay={0.2} x={-20}>
+                  <div className="flex items-center gap-4 mb-4">
+                    <p className="outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase tracking-[0.4em] font-semibold text-[#50593f]">THE WEDDING OF</p>
+                    <div className="flex-1 h-[1px] bg-[#50593f]/30" />
+                  </div>
+                </Reveal>
+                <Reveal delay={0.4} y={30} duration={1.2}>
+                  <h1 className="italiana-font leading-[0.85] text-[#3D4238] drop-shadow-md flex flex-col w-full">
+                    <span className="text-[3.5rem]">Ayu</span>
+                    <div className="flex items-center ml-[2.5rem] -mt-1">
+                      <span className="text-[2.5rem] opacity-60 font-light italic mr-4">&</span>
+                      <span className="text-[3.5rem]">Rudi</span>
+                    </div>
+                  </h1>
+                </Reveal>
+              </div>
+
               <Reveal delay={0.2} y={20} duration={1.5}>
                 <div className="w-full pr-4">
                   <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-3 md:gap-6" />
@@ -1265,10 +1301,10 @@ const App = () => {
               <div className="mt-10 max-w-xl">
                 <Reveal delay={0.5} x={-20} duration={1.5}>
                   <div className="pl-4 md:pl-5 border-l-[3px] border-[#A68A4D]/60 py-1">
-                    <p className="serif-font text-[14px] md:text-lg italic leading-relaxed text-[#4B4A42] drop-shadow-sm">
+                    <p className="serif-font text-[12.5px] md:text-lg lg:text-[12.5px] italic leading-[1.8] text-[#4B4A42] drop-shadow-sm">
                       "Dan segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah)."
                     </p>
-                    <p className="outfit-font text-[10px] md:text-[12px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
+                    <p className="outfit-font text-[9.5px] md:text-[12px] lg:text-[9.5px] tracking-[0.2em] uppercase text-[#A68A4D] font-semibold mt-3">
                       QS. Adz Zariyat : 49
                     </p>
                   </div>
@@ -1278,12 +1314,12 @@ const App = () => {
               <div className="mt-10 space-y-6 flex flex-col items-start">
                 <Reveal delay={0.8} y={20} duration={1.5}>
                   <div className="flex flex-col items-start gap-2">
-                    <p className="outfit-font text-[11px] md:text-[13px] uppercase tracking-[0.25em] text-[#50593f] font-bold drop-shadow-sm flex items-center gap-2 md:gap-3 flex-wrap">
-                      <span>MINGGU</span>
+                    <p className="outfit-font text-[9.5px] md:text-[13px] lg:text-[9.5px] uppercase tracking-[0.25em] text-[#50593f] font-bold drop-shadow-sm flex items-center gap-2 md:gap-3 flex-wrap">
+                      <span>SUNDAY</span>
                       <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
-                      <span className="cinzel-font text-[14px] md:text-[16px] text-[#BDA76E]">02</span>
+                      <span className="cinzel-font text-[12px] md:text-[16px] lg:text-[12px] text-[#BDA76E]">02</span>
                       <span className="w-1 h-1 rounded-full bg-[#BDA76E]/60" />
-                      <span>AGUSTUS 2026</span>
+                      <span>AUGUST 2026</span>
                     </p>
                     <div className="w-10 md:w-12 h-[2px] bg-[#BDA76E]/80" />
                   </div>
@@ -1303,10 +1339,10 @@ const App = () => {
                       };
                       window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
                     }}
-                    className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3"
+                    className="btn-primary rounded-full inline-flex items-center justify-center gap-2 px-5 py-3"
                   >
                     <Calendar size={14} />
-                    <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SIMPAN KE KALENDER</span>
+                    <span className="tracking-widest text-[10px] sm:text-[11px] font-bold">SAVE TO CALENDAR</span>
                   </motion.button>
                 </Reveal>
               </div>
@@ -1345,7 +1381,7 @@ const App = () => {
               </Reveal>
 
               <Reveal delay={0.5} y={20} duration={2}>
-                <p className="serif-font text-[13px] sm:text-[14px] italic leading-relaxed sm:leading-[1.8] text-white/95 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] max-w-3xl mx-auto px-2">
+                <p className="serif-font text-[11.5px] sm:text-[14px] italic leading-[1.9] sm:leading-[1.8] text-white/95 drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)] max-w-3xl mx-auto px-2">
                   "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir"
                 </p>
               </Reveal>
@@ -1353,7 +1389,7 @@ const App = () => {
               <Reveal delay={1.2} y={10} duration={1.5}>
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-12 h-[1px] bg-[#c6b793]/40 shadow-sm" />
-                  <p className="outfit-font text-[9px] md:text-xs uppercase tracking-[0.4em] font-bold text-[#c6b793] drop-shadow-md">
+                  <p className="outfit-font text-[9px] md:text-xs lg:text-[9px] uppercase tracking-[0.4em] font-bold text-[#c6b793] drop-shadow-md">
                     QS. AR-RUM : 21
                   </p>
                 </div>
@@ -1392,11 +1428,11 @@ const App = () => {
                 </Reveal>
 
                 <Reveal delay={0.4} y={10} duration={1.2}>
-                  <h2 className="italiana-font text-2xl font-bold text-center text-[#3D4238] tracking-widest mb-3">Assalamu'alaikum Wr. Wb.</h2>
+                  <h2 className="italiana-font text-[20px] md:text-2xl lg:text-[20px] font-bold text-center text-[#3D4238] tracking-widest mb-3">Assalamu'alaikum Wr. Wb.</h2>
                 </Reveal>
 
                 <Reveal delay={0.6} y={10} duration={1.5}>
-                  <p className="serif-font text-[14px] md:text-[16px] leading-relaxed text-primary/70 italic text-center max-w-[340px] mx-auto">
+                  <p className="serif-font text-[12.5px] md:text-[16px] lg:text-[12.5px] leading-[1.8] text-primary/70 italic text-center max-w-[340px] mx-auto">
                     Dengan memohon rahmat dan ridho Allah SWT. Kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.
                   </p>
                 </Reveal>
@@ -1494,17 +1530,17 @@ const App = () => {
                     <div className="flex-1 text-center">
                       <Reveal delay={0.2} y={20}>
                         <div className="space-y-0 flex flex-col items-center">
-                          <h3 className="italiana-font text-[24px] md:text-[34px] text-white tracking-wide font-normal leading-tight">
+                          <h3 className="italiana-font text-[24px] md:text-[34px] lg:text-[24px] text-white tracking-wide font-normal leading-tight">
                             {WEDDING_CONFIG.groomNickname}
                           </h3>
-                          <p className="script-font text-[28px] md:text-[40px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
+                          <p className="script-font text-[28px] md:text-[40px] lg:text-[28px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
                             {WEDDING_CONFIG.groomName.split(WEDDING_CONFIG.groomNickname)[1]?.trim() || "Siarudin"}
                           </p>
                         </div>
 
-                        <div className="mt-6 md:mt-8 space-y-1.5">
-                          <p className="outfit-font text-[10px] md:text-[12px] text-white/50 tracking-[0.2em] font-bold uppercase">Putra Terakhir dari</p>
-                          <p className="serif-font text-[12px] md:text-[15px] text-white italic leading-relaxed px-1">
+                        <div className="mt-6 md:mt-8 flex flex-col gap-1 md:gap-2">
+                          <p className="outfit-font text-[9px] md:text-[12px] lg:text-[9px] text-white/50 tracking-[0.2em] font-bold uppercase">Putra Terakhir</p>
+                          <p className="serif-font text-[11.5px] md:text-[15px] lg:text-[11.5px] text-white italic leading-[1.8] px-1">
                             {WEDDING_CONFIG.groomParents}
                           </p>
                         </div>
@@ -1524,17 +1560,17 @@ const App = () => {
                     <div className="flex-1 text-center">
                       <Reveal delay={0.4} y={20}>
                         <div className="space-y-0 flex flex-col items-center">
-                          <h3 className="italiana-font text-[24px] md:text-[34px] text-white tracking-wide font-normal leading-tight">
+                          <h3 className="italiana-font text-[20px] md:text-[34px] lg:text-[20px] text-white tracking-wide font-normal leading-tight">
                             {WEDDING_CONFIG.brideNickname}
                           </h3>
-                          <p className="script-font text-[28px] md:text-[40px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
+                          <p className="script-font text-[28px] md:text-[40px] lg:text-[28px] text-[#c6b793] leading-none mt-[-2px] md:mt-[-6px]">
                             {WEDDING_CONFIG.brideName.split(WEDDING_CONFIG.brideNickname)[1]?.trim() || "Saputri"}
                           </p>
                         </div>
 
-                        <div className="mt-6 md:mt-8 space-y-1.5">
-                          <p className="outfit-font text-[10px] md:text-[12px] text-white/50 tracking-[0.2em] font-bold uppercase">Putri Pertama dari</p>
-                          <p className="serif-font text-[12px] md:text-[15px] text-white italic leading-relaxed px-1">
+                        <div className="mt-6 md:mt-8 flex flex-col gap-1 md:gap-2">
+                          <p className="outfit-font text-[9px] md:text-[12px] lg:text-[9px] text-white/50 tracking-[0.2em] font-bold uppercase">Putri Pertama</p>
+                          <p className="serif-font text-[11.5px] md:text-[15px] lg:text-[11.5px] text-white italic leading-[1.8] px-1">
                             {WEDDING_CONFIG.brideParents}
                           </p>
                         </div>
@@ -1556,24 +1592,6 @@ const App = () => {
             </div>
           </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           {/* Event Details */}
           <section id="event" className="py-24 px-6 space-y-16 relative overflow-hidden bg-[#F9F8F4]">
             {/* Background Ornaments */}
@@ -1584,13 +1602,13 @@ const App = () => {
 
             <Reveal y={30}>
               <div className="text-center space-y-4 mb-16 relative z-10">
-                <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Simpan Tanggalnya</p>
+                <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Save The Date</p>
                 <div className="flex items-center justify-center gap-4">
                   <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
                   <Calendar size={14} className="text-[#c6b793]/60" />
                   <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
                 </div>
-                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Waktu & Tempat</h2>
+                <h2 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-[#3D4238]">Time & Location</h2>
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-[1px] w-8 bg-[#c6b793]/40" />
                   <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
@@ -1623,9 +1641,9 @@ const App = () => {
 
                       <Reveal delay={0.4} scale={0.9} duration={1.5}>
                         <div className="flex items-center justify-center gap-6">
-                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">Agustus</p>
+                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">August</p>
                           <div className="flex flex-col items-center border-x border-white/20 px-6">
-                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Minggu</p>
+                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Sunday</p>
                             <p className="cinzel-font text-3xl font-bold border-b-2 border-gold/60 pb-1">02</p>
                           </div>
                           <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">2026</p>
@@ -1653,9 +1671,9 @@ const App = () => {
 
                       <Reveal delay={0.5} scale={0.9} duration={1.5}>
                         <div className="flex items-center justify-center gap-6">
-                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">Agustus</p>
+                          <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">August</p>
                           <div className="flex flex-col items-center border-x border-white/20 px-6">
-                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Minggu</p>
+                            <p className="outfit-font text-[10px] tracking-[0.3em] opacity-60 uppercase mb-1">Sunday</p>
                             <p className="cinzel-font text-3xl font-bold border-b-2 border-gold/60 pb-1">02</p>
                           </div>
                           <p className="cinzel-font text-sm tracking-[0.3em] font-bold opacity-80 uppercase">2026</p>
@@ -1683,17 +1701,17 @@ const App = () => {
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
                           <MapPin size={14} className="opacity-60" />
-                          Peta Lokasi
+                          Location Map
                         </motion.a>
                         <motion.a
                           href={WEDDING_CONFIG.liveStreamingLink}
                           target="_blank"
                           whileHover={{ scale: 1.05, backgroundColor: "rgba(255,0,0,0.1)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-[5px] backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
+                          className="inline-flex items-center gap-3 px-10 py-4 border border-white/40 rounded-full backdrop-blur-md text-[9.5px] font-bold tracking-[0.3em] uppercase transition-all duration-300 w-full sm:w-auto text-center justify-center font-outfit"
                         >
                           <div className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
                           Live Streaming
@@ -1756,7 +1774,7 @@ const App = () => {
                           }}
                         />
                       </div>
-                      <span className="outfit-font text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] text-neutral/60 transition-colors duration-500 group-hover:text-[#c6b793] text-center w-[120px]">
+                      <span className="outfit-font text-[8px] md:text-[9px] lg:text-[8px] font-bold uppercase tracking-[0.3em] text-neutral/60 transition-colors duration-500 group-hover:text-[#c6b793] text-center w-[120px]">
                         {item.name}
                       </span>
                     </motion.div>
@@ -1798,13 +1816,13 @@ const App = () => {
             <div className="relative z-10 max-w-2xl mx-auto">
               <Reveal>
                 <div className="text-center space-y-4 mb-16">
-                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Perjalanan Cinta Kami</p>
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#c6b793] font-bold">Our Journey</p>
                   <div className="flex items-center justify-center gap-4">
                     <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
                     <Sparkles size={14} className="text-[#c6b793]/60" />
                     <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
                   </div>
-                  <h2 className="italiana-font text-4xl md:text-5xl text-white drop-shadow-md">Kisah Cinta Kami</h2>
+                  <h2 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-white drop-shadow-md">Love Story</h2>
                   <div className="flex items-center justify-center gap-3">
                     <div className="h-[1px] w-8 bg-[#c6b793]/40" />
                     <Heart size={10} className="text-[#c6b793]" />
@@ -1845,8 +1863,8 @@ const App = () => {
                         <p className="outfit-font text-[8px] text-[#c6b793] font-bold tracking-[0.4em] uppercase mb-2">
                           {story.chapter}
                         </p>
-                        <h3 className="italiana-font text-2xl md:text-3xl text-white mb-4 drop-shadow-sm">{story.title}</h3>
-                        <p className="text-[12px] md:text-[13px] text-white/80 leading-[2] serif-font font-light italic">
+                        <h3 className="italiana-font text-[22px] md:text-3xl lg:text-[22px] text-white mb-4 drop-shadow-sm">{story.title}</h3>
+                        <p className="text-[11px] md:text-[13px] lg:text-[11px] text-white/80 leading-[2.2] serif-font font-light italic">
                           "{story.desc}"
                         </p>
                       </div>
@@ -1865,13 +1883,13 @@ const App = () => {
 
             <Reveal y={30}>
               <div className="text-center space-y-4 mb-16 relative z-10">
-                <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Mengabadikan</p>
+                <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Capturing</p>
                 <div className="flex items-center justify-center gap-4">
                   <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
                   <Camera size={14} className="text-[#c6b793]/60" />
                   <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
                 </div>
-                <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238]">Momen Indah Kami</h2>
+                <h2 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-[#3D4238]">Our Moments</h2>
                 <div className="flex items-center justify-center gap-3">
                   <div className="h-[1px] w-8 bg-[#c6b793]/40" />
                   <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
@@ -1897,41 +1915,16 @@ const App = () => {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-4xl mx-auto px-4 relative z-10 pt-8 pb-16">
-              {WEDDING_CONFIG.galleryImages.map((_, i) => {
-                // Determine a slight random-looking rotation for the polaroid
-                const rotations = [-3, 3, -4, 4, -2, 2, -3, 3, -4, 4, -2, 2];
-                const finalRotate = rotations[i % rotations.length];
-
-                return (
-                  <div key={i} className="pt-2">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9, rotate: finalRotate - 5, y: 50 }}
-                      whileInView={{ opacity: 1, scale: 1, rotate: finalRotate, y: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 100,
-                        damping: 15,
-                        delay: (i % 2) * 0.1
-                      }}
-                      className="bg-[#fcfbf9] p-2 pb-8 md:p-3 md:pb-12 shadow-[0_15px_30px_rgba(0,0,0,0.1)] border border-black/5 group cursor-pointer hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] hover:z-50 transition-shadow duration-500 relative"
-                      style={{ transformOrigin: 'center center' }}
-                    >
-                      {/* Subtle tape effect at top */}
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 backdrop-blur-sm border border-white/20 rotate-[-2deg] shadow-sm z-20 opacity-70" />
-
-                      <div className="overflow-hidden bg-neutral/10 aspect-square">
-                        <GalleryItem
-                          index={i}
-                          onClick={() => setSelectedGalleryImage(i)}
-                          className="w-full h-full filter contrast-[1.05] brightness-[1.02] transform group-hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
-                    </motion.div>
-                  </div>
-                );
-              })}
+            <div className="columns-2 md:columns-3 lg:columns-2 gap-3 md:gap-4 max-w-6xl mx-auto px-4 relative z-10 pt-8 pb-16">
+              {WEDDING_CONFIG.galleryImages.map((_, i) => (
+                <div key={i} className="break-inside-avoid mb-3 md:mb-4">
+                  <GalleryItem
+                    index={i}
+                    onClick={() => setSelectedGalleryImage(i)}
+                    className="w-full rounded-[10px] md:rounded-[14px] shadow-sm hover:shadow-xl transition-all duration-700 border border-black/5"
+                  />
+                </div>
+              ))}
             </div>
           </section>
 
@@ -1951,13 +1944,13 @@ const App = () => {
 
               <Reveal delay={0.4} y={20} duration={1.5}>
                 <div className="text-center space-y-4 mb-10 relative z-10">
-                  <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Wedding Gift</p>
+                  <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Share The Joy</p>
                   <div className="flex items-center justify-center gap-4">
                     <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
                     <Gift size={16} className="text-[#c6b793]/60" />
                     <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
                   </div>
-                  <h2 className="italiana-font text-4xl text-[#f7f1e6] drop-shadow-sm">Kado Pernikahan</h2>
+                  <h2 className="italiana-font text-4xl text-[#f7f1e6] drop-shadow-sm">Wedding Gift</h2>
                   <div className="flex items-center justify-center gap-3">
                     <div className="h-[1px] w-8 bg-[#c6b793]/40" />
                     <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
@@ -1992,7 +1985,7 @@ const App = () => {
             <div className="relative z-10 pt-20 pb-8 px-6">
               <Reveal y={20} duration={1.5}>
                 <div className="text-center space-y-6 max-w-sm mx-auto">
-                  <p className="outfit-font text-[9px] uppercase tracking-[0.5em] text-[#50593f]/50 font-bold">Wedding Wishes</p>
+                  <p className="outfit-font text-[9px] lg:text-[9px] uppercase tracking-[0.5em] text-[#50593f]/50 font-bold">Guest Book</p>
 
                   <div className="flex items-center justify-center gap-4">
                     <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#50593f]/15" />
@@ -2005,8 +1998,8 @@ const App = () => {
                     <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#50593f]/15" />
                   </div>
 
-                  <h2 className="italiana-font text-4xl md:text-5xl text-[#3D4238] leading-tight">
-                    Ucapan & Doa
+                  <h2 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-[#3D4238] leading-tight">
+                    Wedding Wishes
                   </h2>
 
                   <div className="flex items-center justify-center gap-4">
@@ -2096,7 +2089,7 @@ const App = () => {
                     <Heart size={14} className="text-[#c6b793]/60" />
                     <div className="w-12 h-[0.5px] bg-[#c6b793]/40" />
                   </div>
-                  <p className="serif-font text-[14px] md:text-base italic leading-[2] text-[#50593f]/80 px-4 max-w-lg mx-auto">
+                  <p className="serif-font text-[14px] md:text-base lg:text-[14px] italic leading-[2] text-[#50593f]/80 px-4 max-w-lg mx-auto">
                     "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu."
                   </p>
                   <p className="serif-font text-base font-bold italic text-[#50593f]/90 pt-4">
@@ -2143,7 +2136,7 @@ const App = () => {
                 
                 <Reveal delay={1.3} scale={0.98} duration={2}>
                   <div className="relative inline-block px-4">
-                    <h2 className="italiana-font text-[2.8rem] md:text-[3.5rem] text-[#3D4238] drop-shadow-sm">Ayu & Rudi</h2>
+                    <h2 className="italiana-font text-[2.8rem] md:text-[3.5rem] lg:text-[2.8rem] text-[#3D4238] drop-shadow-sm">Ayu & Rudi</h2>
                     {/* Delicate under-text ornament */}
                     <div className="flex items-center justify-center gap-4 mt-4 opacity-40">
                       <div className="h-[0.5px] flex-1 bg-gradient-to-r from-transparent to-[#c6b793]" />
