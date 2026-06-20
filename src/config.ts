@@ -34,7 +34,7 @@ export const WEDDING_CONFIG = {
   // Rekening Bank / Hadiah
   bankName: 'BCA',
   bankAccount: '5730 3703 95',
-  bankAccountName: "RUDI SI'ARUDIN",
+  bankAccountName: "Rudi Si'arudin",
   bankAccountToCopy: '5730370395',
 
   physicalGiftAddress: 'Jl. Metro Jaya No. 3 Kayu Putih Jakarta Timur',
