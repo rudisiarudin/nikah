@@ -2014,7 +2014,7 @@ const App = () => {
                 {/* Row 1: Images */}
                 <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-3 md:gap-4 w-full pr-4 md:pr-8 h-[200px] md:h-[260px] items-stretch">
                   {galleryRow1.map((_, idx) => (
-                    <div key={`row1-${idx}`} className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
+                    <div key={`row1-${idx}`} className="shrink-0 h-full snap-center">
                       <GalleryItem
                         index={idx}
                         onClick={() => setSelectedGalleryImage(idx)}
@@ -2027,8 +2027,8 @@ const App = () => {
                 {/* Row 2: Video + Images */}
                 <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-3 md:gap-4 w-full pr-4 md:pr-8 h-[200px] md:h-[260px] items-stretch">
                   {/* Video Card */}
-                  <div className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
-                    <div className="relative h-full w-auto shadow-sm hover:shadow-lg transition-all duration-700 bg-black group cursor-pointer">
+                  <div className="shrink-0 h-full snap-center aspect-[16/9]">
+                    <div className="relative h-full w-full shadow-sm hover:shadow-lg transition-all duration-700 bg-black group cursor-pointer overflow-hidden">
                       <video
                         autoPlay
                         loop
@@ -2036,7 +2036,7 @@ const App = () => {
                         playsInline
                         preload="metadata"
                         poster={galleryRow1[0]}
-                        className="w-auto h-full max-w-none object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
+                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
                       >
                         <source src="/video/video-gallery.mp4" type="video/mp4" />
                       </video>
@@ -2047,7 +2047,7 @@ const App = () => {
                   {galleryRow2.map((_, idx) => {
                     const originalIndex = halfGalleryLength + idx;
                     return (
-                      <div key={`row2-${idx}`} className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
+                      <div key={`row2-${idx}`} className="shrink-0 h-full snap-center">
                         <GalleryItem
                           index={originalIndex}
                           onClick={() => setSelectedGalleryImage(originalIndex)}
