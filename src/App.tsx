@@ -23,13 +23,11 @@ import {
   Mail
 } from 'lucide-react';
 import { Player } from '@lottiefiles/react-lottie-player';
-import birdAnimation from '../public/lottie_birds.json';
 import { QRCodeSVG } from 'qrcode.react';
 import { cn } from './lib/utils';
 import { WEDDING_CONFIG } from './config';
 import { Reveal } from './components/Reveal';
 import Lottie from 'lottie-react';
-import birdsData from '../public/lottie_birds.json';
 import { supabase } from './lib/supabase';
 
 // --- Types ---
@@ -136,38 +134,36 @@ const GiftModal = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[50px] relative">
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {!isOpen ? (
           <motion.button
             key="btn"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, position: 'absolute' }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             onClick={() => setIsOpen(true)}
-            className="px-8 py-3.5 bg-[#fcfbf9] text-[#3D4238] border border-white/20 rounded-full font-serif text-[12px] tracking-widest uppercase transition-colors hover:bg-white shadow-[0_10px_25px_rgba(0,0,0,0.2)] relative z-10"
+            className="px-8 py-3.5 bg-transparent text-white border border-white/40 rounded-full font-serif text-[12px] tracking-widest uppercase transition-colors hover:bg-white/10 relative z-10"
           >
             SEND GIFT
           </motion.button>
         ) : (
           <motion.div
             key="card"
-            initial={{ opacity: 0, y: 15, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.98 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full max-w-[400px] bg-[#FDFBF7]/90 backdrop-blur-md rounded-[16px] border border-[#50593f]/10 overflow-hidden shadow-2xl relative z-20"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full max-w-[400px] bg-black/30 backdrop-blur-md rounded-[16px] border border-white/10 overflow-hidden relative z-20"
           >
             {/* CLOSE button row */}
             <div className="flex justify-end p-4 pb-0 relative z-30">
               <button
                 onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
-                className="w-8 h-8 rounded-full bg-[#50593f]/5 hover:bg-[#50593f]/10 flex items-center justify-center transition-colors group"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors group"
                 aria-label="Close"
               >
-                <X size={14} className="text-[#50593f]/60 group-hover:text-[#50593f] transition-colors" />
+                <X size={16} className="text-white/60 group-hover:text-white transition-colors" />
               </button>
             </div>
 
@@ -175,54 +171,54 @@ const GiftModal = () => {
             <div className="flex flex-col px-6 pb-6 mt-2">
               
               {/* Row 1: BCA */}
-              <div className="flex items-center justify-between py-5 border-b border-[#50593f]/10">
+              <div className="flex items-center justify-between py-5 border-b border-white/10">
                 <div className="flex items-center gap-5">
-                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-[#50593f]/5">
-                    <img src="/images/bca.png" alt="BCA" className="w-full h-full object-contain" />
+                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-white/5">
+                    <img src="/images/bca.webp" alt="BCA" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex flex-col text-left">
-                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-0.5">{WEDDING_CONFIG.bankAccountName}</p>
-                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">{WEDDING_CONFIG.bankAccount} - BCA</p>
+                    <p className="text-white font-bold text-[13px] tracking-wide mb-0.5">{WEDDING_CONFIG.bankAccountName}</p>
+                    <p className="text-white/70 text-[12px] font-mono tracking-wider">{WEDDING_CONFIG.bankAccount} - BCA</p>
                   </div>
                 </div>
                 <button
                   onClick={() => copyToClipboard(WEDDING_CONFIG.bankAccountToCopy)}
-                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  className="w-9 h-9 border border-white/10 rounded-[10px] flex items-center justify-center shrink-0 ml-2"
                   title="Salin Rekening"
                 >
-                  {copiedText === WEDDING_CONFIG.bankAccountToCopy ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                  {copiedText === WEDDING_CONFIG.bankAccountToCopy ? <Check size={14} className="text-white" /> : <Copy size={14} className="text-white/70" />}
                 </button>
               </div>
 
               {/* Row 2: SeaBank */}
-              <div className="flex items-center justify-between py-5 border-b border-[#50593f]/10">
+              <div className="flex items-center justify-between py-5 border-b border-white/10">
                 <div className="flex items-center gap-5">
-                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-[#50593f]/5">
+                  <div className="w-11 h-11 bg-white rounded-[10px] flex items-center justify-center p-2 shadow-sm shrink-0 border border-white/5">
                     <img src="https://assets.zonalogo.com/finance/seabank.co.id/logo-1772115609286-848.svg" alt="SeaBank" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex flex-col text-left">
-                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-0.5">Ayu Dewi Saputri</p>
-                    <p className="text-[#50593f]/70 text-[12px] font-mono tracking-wider">901364511113 - SeaBank</p>
+                    <p className="text-white font-bold text-[13px] tracking-wide mb-0.5">Ayu Dewi Saputri</p>
+                    <p className="text-white/70 text-[12px] font-mono tracking-wider">901364511113 - SeaBank</p>
                   </div>
                 </div>
                 <button
                   onClick={() => copyToClipboard('901364511113')}
-                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  className="w-9 h-9 border border-white/10 rounded-[10px] flex items-center justify-center shrink-0 ml-2"
                   title="Salin Rekening"
                 >
-                  {copiedText === '901364511113' ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                  {copiedText === '901364511113' ? <Check size={14} className="text-white" /> : <Copy size={14} className="text-white/70" />}
                 </button>
               </div>
 
-              {/* Row 2: Physical Gift */}
+              {/* Row 3: Physical Gift */}
               <div className="flex items-center justify-between py-5">
                 <div className="flex items-center gap-5">
-                  <div className="w-11 h-11 bg-[#50593f]/5 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center shrink-0 shadow-sm">
-                    <Gift size={18} className="text-[#50593f]/70" />
+                  <div className="w-11 h-11 border border-white/10 rounded-[10px] flex items-center justify-center shrink-0">
+                    <Gift size={18} className="text-white/70" />
                   </div>
                   <div className="flex flex-col text-left">
-                    <p className="text-[#3D4238] font-bold text-[13px] tracking-wide mb-1">Send Gift</p>
-                    <p className="text-[#50593f]/70 text-[11px] leading-relaxed max-w-[190px]">
+                    <p className="text-white font-bold text-[13px] tracking-wide mb-1">Send Gift</p>
+                    <p className="text-white/70 text-[11px] leading-relaxed max-w-[190px]">
                       Ayu & Rudi<br/>
                       {WEDDING_CONFIG.physicalGiftAddress}
                     </p>
@@ -230,10 +226,10 @@ const GiftModal = () => {
                 </div>
                 <button
                   onClick={() => copyToClipboard(WEDDING_CONFIG.physicalGiftAddress)}
-                  className="w-9 h-9 bg-[#50593f]/5 hover:bg-[#50593f]/10 border border-[#50593f]/10 rounded-[10px] flex items-center justify-center transition-colors shrink-0 ml-2 shadow-sm"
+                  className="w-9 h-9 border border-white/10 rounded-[10px] flex items-center justify-center shrink-0 ml-2"
                   title="Salin Alamat"
                 >
-                  {copiedText === WEDDING_CONFIG.physicalGiftAddress ? <Check size={14} className="text-[#50593f]" /> : <Copy size={14} className="text-[#50593f]/70" />}
+                  {copiedText === WEDDING_CONFIG.physicalGiftAddress ? <Check size={14} className="text-white" /> : <Copy size={14} className="text-white/70" />}
                 </button>
               </div>
 
@@ -585,7 +581,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden shadow-2xl cursor-pointer group border border-white/10",
+        "relative overflow-hidden cursor-pointer group border border-white/10",
         className
       )}
     >
@@ -596,7 +592,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
         layoutId={`image-${index}`}
         src={WEDDING_CONFIG.galleryImages[index]}
         alt={`Gallery ${index + 1}`}
-        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        className="h-full w-auto max-w-none object-cover transition-transform duration-1000 group-hover:scale-110"
         loading="lazy"
       />
 
@@ -752,38 +748,89 @@ const LeafOrnament = ({ className, rotate = 0, delay = 0, parallaxSpeed = 0 }: {
 const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOpen: boolean; onOpen: () => void }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 md:p-16 text-white overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <img
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.img
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
           src={WEDDING_CONFIG.coverImageLeft}
           alt="Sidebar Background"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        
+        {/* Lottie Bird Animation */}
+        <div className="absolute top-[15%] left-[5%] w-[300px] pointer-events-none opacity-70 z-[5]">
+          <Player
+            autoplay
+            loop
+            src="/lottie_birds.json"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
       </div>
 
       <div className="relative z-10 w-full max-w-2xl flex flex-col items-center">
-        <Reveal delay={0.2} y={20}>
-          <div className="flex items-center justify-center gap-4 mb-8 w-full">
-            <p className="outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase tracking-[0.4em] font-semibold">THE WEDDING OF</p>
-            <div className="w-16 md:w-32 h-[1px] bg-white/40" />
-          </div>
-        </Reveal>
+        <div className="flex items-center justify-center gap-4 mb-8 w-full overflow-hidden">
+          <motion.p 
+            initial={{ opacity: 0, letterSpacing: "0.1em" }}
+            animate={{ opacity: 1, letterSpacing: "0.4em" }}
+            transition={{ duration: 1.5, delay: 4.2, ease: "easeOut" }}
+            className="outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase font-semibold whitespace-nowrap"
+          >
+            THE WEDDING OF
+          </motion.p>
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.2, delay: 4.5, ease: "easeInOut" }}
+            className="w-16 md:w-32 h-[1px] bg-white/40 origin-left" 
+          />
+        </div>
         
-        <Reveal delay={0.4} scale={0.9} y={30} duration={1.2}>
-          <h1 className="italiana-font text-[5rem] md:text-[7rem] lg:text-[5rem] leading-[0.85] text-white drop-shadow-2xl flex flex-col items-center text-center w-full">
-            <span className="pr-12 md:pr-24">Ayu</span>
-            <span className="text-4xl md:text-6xl lg:text-4xl opacity-50 font-light italic my-2 md:my-4">&</span>
-            <span className="pl-12 md:pl-24">Rudi</span>
-          </h1>
-        </Reveal>
+        <h1 className="italiana-font text-[5rem] md:text-[7rem] lg:text-[5rem] leading-[0.85] text-white drop-shadow-2xl flex flex-col items-center text-center w-full">
+          <motion.span 
+            initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.5, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
+            className="pr-12 md:pr-24"
+          >
+            Ayu
+          </motion.span>
+          <motion.span 
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 0.5, scale: 1 }}
+            transition={{ duration: 1.5, delay: 5.2, ease: "easeOut" }}
+            className="text-4xl md:text-6xl lg:text-4xl font-light italic my-2 md:my-4"
+          >
+            &
+          </motion.span>
+          <motion.span 
+            initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.5, delay: 5.5, ease: [0.16, 1, 0.3, 1] }}
+            className="pl-12 md:pl-24"
+          >
+            Rudi
+          </motion.span>
+        </h1>
 
-        <Reveal delay={0.6} y={10}>
-          <div className="flex items-center justify-center gap-4 mt-12 w-full">
-            <div className="w-16 md:w-32 h-[1px] bg-white/40" />
-            <p className="outfit-font text-[9px] md:text-xs lg:text-[9px] uppercase tracking-[0.3em] font-medium">02 AGUSTUS 2026</p>
-          </div>
-        </Reveal>
+        <div className="flex items-center justify-center gap-4 mt-12 w-full overflow-hidden">
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.2, delay: 5.8, ease: "easeInOut" }}
+            className="w-16 md:w-32 h-[1px] bg-white/40 origin-right" 
+          />
+          <motion.p 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 6.1, ease: "easeOut" }}
+            className="outfit-font text-[9px] md:text-xs lg:text-[9px] uppercase tracking-[0.3em] font-medium whitespace-nowrap"
+          >
+            02 AGUSTUS 2026
+          </motion.p>
+        </div>
       </div>
 
       <div className="relative z-10 w-full pt-16 mt-8">
@@ -791,27 +838,34 @@ const DesktopSidebar = ({ guestName, isOpen, onOpen }: { guestName: string; isOp
           {!isOpen && (
             <motion.div
               key="opening"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
               transition={{ duration: 0.8 }}
               className="flex flex-col items-center text-center space-y-6"
             >
               <div className="space-y-2">
-                <p className="serif-font text-sm md:text-base lg:text-sm italic">Dear,</p>
-                <p className="outfit-font text-2xl md:text-3xl lg:text-2xl font-bold">{guestName}</p>
+                <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 6.4, duration: 1 }} className="serif-font text-sm md:text-base lg:text-sm italic">Dear,</motion.p>
+                <motion.p initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} transition={{ delay: 6.6, duration: 1, ease: "easeOut" }} className="outfit-font text-2xl md:text-3xl lg:text-2xl font-bold">{guestName}</motion.p>
               </div>
-              <div className="w-full max-w-[250px] h-[1px] bg-white/30" />
-              <p className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] italic opacity-80 mt-[-10px]">
-                Tanpa mengurangi rasa hormat, mohon maaf bila ada kesalahan penulisan nama/gelar.
-              </p>
+              <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 6.8, duration: 1 }} className="w-full max-w-[250px] h-[1px] bg-white/30 origin-center" />
+              <div className="mt-[-10px]">
+                <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 7.0, duration: 1 }} className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] italic opacity-80">
+                  Tanpa mengurangi rasa hormat, mohon maaf bila ada kesalahan penulisan nama/gelar.
+                </motion.p>
+              </div>
               <motion.button
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0, boxShadow: ["0 0 0px rgba(255,255,255,0)", "0 0 20px rgba(255,255,255,0.4)", "0 0 0px rgba(255,255,255,0)"] }}
+                transition={{ opacity: { duration: 0.8, delay: 7.2 }, y: { duration: 0.8, delay: 7.2 }, boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 7.2 } }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onOpen}
                 className="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 rounded-full text-white inline-flex items-center justify-center gap-3 px-6 py-3 mt-4 transition-colors w-fit"
               >
-                <Mail size={16} />
+                <motion.div animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+                  <Mail size={16} />
+                </motion.div>
                 <span className="tracking-widest text-xs font-bold uppercase">OPEN INVITATION</span>
               </motion.button>
             </motion.div>
@@ -831,6 +885,10 @@ const App = () => {
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<number | null>(null);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const halfGalleryLength = Math.ceil(WEDDING_CONFIG.galleryImages.length / 2);
+  const galleryRow1 = WEDDING_CONFIG.galleryImages.slice(0, halfGalleryLength);
+  const galleryRow2 = WEDDING_CONFIG.galleryImages.slice(halfGalleryLength);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -1095,9 +1153,15 @@ const App = () => {
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1.2, ease: "easeInOut" }}
-                  className="absolute inset-0 z-[5]"
+                  className="absolute inset-0 z-[5] overflow-hidden"
                 >
-                  <img src={WEDDING_CONFIG.coverImageLeft} alt="Cover" className="w-full h-full object-cover" />
+                  <motion.img
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+                    src={WEDDING_CONFIG.coverImageLeft}
+                    alt="Cover"
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
                 </motion.div>
               )}
@@ -1127,34 +1191,75 @@ const App = () => {
               <Player
                 autoplay
                 loop
-                src={birdAnimation}
+                src="/lottie_birds.json"
                 style={{ width: '100%', height: '100%' }}
               />
             </div>
 
             <div className="relative z-10 flex flex-col items-start justify-center w-full h-full max-w-5xl mx-auto px-6 md:px-16 pt-16 pb-28 md:py-24 text-left">
               <div className="w-full mt-4 md:mt-12">
-                <Reveal delay={0.2} x={-20}>
-                  <div className="flex items-center gap-4 mb-3">
-                    <p className={cn("outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase tracking-[0.4em] font-semibold transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>THE WEDDING OF</p>
-                    <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
+                <div className="flex items-center gap-4 mb-3 overflow-hidden">
+                  <motion.p 
+                    initial={{ opacity: 0, letterSpacing: "0.1em" }}
+                    animate={{ opacity: 1, letterSpacing: "0.4em" }}
+                    transition={{ duration: 1.5, delay: 4.2, ease: "easeOut" }}
+                    className={cn("outfit-font text-[10px] md:text-sm lg:text-[10px] uppercase font-semibold transition-colors duration-1000 whitespace-nowrap", !isOpen ? "text-white/90" : "text-[#50593f]")}
+                  >
+                    THE WEDDING OF
+                  </motion.p>
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1.2, delay: 4.5, ease: "easeInOut" }}
+                    className={cn("flex-1 h-[1px] origin-left transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} 
+                  />
+                </div>
+                
+                <h1 className={cn("italiana-font leading-[0.85] transition-colors duration-1000 flex flex-col w-full", !isOpen ? "text-white drop-shadow-2xl" : "text-[#3D4238] drop-shadow-md")}>
+                  <motion.span 
+                    initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 1.5, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]"
+                  >
+                    Ayu
+                  </motion.span>
+                  <div className="flex items-center ml-[3.5rem] md:ml-[6rem] -mt-1 md:-mt-2">
+                    <motion.span 
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 0.6, scale: 1 }}
+                      transition={{ duration: 1.5, delay: 5.2, ease: "easeOut" }}
+                      className="text-[3.5rem] md:text-[5rem] lg:text-[3.5rem] font-light italic mr-4 md:mr-6"
+                    >
+                      &
+                    </motion.span>
+                    <motion.span 
+                      initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ duration: 1.5, delay: 5.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]"
+                    >
+                      Rudi
+                    </motion.span>
                   </div>
-                </Reveal>
-                <Reveal delay={0.4} y={30} duration={1.2}>
-                  <h1 className={cn("italiana-font leading-[0.85] transition-colors duration-1000 flex flex-col w-full", !isOpen ? "text-white drop-shadow-2xl" : "text-[#3D4238] drop-shadow-md")}>
-                    <span className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]">Ayu</span>
-                    <div className="flex items-center ml-[3.5rem] md:ml-[6rem] -mt-1 md:-mt-2">
-                      <span className="text-[3.5rem] md:text-[5rem] lg:text-[3.5rem] opacity-60 font-light italic mr-4 md:mr-6">&</span>
-                      <span className="text-[5.5rem] md:text-[7rem] lg:text-[5.5rem]">Rudi</span>
-                    </div>
-                  </h1>
-                </Reveal>
-                <Reveal delay={0.6} x={20}>
-                  <div className="flex items-center gap-4 mt-6 md:mt-10 w-full">
-                    <div className={cn("flex-1 h-[1px] transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} />
-                    <p className={cn("outfit-font text-[9px] md:text-[11px] lg:text-[9px] uppercase tracking-[0.3em] font-medium transition-colors duration-1000", !isOpen ? "text-white/90" : "text-[#50593f]")}>02 AGUSTUS 2026</p>
-                  </div>
-                </Reveal>
+                </h1>
+
+                <div className="flex items-center gap-4 mt-6 md:mt-10 w-full overflow-hidden">
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1.2, delay: 5.8, ease: "easeInOut" }}
+                    className={cn("flex-1 h-[1px] origin-right transition-colors duration-1000", !isOpen ? "bg-white/40" : "bg-[#50593f]/30")} 
+                  />
+                  <motion.p 
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, delay: 6.1, ease: "easeOut" }}
+                    className={cn("outfit-font text-[9px] md:text-[11px] lg:text-[9px] uppercase tracking-[0.3em] font-medium transition-colors duration-1000 whitespace-nowrap", !isOpen ? "text-white/90" : "text-[#50593f]")}
+                  >
+                    02 AGUSTUS 2026
+                  </motion.p>
+                </div>
               </div>
 
               <div className="w-full relative mt-8 flex-1 min-h-[300px]">
@@ -1162,27 +1267,34 @@ const App = () => {
                   {!isOpen ? (
                     <motion.div
                       key="opening"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
                       transition={{ duration: 0.8 }}
                       className="absolute inset-0 flex flex-col justify-end pb-8 w-full lg:hidden items-center text-center"
                     >
                       <div className="space-y-1 mb-3">
-                        <p className="serif-font text-[15px] md:text-lg lg:text-[15px] italic text-white/90">Dear,</p>
-                        <p className="outfit-font text-[28px] md:text-[32px] lg:text-[28px] font-bold text-white drop-shadow-md tracking-tight">{guestName}</p>
+                        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 6.4, duration: 1 }} className="serif-font text-[15px] md:text-lg lg:text-[15px] italic text-white/90">Dear,</motion.p>
+                        <motion.p initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} transition={{ delay: 6.6, duration: 1, ease: "easeOut" }} className="outfit-font text-[28px] md:text-[32px] lg:text-[28px] font-bold text-white drop-shadow-md tracking-tight">{guestName}</motion.p>
                       </div>
-                      <div className="w-full max-w-[280px] h-[1px] bg-white/40 mb-3" />
-                      <p className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] font-semibold italic opacity-90 text-white max-w-[280px] mb-6 tracking-wide">
-                        We apologize if there is any misspelling of name or title.
-                      </p>
+                      <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 6.8, duration: 1 }} className="w-full max-w-[280px] h-[1px] bg-white/40 mb-3 origin-center" />
+                      <div className="mb-6 pt-3">
+                        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 7.0, duration: 1 }} className="outfit-font text-[9px] md:text-[10px] lg:text-[9px] font-semibold italic opacity-90 text-white max-w-[280px] tracking-wide">
+                          Tanpa mengurangi rasa hormat, mohon maaf bila ada kesalahan penulisan nama/gelar.
+                        </motion.p>
+                      </div>
                       <motion.button
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0, boxShadow: ["0 0 0px rgba(255,255,255,0)", "0 0 25px rgba(255,255,255,0.5)", "0 0 0px rgba(255,255,255,0)"] }}
+                        transition={{ opacity: { duration: 0.8, delay: 7.2 }, y: { duration: 0.8, delay: 7.2 }, boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 7.2 } }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={handleOpenInvitation}
-                        className="bg-white/30 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-full text-white inline-flex items-center justify-center gap-3 px-8 py-3.5 transition-colors w-fit shadow-2xl"
+                        className="bg-white/30 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-full text-white inline-flex items-center justify-center gap-3 px-8 py-3.5 transition-colors w-fit"
                       >
-                        <Mail size={16} />
+                        <motion.div animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+                          <Mail size={16} />
+                        </motion.div>
                         <span className="tracking-[0.2em] text-[10px] md:text-xs lg:text-[10px] font-bold uppercase">OPEN INVITATION</span>
                       </motion.button>
                     </motion.div>
@@ -1364,7 +1476,7 @@ const App = () => {
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
               <img
-                src="/images/couple-hand.png"
+                src="/images/couple-hand.webp"
                 alt="Background"
                 className="w-full h-full object-cover object-bottom"
               />
@@ -1500,7 +1612,7 @@ const App = () => {
                 <svg viewBox="0 0 1440 120" className="relative block w-full h-auto" preserveAspectRatio="none">
                   <defs>
                     <pattern id="curve-texture" patternUnits="userSpaceOnUse" width="400" height="400">
-                      <image href="/images/paper-fibers.png" width="400" height="400" preserveAspectRatio="none" />
+                      <image href="/images/paper-fibers.webp" width="400" height="400" preserveAspectRatio="none" />
                     </pattern>
                   </defs>
                   <path
@@ -1521,7 +1633,7 @@ const App = () => {
                 {/* Paper Texture Overlay */}
                 <div
                   className="absolute inset-0 pointer-events-none z-0 opacity-40 mix-blend-overlay"
-                  style={{ backgroundImage: "url('/images/paper-fibers.png')", backgroundRepeat: 'repeat' }}
+                  style={{ backgroundImage: "url('/images/paper-fibers.webp')", backgroundRepeat: 'repeat' }}
                 />
 
                 <div className="max-w-md mx-auto relative z-10">
@@ -1529,7 +1641,7 @@ const App = () => {
                     {/* Groom Column */}
                     <div className="flex-1 text-center">
                       <Reveal delay={0.2} y={20}>
-                        <div className="space-y-0 flex flex-col items-center">
+                        <div className="space-y-0 flex flex-col items-center justify-end min-h-[75px] md:min-h-[100px]">
                           <h3 className="italiana-font text-[24px] md:text-[34px] lg:text-[24px] text-white tracking-wide font-normal leading-tight">
                             {WEDDING_CONFIG.groomNickname}
                           </h3>
@@ -1559,7 +1671,7 @@ const App = () => {
                     {/* Bride Column */}
                     <div className="flex-1 text-center">
                       <Reveal delay={0.4} y={20}>
-                        <div className="space-y-0 flex flex-col items-center">
+                        <div className="space-y-0 flex flex-col items-center justify-end min-h-[75px] md:min-h-[100px]">
                           <h3 className="italiana-font text-[20px] md:text-[34px] lg:text-[20px] text-white tracking-wide font-normal leading-tight">
                             {WEDDING_CONFIG.brideNickname}
                           </h3>
@@ -1622,11 +1734,14 @@ const App = () => {
                 <div className="relative rounded-[5px] overflow-hidden shadow-2xl border border-white/10 min-h-[600px] flex flex-col justify-center text-white py-16 px-8">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0 z-0">
-                    <motion.img
+                    <motion.video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
                       animate={{ scale: [1, 1.15, 1] }}
                       transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-                      src={WEDDING_CONFIG.eventBg}
-                      alt="Event Background"
+                      src="/video/0621.mp4"
                       className="w-full h-full object-cover brightness-[0.4] contrast-[1.1]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
@@ -1809,7 +1924,12 @@ const App = () => {
 
               {/* Lottie Birds Overlay */}
               <div className="absolute inset-0 z-10 pointer-events-none opacity-30 mix-blend-screen filter invert">
-                <Lottie animationData={birdsData} loop={true} className="w-full h-full object-cover" />
+                <Player
+                  autoplay
+                  loop
+                  src="/lottie_birds.json"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
               </div>
             </div>
 
@@ -1898,34 +2018,56 @@ const App = () => {
               </div>
             </Reveal>
 
-            {/* Cinematic Video */}
+            {/* Gallery Layout - Horizontal Scrolling Rows */}
             <Reveal y={30} delay={0.2}>
-              <div className="relative max-w-4xl mx-auto rounded-[5px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] mb-12 group bg-black">
-                <div className="absolute inset-0 border border-white/20 rounded-[5px] z-10 pointer-events-none mix-blend-overlay" />
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
-                >
-                  <source src="/video/video.mp4" type="video/mp4" />
-                  Browser Anda tidak mendukung pemutaran video.
-                </video>
+              <div className="w-full relative z-10 pt-8 pb-16 space-y-4 overflow-hidden pl-4 md:pl-8">
+                
+                {/* Row 1: Images */}
+                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 w-full pr-4 md:pr-8 h-[160px] md:h-[240px] items-stretch">
+                  {galleryRow1.map((_, idx) => (
+                    <div key={`row1-${idx}`} className="shrink-0 h-full snap-center">
+                      <GalleryItem
+                        index={idx}
+                        onClick={() => setSelectedGalleryImage(idx)}
+                        className="h-full w-auto transition-all duration-700 shadow-sm hover:shadow-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Row 2: Video + Images */}
+                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 w-full pr-4 md:pr-8 h-[160px] md:h-[240px] items-stretch">
+                  {/* Video Card */}
+                  <div className="shrink-0 h-full snap-center">
+                    <div className="relative h-full w-auto overflow-hidden shadow-sm hover:shadow-lg transition-all duration-700 bg-black group cursor-pointer">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-auto h-full max-w-none object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
+                      >
+                        <source src="/video/video-gallery.mp4" type="video/mp4" />
+                      </video>
+                      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  {galleryRow2.map((_, idx) => {
+                    const originalIndex = halfGalleryLength + idx;
+                    return (
+                      <div key={`row2-${idx}`} className="shrink-0 h-full snap-center">
+                        <GalleryItem
+                          index={originalIndex}
+                          onClick={() => setSelectedGalleryImage(originalIndex)}
+                          className="h-full w-auto transition-all duration-700 shadow-sm hover:shadow-lg"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </Reveal>
-
-            <div className="columns-2 md:columns-3 lg:columns-2 gap-3 md:gap-4 max-w-6xl mx-auto px-4 relative z-10 pt-8 pb-16">
-              {WEDDING_CONFIG.galleryImages.map((_, i) => (
-                <div key={i} className="break-inside-avoid mb-3 md:mb-4">
-                  <GalleryItem
-                    index={i}
-                    onClick={() => setSelectedGalleryImage(i)}
-                    className="w-full rounded-[10px] md:rounded-[14px] shadow-sm hover:shadow-xl transition-all duration-700 border border-black/5"
-                  />
-                </div>
-              ))}
-            </div>
           </section>
 
           {/* Wedding Gift Section */}
@@ -1933,7 +2075,7 @@ const App = () => {
             {/* Texture and Pattern Ornaments */}
             <div className="absolute inset-0 bg-texture opacity-[0.2] pointer-events-none z-0" />
             <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-screen z-[1]">
-              <img src="/images/paper-fibers.png" alt="" className="w-full h-full object-cover" />
+              <img src="/images/paper-fibers.webp" alt="" className="w-full h-full object-cover" />
             </div>
             <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay z-[2]">
               <img src={WEDDING_CONFIG.floralBg} alt="" className="w-full h-full object-cover" />
@@ -2104,7 +2246,7 @@ const App = () => {
                   <div className="relative w-[clamp(240px,70vw,350px)] h-[clamp(240px,70vw,350px)] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
                     <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                       <img
-                        src="/images/couple.jpg"
+                        src="/images/couple.webp"
                         alt="Ayu & Rudi"
                         className="w-full h-full object-cover scale-[1.05] group-hover:scale-110 transition-transform duration-[4s] ease-out"
                         style={{ objectPosition: 'center 20%' }}

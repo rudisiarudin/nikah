@@ -61,7 +61,7 @@
   body {
     @apply min-h-screen text-primary selection:bg-primary selection:text-neutral;
     background: radial-gradient(circle at top, rgba(255,255,255,0.96), rgba(245,243,239,0.92) 35%, rgba(216,211,197,0.95) 100%);
-    background-image: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245,243,239,0.95) 45%, rgba(216,211,197,0.98) 100%), url('/images/paper-fibers.png');
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(245,243,239,0.95) 45%, rgba(216,211,197,0.98) 100%), url('/images/paper-fibers.webp');
     background-size: auto, cover;
     -webkit-tap-highlight-color: transparent;
   }
@@ -212,7 +212,7 @@
 
 /* Texture Overlay */
 .bg-texture {
-  background-image: url("/images/paper-fibers.png");
+  background-image: url("/images/paper-fibers.webp");
 }
 
 .mask-oval {
@@ -250,7 +250,7 @@
 /* === Vintage Guestbook Styles === */
 .vintage-form-card {
   background:
-    url('/images/paper-fibers.png'),
+    url('/images/paper-fibers.webp'),
     linear-gradient(170deg, #faf5eb 0%, #f3ead8 50%, #ede3cf 100%);
   background-blend-mode: overlay;
   background-size: cover, auto;
@@ -342,7 +342,7 @@
   gap: 0.75rem;
   padding: 0.9rem 1rem;
   background:
-    url('/images/paper-fibers.png'),
+    url('/images/paper-fibers.webp'),
     linear-gradient(175deg, rgba(250, 245, 235, 0.85), rgba(243, 234, 216, 0.7));
   background-blend-mode: overlay;
   background-size: cover, auto;
@@ -356,5 +356,14 @@
 .vintage-wish-card:hover {
   background: linear-gradient(175deg, rgba(250, 245, 235, 0.9), rgba(243, 234, 216, 0.7));
   box-shadow: 0 4px 12px rgba(124, 106, 80, 0.06);
+}
+
+/* Utilities */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
