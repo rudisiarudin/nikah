@@ -2034,6 +2034,8 @@ const App = () => {
                         loop
                         muted
                         playsInline
+                        preload="metadata"
+                        poster={galleryRow1[0]}
                         className="w-auto h-full max-w-none object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
                       >
                         <source src="/video/video-gallery.mp4" type="video/mp4" />
