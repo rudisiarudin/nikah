@@ -591,7 +591,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
           Moment {index + 1}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
