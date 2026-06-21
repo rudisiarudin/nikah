@@ -568,31 +568,20 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
 
 const GalleryItem = ({ index, className, onClick }: { index: number; className?: string; onClick: () => void }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.8,
-        delay: (index % 6) * 0.1,
-        ease: "easeOut"
-      }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
+    <div
       onClick={onClick}
       className={cn(
         "relative overflow-hidden cursor-pointer group border border-white/10",
         className
       )}
     >
-      <motion.div
+      <div
         className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
       />
-      <motion.img
-        layoutId={`image-${index}`}
+      <img
         src={WEDDING_CONFIG.galleryImages[index]}
         alt={`Gallery ${index + 1}`}
-        className="h-full w-auto max-w-none object-cover transition-transform duration-1000 group-hover:scale-110"
+        className="h-full w-auto max-w-none object-cover transition-transform duration-700 group-hover:scale-[1.03]"
         loading="lazy"
       />
 
@@ -2339,7 +2328,6 @@ const App = () => {
               <X size={32} />
             </motion.button>
             <motion.img
-              layoutId={`image-${selectedGalleryImage}`}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
