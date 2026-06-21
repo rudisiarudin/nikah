@@ -2246,7 +2246,7 @@ const App = () => {
                   <div className="relative w-[clamp(240px,70vw,350px)] h-[clamp(240px,70vw,350px)] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
                     <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                       <img
-                        src="/images/couple.webp"
+                        src="/images/galeri7.webp"
                         alt="Ayu & Rudi"
                         className="w-full h-full object-cover scale-[1.05] group-hover:scale-110 transition-transform duration-[4s] ease-out"
                         style={{ objectPosition: 'center 20%' }}
