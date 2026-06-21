@@ -2009,12 +2009,12 @@ const App = () => {
 
             {/* Gallery Layout - Horizontal Scrolling Rows */}
             <Reveal y={30} delay={0.2}>
-              <div className="w-full relative z-10 pt-8 pb-16 space-y-4 overflow-hidden pl-4 md:pl-8">
+              <div className="w-full relative z-10 pt-8 pb-16 space-y-4 md:space-y-6 overflow-hidden pl-4 md:pl-8">
                 
                 {/* Row 1: Images */}
-                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 w-full pr-4 md:pr-8 h-[160px] md:h-[240px] items-stretch">
+                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-3 md:gap-4 w-full pr-4 md:pr-8 h-[200px] md:h-[260px] items-stretch">
                   {galleryRow1.map((_, idx) => (
-                    <div key={`row1-${idx}`} className="shrink-0 h-full snap-center">
+                    <div key={`row1-${idx}`} className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
                       <GalleryItem
                         index={idx}
                         onClick={() => setSelectedGalleryImage(idx)}
@@ -2025,10 +2025,10 @@ const App = () => {
                 </div>
 
                 {/* Row 2: Video + Images */}
-                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-2 w-full pr-4 md:pr-8 h-[160px] md:h-[240px] items-stretch">
+                <div className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory gap-3 md:gap-4 w-full pr-4 md:pr-8 h-[200px] md:h-[260px] items-stretch">
                   {/* Video Card */}
-                  <div className="shrink-0 h-full snap-center">
-                    <div className="relative h-full w-auto overflow-hidden shadow-sm hover:shadow-lg transition-all duration-700 bg-black group cursor-pointer">
+                  <div className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
+                    <div className="relative h-full w-auto shadow-sm hover:shadow-lg transition-all duration-700 bg-black group cursor-pointer">
                       <video
                         autoPlay
                         loop
@@ -2045,7 +2045,7 @@ const App = () => {
                   {galleryRow2.map((_, idx) => {
                     const originalIndex = halfGalleryLength + idx;
                     return (
-                      <div key={`row2-${idx}`} className="shrink-0 h-full snap-center">
+                      <div key={`row2-${idx}`} className="shrink-0 h-full snap-center rounded-sm overflow-hidden">
                         <GalleryItem
                           index={originalIndex}
                           onClick={() => setSelectedGalleryImage(originalIndex)}
