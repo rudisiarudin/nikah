@@ -2248,8 +2248,8 @@ const App = () => {
                       <img
                         src="/images/galeri7.webp"
                         alt="Ayu & Rudi"
-                        className="w-full h-full object-cover scale-[1.05] group-hover:scale-110 transition-transform duration-[4s] ease-out"
-                        style={{ objectPosition: 'center 20%' }}
+                        className="w-full h-full object-cover scale-[1.7] group-hover:scale-[1.8] transition-transform duration-[4s] ease-out"
+                        style={{ objectPosition: 'center 85%', transformOrigin: 'center 85%' }}
                       />
                     </div>
                     {/* Elegant Floating Ornament */}
