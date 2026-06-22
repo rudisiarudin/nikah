@@ -20,7 +20,9 @@ import {
   Check,
   User,
   Sparkles,
-  Mail
+  Mail,
+  MoveHorizontal,
+  ArrowRight
 } from 'lucide-react';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { QRCodeSVG } from 'qrcode.react';
@@ -2107,6 +2109,16 @@ const App = () => {
                       </div>
                     );
                   })}
+                </div>
+                
+                {/* Scroll Indicator */}
+                <div className="flex items-center justify-center gap-4 mt-6 opacity-80">
+                  <div className="w-16 h-[0.5px] bg-gradient-to-r from-transparent to-[#9b8a6e]/60" />
+                  <div className="flex items-center gap-2 text-[#9b8a6e] animate-pulse">
+                    <span className="outfit-font text-[9px] uppercase tracking-[0.5em] ml-1">Swipe Right</span>
+                    <ArrowRight size={14} strokeWidth={1.5} />
+                  </div>
+                  <div className="w-16 h-[0.5px] bg-gradient-to-l from-transparent to-[#9b8a6e]/60" />
                 </div>
               </div>
             </Reveal>
