@@ -56,7 +56,7 @@ export const WEDDING_CONFIG = {
     '/images/story4.webp',
     '/images/story5.webp'
   ],
-  musicUrl: '/Nadin Amizah - Berpayung Tuhan (Official Lyric Video).mp3',
+  musicUrl: '/music.MP3',
   couplePhoto: '/images/couple.webp',
   ringsImage: '/images/rings.webp',
   daunAtas: '/images/daun-atas.webp',

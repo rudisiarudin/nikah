@@ -58,6 +58,13 @@
 }
 
 @layer base {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  section {
+    scroll-snap-align: start;
+  }
+
   body {
     @apply min-h-screen text-primary selection:bg-primary selection:text-neutral;
     background: radial-gradient(circle at top, rgba(255,255,255,0.96), rgba(245,243,239,0.92) 35%, rgba(216,211,197,0.95) 100%);

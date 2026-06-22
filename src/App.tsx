@@ -249,6 +249,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
   const [status, setStatus] = useState<'Hadir' | 'Tidak Hadir' | 'Masih Ragu'>('Hadir');
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const displayName = guestName !== 'Tamu Undangan' ? guestName : '';
@@ -317,6 +318,8 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
         setWishes(prev => [newWish, ...prev]);
         setMessage('');
         setCurrentPage(1);
+        setIsSuccess(true);
+        setTimeout(() => setIsSuccess(false), 5000);
       }
     } catch (err) {
       console.error('Error submitting wish:', err);
@@ -342,6 +345,49 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
              <p className="serif-font italic text-[13px] text-[#7c6a50]/50">Halaman ini tertutup untuk umum.</p>
           </div>
         </div>
+      ) : isSuccess ? (
+        <AnimatePresence mode="wait">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-md mx-auto py-8 px-4"
+          >
+            <div className="vintage-form-card relative flex flex-col items-center justify-center text-center py-16 px-8 min-h-[350px]">
+              <div className="vintage-corner vintage-corner-tl" />
+              <div className="vintage-corner vintage-corner-tr" />
+              <div className="vintage-corner vintage-corner-bl" />
+              <div className="vintage-corner vintage-corner-br" />
+
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", damping: 15, stiffness: 100, delay: 0.2 }}
+                className="w-20 h-20 bg-gradient-to-br from-[#50593f] to-[#3D4238] rounded-full flex items-center justify-center mb-6 shadow-xl shadow-[#50593f]/20 relative"
+              >
+                <motion.div
+                   animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                   className="absolute inset-0 rounded-full border border-[#50593f]"
+                />
+                <Check size={36} className="text-[#f5ece0]" />
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <p className="cinzel-font text-[10px] uppercase tracking-[0.4em] text-[#7c6a50]/60 font-semibold mb-2">Terkirim</p>
+                <h3 className="italiana-font text-3xl text-[#3D4238] mb-4">Terima Kasih</h3>
+                <p className="serif-font italic text-[14px] text-[#7c6a50]/80 max-w-[280px] leading-relaxed">
+                  Pesan dan doa restu Anda telah kami terima. Kehadiran Anda adalah kebahagiaan bagi kami.
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       ) : (
         <form onSubmit={handleSubmit} className="max-w-md mx-auto pb-8 px-2">
           <Reveal y={20} duration={1.2}>
@@ -1948,17 +1994,17 @@ const App = () => {
                   {
                     chapter: 'CHAPTER I',
                     title: 'Awal Bertemu',
-                    desc: 'Di penghujung tahun 2022, kisah ini bermula. Jarak Jakarta dan Lampung menjadi saksi perjalanan kami. Meski terpisah oleh ruang, langkah tak pernah ragu—Rudi beberapa kali menempuh perjalanan menuju Lampung hanya untuk bertemu Ayu. Dari pertemuan sederhana, tumbuh rasa yang perlahan menjadi istimewa.'
+                    desc: 'Di penghujung tahun 2022, kisah kami dimulai. Jakarta dan Lampung menjadi saksi perjalanan yang mempertemukan dua hati. Meski terpisah oleh jarak, langkah tak pernah terasa berat. Berkali-kali Rudi menempuh perjalanan menuju Lampung hanya untuk menghabiskan waktu bersama Ayu.\n\nDari pertemuan-pertemuan sederhana, tumbuh rasa yang semakin menguat. Hari demi hari, kebersamaan mengubah cerita biasa menjadi kisah yang penuh makna, hingga akhirnya kami yakin bahwa kami dipertemukan untuk tujuan yang lebih indah.'
                   },
                   {
                     chapter: 'CHAPTER II',
-                    title: 'Tunangan',
-                    desc: 'Waktu menguatkan keyakinan kami. Tepat H+3 Lebaran tahun 2026, Rudi bersama keluarga datang ke Sragen, Jawa Tengah, untuk bertemu keluarga besar Ayu. Dalam suasana hangat dan penuh kebersamaan, kami mengikat janji dalam sebuah pertunangan—sebuah langkah pasti menuju masa depan bersama.'
+                    title: 'Pertunangan',
+                    desc: 'Waktu membawa kami pada keyakinan yang semakin kuat. Tepat H+3 Hari Raya Idulfitri tahun 2026, Rudi bersama keluarga datang ke Sragen, Jawa Tengah, untuk bersilaturahmi dan bertemu keluarga besar Ayu.\n\nDalam suasana hangat yang dipenuhi doa dan kebahagiaan, kami mengikat janji dalam sebuah pertunangan. Momen itu menjadi langkah awal yang semakin meneguhkan niat kami untuk berjalan bersama menuju masa depan yang sama.'
                   },
                   {
                     chapter: 'CHAPTER III',
                     title: 'Pernikahan',
-                    desc: 'Di tahun yang sama, pada bulan Agustus 2026, dengan hati yang mantap dan doa yang mengiringi, kami memutuskan untuk melangkah ke jenjang pernikahan. Semoga perjalanan ini menjadi awal dari kebahagiaan yang tak berujung, serta senantiasa dilimpahi rahmat dan karunia Allah SWT.'
+                    desc: 'Pada bulan Agustus 2026, dengan penuh rasa syukur dan keyakinan, kami memutuskan untuk melangkah ke jenjang pernikahan.\n\nKami percaya bahwa setiap perjalanan memiliki takdirnya masing-masing, dan Allah SWT telah mempertemukan kami pada waktu yang paling tepat. Semoga pernikahan ini menjadi awal dari perjalanan panjang yang dipenuhi cinta, kebahagiaan, keberkahan, serta rahmat dan karunia-Nya.\n\nDan semoga kami senantiasa tumbuh bersama, saling menguatkan dalam setiap langkah, hingga akhir hayat.'
                   }
                 ].map((story, idx) => (
                   <Reveal key={idx} delay={idx * 0.2} y={30}>
@@ -1973,7 +2019,7 @@ const App = () => {
                           {story.chapter}
                         </p>
                         <h3 className="italiana-font text-[22px] md:text-3xl lg:text-[22px] text-white mb-4 drop-shadow-sm">{story.title}</h3>
-                        <p className="text-[11px] md:text-[13px] lg:text-[11px] text-white/80 leading-[2.2] serif-font font-light italic">
+                        <p className="text-[11px] md:text-[13px] lg:text-[11px] text-white/80 leading-[2.2] serif-font font-light italic whitespace-pre-line">
                           "{story.desc}"
                         </p>
                       </div>
@@ -2076,18 +2122,21 @@ const App = () => {
 
 
               <Reveal delay={0.4} y={20} duration={1.5}>
-                <div className="text-center space-y-4 mb-10 relative z-10">
-                  <p className="outfit-font text-[9px] uppercase tracking-[0.6em] text-[#c6b793] font-bold">Share The Joy</p>
-                  <div className="flex items-center justify-center gap-4">
-                    <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent to-[#c6b793]/30" />
-                    <Gift size={16} className="text-[#c6b793]/60" />
-                    <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent to-[#c6b793]/30" />
+                <div className="text-center flex flex-col items-center mb-10 relative z-10">
+                  <p className="outfit-font text-[10px] uppercase tracking-[0.5em] text-[#c6b793] font-semibold mb-4 ml-2">Share The Joy</p>
+                  
+                  <div className="flex items-center justify-center gap-5 mb-5 w-full max-w-[280px]">
+                    <div className="flex-1 h-[0.5px] bg-[#c6b793]/40" />
+                    <Gift size={16} className="text-[#c6b793]/70" />
+                    <div className="flex-1 h-[0.5px] bg-[#c6b793]/40" />
                   </div>
-                  <h2 className="italiana-font text-4xl text-[#f7f1e6] drop-shadow-sm">Wedding Gift</h2>
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
-                    <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/40" />
-                    <div className="h-[1px] w-8 bg-[#c6b793]/40" />
+                  
+                  <h2 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-[#f7f1e6] drop-shadow-sm mb-6">Wedding Gift</h2>
+                  
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-[0.5px] w-12 bg-[#c6b793]/40" />
+                    <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/60" />
+                    <div className="h-[0.5px] w-12 bg-[#c6b793]/40" />
                   </div>
                 </div>
               </Reveal>
@@ -2154,7 +2203,7 @@ const App = () => {
           </section>
 
           {/* Prayer Section */}
-          <section className="py-24 px-8 relative overflow-hidden flex items-center justify-center min-h-[600px]">
+          <section className="py-16 md:py-24 px-6 md:px-8 relative overflow-hidden flex items-center justify-center min-h-[450px] md:min-h-[600px]">
             {/* Gallery Slideshow Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
               <AnimatePresence mode="wait">
@@ -2173,16 +2222,34 @@ const App = () => {
             </div>
 
             <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
-              <div className="space-y-4">
+              <div className="text-center flex flex-col items-center mb-10 relative z-10">
+                <Reveal y={20} duration={1.5}>
+                  <div className="flex items-center justify-center gap-5 mb-5 w-full max-w-[280px]">
+                    <div className="flex-1 h-[0.5px] bg-[#c6b793]/40" />
+                    <svg width="16" height="16" viewBox="0 0 448 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-[#c6b793]/70">
+                      <path d="M352 64A64 64 0 1 0 224 64a64 64 0 1 0 128 0zM232.7 264l22.9 31.5c6.5 8.9 16.3 14.7 27.2 16.1s21.9-1.7 30.4-8.7l88-72c17.1-14 19.6-39.2 5.6-56.3s-39.2-19.6-56.3-5.6l-55.2 45.2-26.2-36C253.6 156.7 228.6 144 202 144c-30.9 0-59.2 17.1-73.6 44.4L79.8 280.9c-20.2 38.5-9.4 85.9 25.6 111.8L158.6 432 72 432c-22.1 0-40 17.9-40 40s17.9 40 40 40l208 0c17.3 0 32.6-11.1 38-27.5s-.3-34.4-14.2-44.7L187.7 354l45-90z" />
+                    </svg>
+                    <div className="flex-1 h-[0.5px] bg-[#c6b793]/40" />
+                  </div>
+                </Reveal>
                 <Reveal delay={0.2} y={30} duration={1.5}>
-                  <h3 className="italiana-font text-4xl text-white drop-shadow-md">Do'a Untuk Pengantin</h3>
+                  <h3 className="italiana-font text-4xl md:text-5xl lg:text-4xl text-[#f7f1e6] drop-shadow-sm mb-6 leading-tight">Do'a Untuk Pengantin</h3>
                 </Reveal>
                 <Reveal delay={0.4} scale={0.5} duration={1}>
-                  <div className="w-16 h-[1px] bg-secondary/50 mx-auto" />
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-[0.5px] w-12 bg-[#c6b793]/40" />
+                    <div className="w-1.5 h-1.5 rotate-45 border border-[#c6b793]/60" />
+                    <div className="h-[0.5px] w-12 bg-[#c6b793]/40" />
+                  </div>
                 </Reveal>
               </div>
 
               <div className="space-y-8 px-4">
+                <Reveal delay={0.5} y={20} duration={2}>
+                  <p className="text-[18px] sm:text-[22px] md:text-2xl lg:text-3xl text-[#c6b793] drop-shadow-md text-center arabic-font whitespace-nowrap" dir="rtl" style={{ lineHeight: '2' }}>
+                    بَارَكَ اللهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِيْ خَيْرٍ
+                  </p>
+                </Reveal>
                 <Reveal delay={0.6} y={20} duration={2}>
                   <p className="serif-font text-sm text-white/90 italic leading-relaxed md:leading-loose">
                     "Semoga Allah memberkahimu dan memberkahi apa yang menjadi tanggung jawabmu, serta menyatukan kalian berdua dalam kebaikan."
@@ -2190,7 +2257,7 @@ const App = () => {
                 </Reveal>
                 <Reveal delay={1} y={10} duration={1.5}>
                   <p className="outfit-font text-[10px] text-secondary tracking-widest uppercase opacity-80">
-                    (HR. Ahmad, at-Tirmidzi, an-Nasa'i, Abu Dawud, dan Ibnu Majah)
+                    (HR. Ahmad, at-Tirmidzi, dan an-Nasa'i)
                   </p>
                 </Reveal>
               </div>
