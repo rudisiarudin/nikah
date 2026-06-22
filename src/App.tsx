@@ -253,6 +253,7 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const displayName = guestName !== 'Tamu Undangan' ? guestName : '';
+  const hasSubmitted = wishes.some(w => w.name.toLowerCase() === displayName.toLowerCase());
 
   useEffect(() => {
     fetchWishes();
@@ -345,7 +346,11 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
              <p className="serif-font italic text-[13px] text-[#7c6a50]/50">Halaman ini tertutup untuk umum.</p>
           </div>
         </div>
-      ) : isSuccess ? (
+      ) : isLoading ? (
+        <div className="max-w-md mx-auto py-20 px-4 flex items-center justify-center min-h-[350px]">
+          <div className="w-8 h-8 border-[3px] border-[#c6b793]/30 border-t-[#c6b793] rounded-full animate-spin" />
+        </div>
+      ) : (isSuccess || hasSubmitted) ? (
         <AnimatePresence mode="wait">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
