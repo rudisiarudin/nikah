@@ -634,7 +634,7 @@ const GalleryItem = ({ index, className, onClick }: { index: number; className?:
       <img
         src={WEDDING_CONFIG.galleryImages[index]}
         alt={`Gallery ${index + 1}`}
-        className="h-full w-auto max-w-none object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        className="h-full w-auto max-w-none object-cover transition-all duration-700 group-hover:scale-[1.03] contrast-[1.1] saturate-[0.85] sepia-[0.15] brightness-[0.95] hue-rotate-[-5deg]"
         loading="lazy"
       />
 
@@ -2321,10 +2321,10 @@ const App = () => {
                   <div className="relative w-[clamp(240px,70vw,350px)] h-[clamp(240px,70vw,350px)] bg-white/20 backdrop-blur-sm rounded-full shadow-2xl group overflow-visible">
                     <div className="w-full h-full rounded-full overflow-hidden shadow-inner">
                       <img
-                        src="/images/galeri7.webp"
+                        src="/images/14.webp"
                         alt="Ayu & Rudi"
-                        className="w-full h-full object-cover scale-[1.7] group-hover:scale-[1.8] transition-transform duration-[4s] ease-out"
-                        style={{ objectPosition: 'center 85%', transformOrigin: 'center 85%' }}
+                        className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-[4s] ease-out"
+                        style={{ objectPosition: 'center 20%', transformOrigin: 'center 20%' }}
                       />
                     </div>
                     {/* Elegant Floating Ornament */}
