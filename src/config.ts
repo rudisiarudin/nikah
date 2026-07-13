@@ -37,7 +37,7 @@ export const WEDDING_CONFIG = {
   bankAccountName: "Rudi Si'arudin",
   bankAccountToCopy: '5730370395',
 
-  physicalGiftAddress: 'Jl. Metro Jaya No. 3 Kayu Putih Jakarta Timur',
+  physicalGiftAddress: 'Jl. Jengki Cipinang Asem Blok, Jl. SD Inpres No.23B, RT.9/RW.4, Kb. Pala, Kec. Makasar, Kota Jakarta Timur, DKI Jakarta',
   physicalGiftReceiver: '(Penerima: Ayu / Rudi)',
 
   // Tautan WA Konfirmasi
