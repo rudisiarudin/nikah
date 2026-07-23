@@ -273,6 +273,20 @@ const Admin = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
+  const sendGuestWa = (gName: string, gUrl: string, gCat: string) => {
+    let text = customMessage;
+    if (!text) {
+      if (gCat === 'muslim') {
+        text = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nKepada Yth. ${gName},\n\nTanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami.\n\nBerikut link undangan kami untuk info selengkapnya:\n${gUrl}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nWassalamu'alaikum Warahmatullahi Wabarakatuh.`;
+      } else {
+        text = `Kepada Yth. ${gName},\n\nTanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami.\n\nBerikut link undangan kami untuk info selengkapnya:\n${gUrl}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nTerima Kasih.`;
+      }
+    } else {
+      text = text.replace(/{nama}/g, gName).replace(/{url}/g, gUrl);
+    }
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
   const fetchWishes = async () => {
     try {
       setIsLoadingWishes(true);
@@ -602,6 +616,13 @@ const Admin = () => {
                                 <td className="px-6 py-4 text-right">
                                   <div className="flex items-center justify-end gap-2">
                                     <button 
+                                      onClick={() => sendGuestWa(guest.name, guest.url, guest.category)}
+                                      className="w-8 h-8 rounded-full bg-green-50 text-green-500 hover:bg-green-100 hover:text-green-600 flex items-center justify-center transition-all"
+                                      title="Kirim WA"
+                                    >
+                                      <MessageSquare size={14} />
+                                    </button>
+                                    <button 
                                       onClick={() => {
                                         navigator.clipboard.writeText(guest.url);
                                         showToast('URL disalin!');
@@ -643,6 +664,13 @@ const Admin = () => {
                               {guest.url}
                             </p>
                             <div className="flex justify-end gap-2 pt-1">
+                              <button
+                                onClick={() => sendGuestWa(guest.name, guest.url, guest.category)}
+                                className="px-4 py-2.5 rounded-lg border border-green-200 hover:bg-green-50 text-xs font-semibold flex items-center justify-center transition-colors text-green-600 min-h-[44px]"
+                                title="Kirim WA"
+                              >
+                                <MessageSquare size={14} />
+                              </button>
                               <button
                                 onClick={() => {
                                   navigator.clipboard.writeText(guest.url);
