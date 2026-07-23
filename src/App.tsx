@@ -243,7 +243,7 @@ const GiftModal = () => {
   );
 };
 
-const WISHES_PER_PAGE = 5;
+
 
 const Guestbook = ({ guestName }: { guestName: string }) => {
   const [wishes, setWishes] = useState<Wish[]>([]);
@@ -252,8 +252,6 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-
   const displayName = guestName !== 'Tamu Undangan' ? guestName : '';
   const hasSubmitted = wishes.some(w => w.name.toLowerCase() === displayName.toLowerCase());
 
@@ -320,7 +318,6 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
         };
         setWishes(prev => [newWish, ...prev]);
         setMessage('');
-        setCurrentPage(1);
         setIsSuccess(true);
         setTimeout(() => setIsSuccess(false), 5000);
       }
@@ -331,12 +328,6 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
       setIsSubmitting(false);
     }
   };
-
-  const totalPages = Math.ceil(wishes.length / WISHES_PER_PAGE);
-  const paginatedWishes = wishes.slice(
-    (currentPage - 1) * WISHES_PER_PAGE,
-    currentPage * WISHES_PER_PAGE
-  );
 
   return (
     <div className="space-y-0">
@@ -532,18 +523,25 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
             <p className="serif-font italic text-[13px] text-[#7c6a50]">Jadilah yang pertama memberikan doa.</p>
           </div>
         ) : (
-          <>
-            <div className="max-w-md mx-auto space-y-3">
+          <div className="max-w-md mx-auto relative">
+            {/* Scrollable wishes area */}
+            <div
+              className="overflow-y-auto space-y-3 pr-1"
+              style={{
+                maxHeight: '480px',
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgba(124,106,80,0.2) transparent',
+              }}
+            >
               <AnimatePresence mode="popLayout">
-                {paginatedWishes.map((wish, idx) => (
+                {wishes.map((wish, idx) => (
                   <motion.div
                     key={wish.id}
                     layout
                     initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.97 }}
-                    transition={{ delay: idx * 0.05 }}
+                    transition={{ delay: Math.min(idx * 0.05, 0.3) }}
                   >
                     <div className="vintage-wish-card">
                       {/* Left vintage initial */}
@@ -577,42 +575,14 @@ const Guestbook = ({ guestName }: { guestName: string }) => {
               </AnimatePresence>
             </div>
 
-            {/* Vintage Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-1.5 pt-6 pb-2">
-                <button
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className={cn(
-                    "w-8 h-8 rounded-full border flex items-center justify-center cinzel-font text-[10px] transition-all",
-                    currentPage === 1 ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
-                  )}
-                >‹</button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center cinzel-font text-[10px] transition-all",
-                      currentPage === page
-                        ? "bg-[#50593f] text-[#f5ece0] shadow-md"
-                        : "border border-[#7c6a50]/10 text-[#7c6a50]/40 hover:border-[#7c6a50]/25"
-                    )}
-                  >{page}</button>
-                ))}
-
-                <button
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className={cn(
-                    "w-8 h-8 rounded-full border flex items-center justify-center cinzel-font text-[10px] transition-all",
-                    currentPage === totalPages ? "opacity-20 cursor-not-allowed border-[#7c6a50]/10" : "border-[#7c6a50]/20 text-[#7c6a50] hover:bg-[#7c6a50]/10"
-                  )}
-                >›</button>
-              </div>
+            {/* Fade overlay hint — only visible when there are many wishes */}
+            {wishes.length > 3 && (
+              <div
+                className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 rounded-b-xl"
+                style={{ background: 'linear-gradient(to bottom, transparent, rgba(247,246,243,0.95))' }}
+              />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

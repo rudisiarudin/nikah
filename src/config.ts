@@ -29,7 +29,7 @@ export const WEDDING_CONFIG = {
   resepsiGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
 
   // Live Streaming
-  liveStreamingLink: 'https://youtube.com',
+  liveStreamingLink: 'https://youtube.com/live/eDQ1xHu-x9c?feature=share',
 
   // Rekening Bank / Hadiah
   bankName: 'BCA',
