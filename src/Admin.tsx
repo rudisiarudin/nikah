@@ -525,15 +525,18 @@ const Admin = () => {
                 </div>
                 <div className="aspect-[9/16] max-w-[280px] mx-auto bg-neutral rounded-[20px] border-4 border-primary/5 overflow-hidden relative shadow-inner">
                   {guestName ? (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-[#F9F8F4] text-center">
-                       <div className="absolute inset-0 bg-texture opacity-10" />
-                       <p className="outfit-font text-[8px] uppercase tracking-[0.4em] mb-4 text-primary/40">The Wedding of</p>
-                       <h4 className="italiana-font text-3xl mb-8">Ayu & Rudi</h4>
-                       <div className="w-12 h-px bg-[#7c6d52]/30 mb-8" />
-                       <p className="serif-font text-[10px] italic text-primary/60 mb-2">Kepada Yth:</p>
-                       <p className="outfit-font text-lg font-bold text-[#7c6d52]">{guestName}</p>
-                       <div className="mt-12 w-full px-4">
-                         <div className="h-10 bg-primary/10 rounded-full w-full animate-pulse" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-cover bg-center" style={{ backgroundImage: 'url("/images/cover1.webp")' }}>
+                       <div className="absolute inset-0 bg-white/40" />
+                       <div className="absolute inset-0 bg-texture opacity-20" />
+                       <div className="relative z-10 flex flex-col items-center w-full">
+                         <p className="outfit-font text-[8px] font-bold uppercase tracking-[0.4em] mb-4 text-primary/80">The Wedding of</p>
+                         <h4 className="italiana-font text-3xl mb-8 font-bold text-primary drop-shadow-md">Ayu & Rudi</h4>
+                         <div className="w-12 h-px bg-primary/40 mb-8" />
+                         <p className="serif-font text-[10px] italic text-primary/80 mb-2">Kepada Yth:</p>
+                         <p className="outfit-font text-lg font-bold text-primary drop-shadow-md">{guestName}</p>
+                         <div className="mt-12 w-full px-4">
+                           <div className="h-10 bg-primary/20 backdrop-blur-sm rounded-full w-full animate-pulse" />
+                         </div>
                        </div>
                     </div>
                   ) : (
@@ -930,15 +933,18 @@ const Admin = () => {
               <div className="overflow-y-auto py-4 flex justify-center">
                 <div className="aspect-[9/16] w-[260px] bg-neutral rounded-[20px] border-4 border-primary/5 overflow-hidden relative shadow-inner">
                   {guestName ? (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-[#F9F8F4] text-center">
-                       <div className="absolute inset-0 bg-texture opacity-10" />
-                       <p className="outfit-font text-[8px] uppercase tracking-[0.4em] mb-4 text-primary/40">The Wedding of</p>
-                       <h4 className="italiana-font text-2xl mb-6">Ayu & Rudi</h4>
-                       <div className="w-10 h-px bg-[#7c6d52]/30 mb-6" />
-                       <p className="serif-font text-[9px] italic text-primary/60 mb-2">Kepada Yth:</p>
-                       <p className="outfit-font text-base font-bold text-[#7c6d52]">{guestName}</p>
-                       <div className="mt-8 w-full px-4">
-                         <div className="h-10 bg-primary/10 rounded-full w-full animate-pulse" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-cover bg-center" style={{ backgroundImage: 'url("/images/cover1.webp")' }}>
+                       <div className="absolute inset-0 bg-white/40" />
+                       <div className="absolute inset-0 bg-texture opacity-20" />
+                       <div className="relative z-10 flex flex-col items-center w-full">
+                         <p className="outfit-font text-[8px] font-bold uppercase tracking-[0.4em] mb-4 text-primary/80">The Wedding of</p>
+                         <h4 className="italiana-font text-2xl mb-6 font-bold text-primary drop-shadow-md">Ayu & Rudi</h4>
+                         <div className="w-10 h-px bg-primary/40 mb-6" />
+                         <p className="serif-font text-[9px] italic text-primary/80 mb-2">Kepada Yth:</p>
+                         <p className="outfit-font text-base font-bold text-primary drop-shadow-md">{guestName}</p>
+                         <div className="mt-8 w-full px-4">
+                           <div className="h-10 bg-primary/20 backdrop-blur-sm rounded-full w-full animate-pulse" />
+                         </div>
                        </div>
                     </div>
                   ) : (
