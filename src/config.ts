@@ -57,6 +57,10 @@ export const WEDDING_CONFIG = {
     '/images/story5.webp'
   ],
   musicUrl: '/music.MP3',
+  resepsiMusicUrl: '/Kaulah-Segalanya.mp3',
+  // Jam mulai resepsi (format 24 jam, WIB) untuk auto-switch musik
+  resepsiStartHour: 9,
+  resepsiStartMinute: 30,
   couplePhoto: '/images/couple.webp',
   ringsImage: '/images/rings.webp',
   daunAtas: '/images/daun-atas.webp',

@@ -898,6 +898,22 @@ const App = () => {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Tentukan musik aktif berdasarkan jam sekarang
+  const getActiveMusicUrl = () => {
+    const now = new Date();
+    const weddingDay = new Date(WEDDING_CONFIG.weddingDateISO);
+    const isWeddingDay =
+      now.getFullYear() === weddingDay.getFullYear() &&
+      now.getMonth() === weddingDay.getMonth() &&
+      now.getDate() === weddingDay.getDate();
+    const totalMinutesNow = now.getHours() * 60 + now.getMinutes();
+    const resepsiStart = WEDDING_CONFIG.resepsiStartHour * 60 + WEDDING_CONFIG.resepsiStartMinute;
+    if (isWeddingDay && totalMinutesNow >= resepsiStart) {
+      return WEDDING_CONFIG.resepsiMusicUrl;
+    }
+    return WEDDING_CONFIG.musicUrl;
+  };
+
   const halfGalleryLength = Math.ceil(WEDDING_CONFIG.galleryImages.length / 2);
   const galleryRow1 = WEDDING_CONFIG.galleryImages.slice(0, halfGalleryLength);
   const galleryRow2 = WEDDING_CONFIG.galleryImages.slice(halfGalleryLength);
@@ -954,6 +970,8 @@ const App = () => {
     setIsOpen(true);
     setIsPlaying(true);
     if (audioRef.current) {
+      audioRef.current.src = getActiveMusicUrl();
+      audioRef.current.load();
       audioRef.current.play().catch(e => console.log("Audio play failed:", e));
     }
   };
@@ -1064,6 +1082,7 @@ const App = () => {
         ref={audioRef}
         src={WEDDING_CONFIG.musicUrl}
         loop
+        preload="none"
       />
 
       {/* Music Toggle Button */}
