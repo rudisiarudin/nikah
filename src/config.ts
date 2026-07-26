@@ -23,7 +23,7 @@ export const WEDDING_CONFIG = {
   akadGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
 
   // Lokasi & Waktu Resepsi
-  resepsiTime: '09.30 - 14.00 WIB',
+  resepsiTime: '09.30 - 12.00 WIB',
   resepsiLocationName: 'Gedung IPHI Gemolong',
   resepsiLocationAddress: 'JL. Solo - Purwodadi, Gemolong, Kec. Gemolong, Kabupaten Sragen, Jawa Tengah',
   resepsiGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
