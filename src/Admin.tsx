@@ -232,17 +232,21 @@ const Admin = () => {
 
   const handleCopyUrl = () => {
     if (!generatedUrl) return;
+
+    const alreadyInvited = invitedGuests.some(
+      g => g.name.toLowerCase() === guestName.toLowerCase()
+    );
+
+    if (alreadyInvited) {
+      showToast('Nama sudah ada', 'error');
+      return;
+    }
+
     navigator.clipboard.writeText(generatedUrl);
     setCopiedUrl(true);
     showToast('URL undangan berhasil disalin!');
     
-    // Add to tracker if not already there
-    const alreadyInvited = invitedGuests.some(
-      g => g.name.toLowerCase() === guestName.toLowerCase()
-    );
-    if (!alreadyInvited) {
-      addToTracker(guestName, generatedUrl, category);
-    }
+    addToTracker(guestName, generatedUrl, category);
     
     setTimeout(() => setCopiedUrl(false), 2000);
   };
@@ -250,13 +254,16 @@ const Admin = () => {
   const handleWhatsAppShare = () => {
     if (!generatedUrl || !guestName) return;
 
-    // Add to tracker if not already there
     const alreadyInvited = invitedGuests.some(
       g => g.name.toLowerCase() === guestName.toLowerCase()
     );
-    if (!alreadyInvited) {
-      addToTracker(guestName, generatedUrl, category);
+
+    if (alreadyInvited) {
+      showToast('Nama sudah ada', 'error');
+      return;
     }
+
+    addToTracker(guestName, generatedUrl, category);
 
     let text = customMessage;
     if (!text) {
