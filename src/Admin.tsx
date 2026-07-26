@@ -701,8 +701,9 @@ const Admin = () => {
                           <p className="text-xs text-primary/60 font-medium outfit-font">
                             Menampilkan <span className="font-bold">{startIndexGuests + 1}</span> - <span className="font-bold">{Math.min(startIndexGuests + ITEMS_PER_PAGE_GUESTS, filteredGuests.length)}</span> dari <span className="font-bold">{filteredGuests.length}</span> tamu
                           </p>
-                          <div className="flex items-center gap-1">
-                            <button
+                          <div className="w-full sm:w-auto overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
+                            <div className="flex items-center justify-center sm:justify-end gap-1 min-w-max px-1">
+                              <button
                               onClick={() => handlePageChangeGuests('prev')}
                               disabled={currentPageGuests === 1}
                               className="w-8 h-8 rounded-full flex items-center justify-center border border-primary/10 hover:bg-primary/5 disabled:opacity-30 disabled:hover:bg-transparent transition-colors text-primary"
@@ -732,6 +733,7 @@ const Admin = () => {
                             >
                               <ChevronRight size={16} />
                             </button>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -857,8 +859,9 @@ const Admin = () => {
                     <p className="text-xs text-primary/60 font-medium outfit-font">
                       Menampilkan <span className="font-bold">{startIndexWishes + 1}</span> - <span className="font-bold">{Math.min(startIndexWishes + ITEMS_PER_PAGE_WISHES, filteredWishes.length)}</span> dari <span className="font-bold">{filteredWishes.length}</span> ucapan
                     </p>
-                    <div className="flex items-center gap-1">
-                      <button
+                    <div className="w-full sm:w-auto overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
+                      <div className="flex items-center justify-center sm:justify-end gap-1 min-w-max px-1">
+                        <button
                         onClick={() => handlePageChangeWishes('prev')}
                         disabled={currentPageWishes === 1}
                         className="w-8 h-8 rounded-full flex items-center justify-center border border-primary/10 hover:bg-primary/5 disabled:opacity-30 disabled:hover:bg-transparent transition-colors text-primary"
@@ -888,6 +891,7 @@ const Admin = () => {
                       >
                         <ChevronRight size={16} />
                       </button>
+                      </div>
                     </div>
                   </div>
                 )}

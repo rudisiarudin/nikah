@@ -17,13 +17,13 @@ export const WEDDING_CONFIG = {
   weddingDateISO: '2026-08-02T08:00:00', // Format: YYYY-MM-DDTHH:mm:ss
 
   // Lokasi & Waktu Akad Nikah
-  akadTime: '08.00 - 10.00 WIB',
+  akadTime: '08.00 - 09.00 WIB',
   akadLocationName: 'Gedung IPHI Gemolong',
   akadLocationAddress: 'JL. Solo - Purwodadi, Gemolong, Kec. Gemolong, Kabupaten Sragen, Jawa Tengah',
   akadGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
 
   // Lokasi & Waktu Resepsi
-  resepsiTime: '11.00 - 14.00 WIB',
+  resepsiTime: '09.30 - 14.00 WIB',
   resepsiLocationName: 'Gedung IPHI Gemolong',
   resepsiLocationAddress: 'JL. Solo - Purwodadi, Gemolong, Kec. Gemolong, Kabupaten Sragen, Jawa Tengah',
   resepsiGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
@@ -37,7 +37,7 @@ export const WEDDING_CONFIG = {
   bankAccountName: "Rudi Si'arudin",
   bankAccountToCopy: '5730370395',
 
-  physicalGiftAddress: 'Jl. Jengki Cipinang Asem Blok, Jl. SD Inpres No.23B, RT.9/RW.4, Kb. Pala, Kec. Makasar, Kota Jakarta Timur, DKI Jakarta',
+  physicalGiftAddress: 'Jl. Jengki, Gg. SD Inpres No.23B, RT.9/RW.4, Kb. Pala, Kec. Makasar, Kota Jakarta Timur, DKI Jakarta',
   physicalGiftReceiver: '(Penerima: Ayu / Rudi)',
 
   // Tautan WA Konfirmasi
