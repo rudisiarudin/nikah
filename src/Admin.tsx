@@ -108,6 +108,13 @@ const Admin = () => {
     }, 50);
   };
 
+  const getPaginationGroup = (currentPage: number, totalPages: number) => {
+    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (currentPage <= 3) return [1, 2, 3, 4, '...', totalPages];
+    if (currentPage >= totalPages - 2) return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+  };
+
   // Toast Notifications State
   interface Toast {
     id: string;
@@ -717,22 +724,24 @@ const Admin = () => {
                             >
                               <ChevronLeft size={16} />
                             </button>
-                            {Array.from({ length: totalPagesGuests }).map((_, idx) => {
-                              const pageNum = idx + 1;
-                              return (
-                                <button
-                                  key={pageNum}
-                                  onClick={() => handlePageChangeGuests(pageNum)}
-                                  className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
-                                    currentPageGuests === pageNum
-                                      ? 'bg-primary text-neutral shadow-md shadow-primary/10'
-                                      : 'border border-primary/5 hover:bg-primary/5 text-primary'
-                                  }`}
-                                >
-                                  {pageNum}
-                                </button>
-                              );
-                            })}
+                            {getPaginationGroup(currentPageGuests, totalPagesGuests).map((pageNum, idx) => (
+                              <React.Fragment key={idx}>
+                                {pageNum === '...' ? (
+                                  <span className="w-8 h-8 flex items-center justify-center text-primary/40 text-xs">...</span>
+                                ) : (
+                                  <button
+                                    onClick={() => handlePageChangeGuests(pageNum as number)}
+                                    className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
+                                      currentPageGuests === pageNum
+                                        ? 'bg-primary text-neutral shadow-md shadow-primary/10'
+                                        : 'border border-primary/5 hover:bg-primary/5 text-primary'
+                                    }`}
+                                  >
+                                    {pageNum}
+                                  </button>
+                                )}
+                              </React.Fragment>
+                            ))}
                             <button
                               onClick={() => handlePageChangeGuests('next')}
                               disabled={currentPageGuests === totalPagesGuests}
@@ -875,22 +884,24 @@ const Admin = () => {
                       >
                         <ChevronLeft size={16} />
                       </button>
-                      {Array.from({ length: totalPagesWishes }).map((_, idx) => {
-                        const pageNum = idx + 1;
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => handlePageChangeWishes(pageNum)}
-                            className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
-                              currentPageWishes === pageNum
-                                ? 'bg-primary text-neutral shadow-md shadow-primary/10'
-                                : 'border border-primary/5 hover:bg-primary/5 text-primary'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        );
-                      })}
+                      {getPaginationGroup(currentPageWishes, totalPagesWishes).map((pageNum, idx) => (
+                        <React.Fragment key={idx}>
+                          {pageNum === '...' ? (
+                            <span className="w-8 h-8 flex items-center justify-center text-primary/40 text-xs">...</span>
+                          ) : (
+                            <button
+                              onClick={() => handlePageChangeWishes(pageNum as number)}
+                              className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
+                                currentPageWishes === pageNum
+                                  ? 'bg-primary text-neutral shadow-md shadow-primary/10'
+                                  : 'border border-primary/5 hover:bg-primary/5 text-primary'
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          )}
+                        </React.Fragment>
+                      ))}
                       <button
                         onClick={() => handlePageChangeWishes('next')}
                         disabled={currentPageWishes === totalPagesWishes}
