@@ -1320,7 +1320,7 @@ const App = () => {
                     >
                       <Reveal delay={0.2} y={20} duration={1.5}>
                         <div className="w-full pr-4 mt-8 md:mt-12">
-                          <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-3 md:gap-6" />
+                          <Countdown targetDate={WEDDING_CONFIG.weddingDateISO} className="justify-start gap-3 md:gap-6" />
                         </div>
                       </Reveal>
 
@@ -1343,11 +1343,12 @@ const App = () => {
                             whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(80,89,63,0.2)' }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => {
+                              const isoToGCal = (iso: string) => iso.replace(/[-:]/g, '').split('.')[0];
                               const event = {
                                 title: "Pernikahan Ayu & Rudi",
-                                start: "20260802T080000",
-                                end: "20260802T210000",
-                                location: "Jakarta",
+                                start: isoToGCal(WEDDING_CONFIG.weddingDateISO),
+                                end: isoToGCal(WEDDING_CONFIG.weddingDateISO).slice(0, 8) + 'T210000',
+                                location: WEDDING_CONFIG.akadLocationName,
                                 description: "Mohon doa restu atas pernikahan kami."
                               };
                               window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
@@ -1418,7 +1419,7 @@ const App = () => {
 
               <Reveal delay={0.2} y={20} duration={1.5}>
                 <div className="w-full pr-4">
-                  <Countdown targetDate="2026-08-02T08:00:00" className="justify-start gap-3 md:gap-6" />
+                  <Countdown targetDate={WEDDING_CONFIG.weddingDateISO} className="justify-start gap-3 md:gap-6" />
                 </div>
               </Reveal>
 
@@ -1454,11 +1455,12 @@ const App = () => {
                     whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(80,89,63,0.2)' }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => {
+                      const isoToGCal = (iso: string) => iso.replace(/[-:]/g, '').split('.')[0];
                       const event = {
                         title: "Pernikahan Ayu & Rudi",
-                        start: "20260802T080000",
-                        end: "20260802T210000",
-                        location: "Jakarta",
+                        start: isoToGCal(WEDDING_CONFIG.weddingDateISO),
+                        end: isoToGCal(WEDDING_CONFIG.weddingDateISO).slice(0, 8) + 'T210000',
+                        location: WEDDING_CONFIG.akadLocationName,
                         description: "Mohon doa restu atas pernikahan kami."
                       };
                       window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`, '_blank');
