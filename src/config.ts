@@ -14,10 +14,10 @@ export const WEDDING_CONFIG = {
 
   weddingDate: '02 . 08 . 2026',
   weddingDateFormal: 'Minggu, 02 Agustus 2026',
-  weddingDateISO: '2026-08-02T08:00:00', // Format: YYYY-MM-DDTHH:mm:ss
+  weddingDateISO: '2026-08-02T07:00:00', // Format: YYYY-MM-DDTHH:mm:ss
 
   // Lokasi & Waktu Akad Nikah
-  akadTime: '08.00 - 09.00 WIB',
+  akadTime: '07.00 - 09.00 WIB',
   akadLocationName: 'Gedung IPHI Gemolong',
   akadLocationAddress: 'JL. Solo - Purwodadi, Gemolong, Kec. Gemolong, Kabupaten Sragen, Jawa Tengah',
   akadGoogleMapsLink: 'https://maps.app.goo.gl/tXhFXZzLvxVz1enu9', // Gantilah dengan link yang benar bila ada
